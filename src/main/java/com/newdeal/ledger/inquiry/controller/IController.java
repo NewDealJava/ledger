@@ -35,7 +35,7 @@ package com.newdeal.ledger.inquiry.controller;// package com.newdeal.ledger.inqu
 	 // 1. 문의 게시판_전체 리스트 가져오기
  	@GetMapping("/index")
  	public String index(@RequestParam(name ="page", defaultValue = "1" ) int page, Model model) {
-		System.out.println("확인 : " + page);
+
 		// ▽ Service에 연결
  		Map<String, Object> map = inquiryService.iSelectAll(page);
 

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.newdeal.ledger.inquiry.mapper.InquiryMapper">
+
+    <!--1. 문의게시판_전체리스크 가져오기
+        ArrayList<InquiryDto> iSelectAll(int startContRowNum, int endContRowNum);
+    -->
+    <select id="iSelectAll" resultType="com.newdeal.ledger.inquiry.dto.InquiryDto">
+        SELECT * FROM qboard ORDER BY qbno DESC LIMIT #{endContRowNum} OFFSET #{startContRowNum}
+    </select>
+
+    <!--1-ⓐ. 문의게시판 전체리스크 총갯수 -->
+    <select id="iSelectCountAll" resultType="int">
+        select count(*) from qboard
+    </select>
+
+    <!--2. 문의게시판 게시글 1개 가져오기 -->
+    <select id="iSelectOne" parameterType="String" resultType="com.newdeal.ledger.inquiry.dto.InquiryDto">
+        select * from qboard where qbno =#{qbno}
+    </select>
+
+    <!--3. 문의게시판 게시글 1개 작성하기(feat.파일저장) -->
+    <insert id="iWrite">
+        insert into qbaord (qbno,email, qtitle,qcontent,qstatus,qdate,qfile) values (qbno.nextval,#{email},#{qtitle},#{qcontent},sysdate,#{qfile})
+    </insert>
+
+    <!--4. 문의게시판_게시글 1개 삭제하기 -->
+    <delete id="iDelete">
+        delete from qboard where = #{qbno}
+    </delete>
+</mapper>

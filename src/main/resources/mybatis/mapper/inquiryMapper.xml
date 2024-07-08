@@ -3,7 +3,7 @@
 
 <mapper namespace="com.newdeal.ledger.inquiry.mapper.InquiryMapper">
 
-    <!--1. 문의게시판_전체리스크 가져오기 -->
+    <!--1. 문의게시판_전체리스크 가져오기 -->.
     <select id="iSelectAll" resultType="com.newdeal.ledger.inquiry.dto.InquiryDto">
         SELECT * FROM qboard ORDER BY qbno DESC LIMIT #{endContRowNum} OFFSET #{startContRowNum}
     </select>

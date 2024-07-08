@@ -18,7 +18,7 @@ package com.newdeal.ledger.inquiry.service;// package com.newdeal.ledger.inquiry
      // ▼ (스프링 의존성 주입 방식 : 생성자 주입 방식)
      public  InquiryServiceImpl (InquiryMapper inquiryMapper){
          this.inquiryMapper=inquiryMapper;
-     }//생성자 주입 방식
+     }//생성자 주입 방식.
 
 
      // 1. 문의 게시판_전체리스트 가져오기

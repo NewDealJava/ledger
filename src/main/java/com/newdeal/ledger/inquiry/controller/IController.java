@@ -33,7 +33,7 @@ package com.newdeal.ledger.inquiry.controller;// package com.newdeal.ledger.inqu
  	 */
 	 
 	 // 1. 문의 게시판_전체 리스트 가져오기.
- 	@GetMapping("/index")
+ 	@GetMapping("/inquiry")
  	public String index(@RequestParam(name ="page", defaultValue = "1" ) int page, Model model) {
 
 		// ▽ Service에 연결
@@ -42,13 +42,13 @@ package com.newdeal.ledger.inquiry.controller;// package com.newdeal.ledger.inqu
  		// ▼ model저장 후 전송
  		model.addAttribute("map",map);
 
- 		return "/index";
+
+ 		return "/inquiry";
  	}//index
 
 	// 2.문의 게시판_게시글 1개 가져오기
 	@GetMapping ("/iView")
 	public String iView(@RequestParam (defaultValue = "1") int qbno, Model model){
-
 
 	 	// ▽ Service에 연결
 		InquiryDto ibdto = inquiryService.iSelectOne(qbno);
@@ -64,7 +64,6 @@ package com.newdeal.ledger.inquiry.controller;// package com.newdeal.ledger.inqu
 	public String iWrite (){
 		 return "/iWrite";
 	}//iWrite : 문의 게시찬_게시글 작성 페이지
-
 
 	// 3-ⓐ. 문의 게시판_게시글 1개 작성하기(feat.파일 업로드)
 	@PostMapping("/iWrite")

@@ -84,7 +84,7 @@ package com.newdeal.ledger.inquiry.controller;// package com.newdeal.ledger.inqu
 			// ↓ ibdto ifile추가
 			ibdto.setQfile(upFName);
 		} else {
-			ibdto.setQfile("");
+			ibdto.setQfile(""); //파일이
 		} // if-else(게시글 작성하기 파일있는 경우 else 없는경우)
 
 		// service연결 - 파일저장

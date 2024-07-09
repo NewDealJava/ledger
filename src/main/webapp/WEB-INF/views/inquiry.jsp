@@ -89,10 +89,7 @@
               <li class="pagination-first-page"><a href="/inquiry?page=1">처음</a></li>
 
               <!--이전 페이지-->
-              <c:if test="${map.page<=1 }">
-                <li class="pagination-prev-page"></li>
-              </c:if>
-              <c:if test="${map.page>1 }">
+              <c:if test="${map.page>=1 }">
                <li class="pagination-prev-page"><a href="/inquiry?page=${map.page-1 }"><</a></i></li>
               </c:if>
 
@@ -108,15 +105,15 @@
               <!--페이지 넘버링-->
 
               <!--다음 페이지-->
-              <c:if test="${map.page<map.maxPage }">
-                <li class="pagination-next-page"><a href="inquiry?page=${map.page+1 }"></a></li>
+              <c:if test="${map.page<=map.maxPage }">
+                <li class="pagination-next-page"><a href="/inquiry?page=${map.page+1 }"></a></li>
               </c:if>
               <c:if test="${map.page>=map.maxPage }">
                 <li class="pagination-next-page"></li>
               </c:if>
               <!-- 마지막 페이지 -->
               <li class="pagination-last-page">
-                <a href="inquiry?page=${map.maxPage }">마지막</a>
+                <a href="/inquiry?page=${map.maxPage }">마지막</a>
               </li>
             </ul>
           </div>
@@ -136,7 +133,7 @@
             <button id="searchBtn" class="search-word-button">검색</button>
           </div>
           <div class="control-area">
-            <a href="#">글쓰기</a>
+            <a class="button" href="/iWrite">글쓰기</a>
           </div>
         </div>
       </div>

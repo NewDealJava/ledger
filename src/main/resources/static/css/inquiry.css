@@ -1,0 +1,316 @@
+@charset "UTF-8";
+
+/*index.jsp (리스트형 게시판 표준 CSS -- ★★★★변경시 원제작자 상의 후 변경바랍니다.★★★★)*/
+
+/* body 요소를 기준으로 표와 버튼을 가운데 정렬합니다. */
+* {
+  padding: 0;
+  margin: 0;
+}
+
+.board-title-container {
+  margin: 0 auto;
+  margin-top: 60px;
+  color: #555;
+}
+
+.board-title-area {
+  line-height: 0;
+  height: 230px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: #8450fe;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.board-title {
+  text-align: center;
+  color: #fff;
+}
+.board-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 60px 0;
+}
+
+.filter-answer-status-area {
+  float: left;
+  padding-bottom: 15px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.filter-answer-select {
+  display: inline;
+  margin: 0;
+  padding: 0;
+  width: auto;
+  min-width: 0;
+  max-width: none;
+  height: 26px;
+  line-height: 26px;
+  font-size: 12px;
+  color: #666666;
+  border-radius: 0;
+  border: 1px solid #f1f1f1;
+  background: white;
+  vertical-align: middle;
+  box-shadow: none;
+  box-sizing: content-box;
+  text-indent: 0;
+}
+
+.qna-board-list-area {
+  float: left;
+  width: 100%;
+  background-color: white;
+}
+
+.qna-board-list-area table {
+  display: table;
+  table-layout: fixed;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  border: 0;
+  font-size: 13px;
+  border-collapse: collapse;
+}
+
+.qna-board-list-area table a {
+  color: black;
+  font-weight: normal;
+  text-decoration: none;
+  border: 0;
+  box-shadow: none;
+  font-size: 14px;
+}
+
+.default-cut-strings {
+  width: auto;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  word-wrap: normal;
+  line-height: 33px;
+  font-size: 14px;
+}
+
+.qna-board-list-head {
+  border: 0;
+  background-color: transparent;
+  transition-duration: 0.3s;
+}
+
+.qna-board-list-head th {
+  font-weight: bold;
+  color: #545861;
+  border: 0;
+  border-bottom: 2px solid #f1f1f1;
+  padding: 10px 0;
+}
+
+.qna-board-list-uid {
+  width: 72px;
+}
+
+.qna-board-list-title {
+  width: auto;
+}
+
+.qna-board-list-user {
+  width: 75px;
+}
+
+.qna-board-list-date {
+  width: 120px;
+}
+
+.qna-board-list-status {
+  width: 100px;
+}
+
+.qna-board-list-view {
+  width: 55px;
+}
+
+.qna-board-list-body {
+  border: 0;
+  background-color: transparent;
+  transition-duration: 0.3s;
+  height: 54px;
+}
+
+.qna-board-list-body:hover {
+  background-color: #f7f7f7;
+}
+
+.qna-board-list-body td {
+  word-break: break-all;
+  border: 0;
+  border-bottom: 1px solid #f1f1f1;
+  padding: 10px 0;
+  height: auto;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 13px;
+}
+
+.qna-board-list-body td.qna-board-list-title {
+  text-align: left;
+}
+
+.pagination-area {
+  float: left;
+  padding: 15px 0;
+  width: 100%;
+}
+
+.pagination-area ul {
+  float: left;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  list-style: none;
+  text-align: center;
+  border: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.pagenation-area ul li {
+  display: inline-block;
+  zoom: 1;
+  margin: 0;
+  padding: 0 1px;
+  background: none;
+  border: 0;
+  list-style: none;
+}
+
+.pagination-area ul li a {
+  display: block;
+  margin: 0;
+  padding: 0 11px;
+  height: 28px;
+  line-height: 28px;
+  font-size: 13px;
+  color: #999999;
+  text-decoration: none;
+  border: 0;
+  background-color: #f9f9f9;
+  box-shadow: none;
+  transition-duration: 0.3s;
+}
+
+.pagination-area ul li a:hover {
+  background-color: #6582fe;
+  color: #fff;
+}
+
+.search-area {
+  float: left;
+  padding-bottom: 15px;
+  width: 100%;
+  text-align: center;
+}
+
+.search-word-select {
+  display: inline;
+  margin: 0;
+  padding: 0 5px;
+  width: 100px;
+  min-width: 100px;
+  height: 26px;
+  min-height: 0;
+  font-size: 13px;
+  color: #666666;
+  border-radius: 0;
+  border: 1px solid #f1f1f1;
+  background: white;
+  line-height: 26px;
+  vertical-align: middle;
+  box-shadow: none;
+  box-sizing: content-box;
+}
+
+.search-word-input {
+  display: inline;
+  margin: 0;
+  padding: 0 5px;
+  width: 200px;
+  min-width: 200px;
+  height: 26px;
+  min-height: 0;
+  font-size: 13px;
+  color: #666666;
+  border-radius: 0;
+  border: 1px solid #f1f1f1;
+  background: white;
+  line-height: 26px;
+  vertical-align: middle;
+  box-shadow: none;
+  box-sizing: content-box;
+}
+
+.search-word-button {
+  position: relative;
+  display: inline-block;
+  zoom: 1;
+  margin: 0;
+  padding: 0 10px;
+  height: 28px;
+  line-height: 28px;
+  font-size: 13px;
+  font-weight: normal;
+  letter-spacing: normal;
+  color: white;
+  background: #6582fe;
+  border: none;
+  border-radius: 0;
+  text-decoration: none;
+  cursor: pointer;
+  vertical-align: middle;
+  text-shadow: none;
+  box-shadow: none;
+  transition-duration: 0.3s;
+  box-sizing: content-box;
+}
+
+.control-area {
+  float: left;
+  padding-bottom: 15px;
+  width: 100%;
+  text-align: right;
+}
+
+.control-area a {
+  position: relative;
+  display: inline-block;
+  zoom: 1;
+  margin: 0;
+  padding: 0 10px;
+  height: 28px;
+  line-height: 28px;
+  font-size: 13px;
+  font-weight: normal;
+  letter-spacing: normal;
+  color: white;
+  background: #6582fe;
+  border: none;
+  border-radius: 0;
+  text-decoration: none;
+  cursor: pointer;
+  vertical-align: middle;
+  text-shadow: none;
+  box-shadow: none;
+  transition-duration: 0.3s;
+  box-sizing: content-box;
+}

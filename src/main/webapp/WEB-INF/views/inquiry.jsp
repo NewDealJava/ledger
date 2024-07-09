@@ -86,25 +86,37 @@
           <div class="pagination-area">
             <ul id="pagination">
               <!--첫번째 페이지-->
-              <li class="pagination-first-page"><a href="#">처음</a></li>
+              <li class="pagination-first-page"><a href="/inquiry?page=1">처음</a></li>
+
               <!--이전 페이지-->
-              <li class="pagination-prev-page">
-                <a href="#"><</a></i>
-              </li>
+              <c:if test="${map.page<=1 }">
+                <li class="pagination-prev-page"></li>
+              </c:if>
+              <c:if test="${map.page>1 }">
+               <li class="pagination-prev-page"><a href="/inquiry?page=${map.page-1 }"><</a></i></li>
+              </c:if>
 
               <!--페이지 넘버링-->
               <c:forEach var="i" begin="${map.startPageNum}" end="${map.endPageNum }" step="1">
-                <li class="pagination-number"><a href="#">${i}</a></li>
+                <c:if test="${map.page==i }">
+                    <li class="pagination-number">${i}</li>
+                </c:if>
+                <c:if test="${map.page!=i }">
+                    <li class="pagination-number"><a href="/inquiry?page=${i}">${i}</a></li>
+                </c:if>
               </c:forEach>
               <!--페이지 넘버링-->
 
               <!--다음 페이지-->
-              <li class="pagination-next-page">
-                <a href="#">></a>
-              </li>
+              <c:if test="${map.page<map.maxPage }">
+                <li class="pagination-next-page"><a href="inquiry?page=${map.page+1 }"></a></li>
+              </c:if>
+              <c:if test="${map.page>=map.maxPage }">
+                <li class="pagination-next-page"></li>
+              </c:if>
               <!-- 마지막 페이지 -->
               <li class="pagination-last-page">
-                <a href="#">마지막</a>
+                <a href="inquiry?page=${map.maxPage }">마지막</a>
               </li>
             </ul>
           </div>

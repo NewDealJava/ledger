@@ -52,3 +52,56 @@ body {
   background-position: 50% 50%;
   background-size: 100% 100%;
 }
+
+.board-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 60px 0;
+}
+
+.board-title-container {
+  margin: 0 auto;
+  margin-top: 60px;
+  color: #555;
+}
+
+.board-title-area {
+  line-height: 0;
+  height: 230px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: #8450fe;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.board-title {
+  text-align: center;
+  color: #fff;
+}
+
+.button {
+  position: relative;
+  display: inline-block;
+  zoom: 1;
+  margin: 0;
+  padding: 0 10px;
+  height: 28px;
+  line-height: 28px;
+  font-size: 13px;
+  font-weight: normal;
+  letter-spacing: normal;
+  color: white;
+  background: #6582fe;
+  border: none;
+  border-radius: 0;
+  text-decoration: none;
+  cursor: pointer;
+  vertical-align: middle;
+  text-shadow: none;
+  box-shadow: none;
+  transition-duration: 0.3s;
+  box-sizing: content-box;
+}

@@ -25,5 +25,4 @@ package com.newdeal.ledger.inquiry.mapper;// package com.newdeal.ledger.inquiry.
      // 4.문의 게시판_게시글 1개 삭제하기
      void iDelete(int qbno);
 
-
  }//InquiryMapper

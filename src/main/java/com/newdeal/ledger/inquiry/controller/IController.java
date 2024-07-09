@@ -86,9 +86,8 @@ package com.newdeal.ledger.inquiry.controller;// package com.newdeal.ledger.inqu
 			ibdto.setQfile(""); //파일이
 		} // if-else(게시글 작성하기 파일있는 경우 else 없는경우)
 
-		// service연결 - 파일저장
+		// ▽ service연결 - 파일저장
 		inquiryService.iWrite(ibdto);
-
 
 		// ▼ model저장 후 전송
 		model.addAttribute("result","iWrite-Save");

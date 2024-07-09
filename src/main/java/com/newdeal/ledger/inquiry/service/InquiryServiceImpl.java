@@ -18,8 +18,7 @@ package com.newdeal.ledger.inquiry.service;// package com.newdeal.ledger.inquiry
      // ▼ (스프링 의존성 주입 방식 : 생성자 주입 방식)
      public  InquiryServiceImpl (InquiryMapper inquiryMapper){
          this.inquiryMapper=inquiryMapper;
-     }//생성자 주입 방식.
-
+     }//생성자 주입 방식.gi
 
      // 1. 문의 게시판_전체리스트 가져오기
      @Override
@@ -38,8 +37,8 @@ package com.newdeal.ledger.inquiry.service;// package com.newdeal.ledger.inquiry
              endPageNum = maxPage;
          int startContRowNum = (page - 1) * contentCount + 1; //page 시작 게시판 번호
          int endContRowNum = startContRowNum + contentCount - 1; // page 마지막 게시판 번호
-         System.out.println("첫페이지 : "+startContRowNum);
-         System.out.println("마지막페이지 : "+endContRowNum);
+         System.out.println("pg당 첫번째 : "+startContRowNum);
+         System.out.println("pg당 마지막째 : "+endContRowNum);
 
 //         HashMap<Object, Object> map1 = new HashMap<>();
 //         map1.put("startContRowNum", startContRowNum);

@@ -63,6 +63,9 @@ package com.newdeal.ledger.inquiry.service;// package com.newdeal.ledger.inquiry
     public InquiryDto iSelectOne(int qbno) {
         // ※ mapper연결
         InquiryDto inquiryDto = inquiryMapper.iSelectOne(qbno);
+        //조회수 1증가
+        inquiryMapper.iHitUp(qbno);
+
         return inquiryDto;
     }// iSelectOne(qbno)
 

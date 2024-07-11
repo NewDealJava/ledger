@@ -1,0 +1,145 @@
+* {
+  box-sizing: border-box;
+  list-style: none;
+  text-decoration: none;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  font-family: "Pretendard", sans-serif;
+}
+
+@font-face {
+  font-family: "Pretendard";
+  src: url("https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff")
+    format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
+
+.icon-box {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-button {
+  border-radius: 50% 50%;
+
+  width: 24px;
+  height: 24px;
+
+  margin-right: 10px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+}
+
+.icon-button:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.icon {
+  width: 100%;
+  height: 100%;
+
+  background-position: 50% 50%;
+  background-size: 100% 100%;
+}
+
+.board-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 60px 0;
+}
+
+.board-title-container {
+  margin: 0 auto;
+  margin-top: 60px;
+  color: #555;
+}
+
+.board-title-area {
+  line-height: 0;
+  height: 230px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: #8450fe;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.board-title {
+  text-align: center;
+  color: #fff;
+}
+
+.button {
+  position: relative;
+  display: inline-block;
+  zoom: 1;
+  margin: 0;
+  padding: 0 10px;
+  height: 28px;
+  line-height: 28px;
+  font-size: 13px;
+  font-weight: normal;
+  letter-spacing: normal;
+  color: white;
+  background: #6582fe;
+  border: none;
+  border-radius: 0;
+  text-decoration: none;
+  cursor: pointer;
+  vertical-align: middle;
+  text-shadow: none;
+  box-shadow: none;
+  transition-duration: 0.3s;
+  box-sizing: content-box;
+}
+
+.input-box {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.input-box p {
+  margin: 10px 0;
+}
+
+.input-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  border: 1px solid #ddd;
+  border-radius: 2px;
+}
+
+.input {
+  border: none;
+  background: none;
+  outline: none;
+
+  flex: 1;
+
+  color: rgba(0, 0, 0, 0.7);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 140%;
+
+  height: 42px;
+  width: 100%;
+
+  padding: 0 20px;
+  font-size: 14px;
+}

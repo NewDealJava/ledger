@@ -48,7 +48,7 @@ package com.newdeal.ledger.inquiry.controller;// package com.newdeal.ledger.inqu
 
 	// 2.문의 게시판_게시글 1개 가져오기
 	@GetMapping ("/iView")
-	public String iView(@RequestParam (defaultValue = "1") int qbno, Model model){
+	public String iView(@RequestParam (name = "qbno", defaultValue = "1") int qbno, Model model){
 
 	 	// ▽ Service에 연결
 		InquiryDto ibdto = inquiryService.iSelectOne(qbno);
@@ -56,7 +56,7 @@ package com.newdeal.ledger.inquiry.controller;// package com.newdeal.ledger.inqu
 		// ▼ model저장 후 전송
 		model.addAttribute("ibdto",ibdto);
 
-		 return "/iView";
+		 return "iView";
 	}//iView(qbno, model)
 
 	//3. 문의 게시판_게시글 작성 페이지
@@ -109,6 +109,16 @@ package com.newdeal.ledger.inquiry.controller;// package com.newdeal.ledger.inqu
 		 return "/iResult";
 	}//iDelete(qbno, model)
 
+	@PostMapping ("/iUpdate")
+	public String iUpdate(@RequestParam (name = "qbno", defaultValue = "1") int qbno, Model model){
 
+		// ▽ Service에 연결
+		InquiryDto ibdto = inquiryService.iSelectOne(qbno);
+
+		// ▼ model저장 후 전송
+		model.addAttribute("ibdto",ibdto);
+
+		 return "iUpdate";
+	}//iUpadte(qbno,model)
 
  }//IController

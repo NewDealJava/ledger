@@ -20,5 +20,7 @@ package com.newdeal.ledger.inquiry.dto;// package com.newdeal.ledger.inquiry.dto
  	private int qstatus;
  	private Timestamp qdate;
  	private String qfile;
+    private int qhit;
+
 
  }//inquiryDto

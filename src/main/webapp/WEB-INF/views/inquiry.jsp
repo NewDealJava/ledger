@@ -7,7 +7,7 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>가게부</title>
+    <title>YOONICORN 가계부</title>
   </head>
   <!-- ♣♣♣ CSS ♣♣♣ -->
   <link href="../css/inquiry.css?ver=1" rel="stylesheet" />
@@ -39,7 +39,7 @@
   <body>
     <div class="board-title-container">
         <div class="board-title-area">
-          <h1 class="board-title">문의게시판</h1>
+          <h1 class="board-title">문의 게시판(Q&A)</h1>
         </div>
         <div class="board-container">
           <div class="filter-answer-status-area">
@@ -68,7 +68,7 @@
                       <td class="qna-board-list-uid">${ibdto.qbno}</td>
                       <td class="qna-board-list-title">
                         <a href="">
-                          <div class="default-cut-strings">${ibdto.qtitle}</div>
+                          <div class="default-cut-strings"><a href="/iView?qbno=${ibdto.qbno }">${ibdto.qtitle}</a></div>
                         </a>
                       </td>
                       <td class="qna-board-list-user">${ibdto.email}</td>
@@ -77,7 +77,7 @@
                        <c:if test="${ibdto.qstatus<=0}"><strong style="color : red;">답변대기</strong></c:if>
                        <c:if test="${ibdto.qstatus>0}"><strong style="color : blue;">답변완료</strong></c:if>
                       </td>
-                      <td class="qna-board-list-view">0</td>
+                      <td class="qna-board-list-view">${ibdto.qhit}</td>
                     </tr>
                 </c:forEach>
               </tbody>
@@ -122,7 +122,7 @@
               <option value="All" selected="selected">전체</option>
               <option value="qtitle">제목</option>
               <option value="qcontent">내용</option>
-              <option value="Id">아이디</option>
+              <option value="Id">작성자</option>
             </select>
             <input
               type="text"

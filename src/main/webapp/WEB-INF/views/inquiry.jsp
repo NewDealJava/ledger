@@ -107,7 +107,7 @@
               <!--페이지 넘버링-->
 
               <!--다음 페이지-->
-              <c:if test="${map.page<=map.maxPage }">
+              <c:if test="${map.page<map.maxPage }">
                 <a href="/inquiry?page=${map.page+1 }"><i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>
               </c:if>
               <c:if test="${map.page>=map.maxPage }">

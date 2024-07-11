@@ -5,7 +5,7 @@
 
     <!--1. 문의게시판_전체리스트 가져오기 -->
     <select id="iSelectAll" resultType="com.newdeal.ledger.inquiry.dto.InquiryDto">
-        select * from qboard order by qbno DESC LIMIT 10 OFFSET #{startContRowNum}
+        SELECT * FROM qboard ORDER BY qbno DESC LIMIT 10 offset #{startContRowNum}
     </select>
 
     <!--1-ⓐ. 문의게시판 전체리스크 총갯수1 -->
@@ -24,7 +24,7 @@
 
     <!--3. 문의게시판 게시글 1개 작성하기(feat.파일저장) -->
     <insert id="iWrite" useGeneratedKeys="true" keyProperty="qbno" >
-        insert into qboard (email, qtitle,qcontent,qstatus,qdate,qfile) values ("jjsd",#{qtitle},#{qcontent},0,NOW(),"")
+        insert into qboard (email, qtitle,qcontent,qstatus,qfile,qhit) values ("jjsd@exam.com",#{qtitle},#{qcontent},0,null,0)
     </insert>
 
     <!--4. 문의게시판_게시글 1개 삭제하기 -->

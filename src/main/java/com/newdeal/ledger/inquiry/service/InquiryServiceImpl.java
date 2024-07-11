@@ -36,7 +36,7 @@ package com.newdeal.ledger.inquiry.service;// package com.newdeal.ledger.inquiry
          int endPageNum = (startPageNum + bottomArray) - 1; //게시글 마지막 페이지
          if (endPageNum > maxPage) // *페이지 넘버링 최대페이지가 끝페이지보다 작을경우
              endPageNum = maxPage;
-         int startContRowNum = (page - 1) * contentCount + 1; //page 시작 게시판 번호
+         int startContRowNum = (page - 1) * contentCount; //page 시작 게시판 번호
          int endContRowNum = startContRowNum + contentCount - 1; // page 마지막 게시판 번호
          System.out.println("pg당 첫번째 : "+startContRowNum);
          System.out.println("pg당 마지막째 : "+endContRowNum);

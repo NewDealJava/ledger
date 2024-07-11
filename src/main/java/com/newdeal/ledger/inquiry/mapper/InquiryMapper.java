@@ -18,13 +18,14 @@ package com.newdeal.ledger.inquiry.mapper;// package com.newdeal.ledger.inquiry.
      
      // 2.문의 게시판_게시글 1개 가져오기.
      InquiryDto iSelectOne(int qbno);
-     void iHitUp(int qbno);//게시글 조회수 증가
+     void iHitUp(int qbno);// ← 게시글 조회수 증가
 
      // 3.문의 게시판_게시글 1개 작성하기(feat.파일 업로드)
-     void iWirte(InquiryDto ibdto);
+     void iWrite(InquiryDto ibdto);
 
      // 4.문의 게시판_게시글 1개 삭제하기
      void iDelete(int qbno);
 
-
+     // 5.문의 게시판_게시글 1개 수정하기
+     void iDoUpdate(InquiryDto inquiryDto);
 }//InquiryMapper

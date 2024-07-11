@@ -4,6 +4,7 @@ package com.newdeal.ledger.inquiry.service;// package com.newdeal.ledger.inquiry
  import com.newdeal.ledger.inquiry.mapper.InquiryMapper;
  import org.springframework.beans.factory.annotation.Autowired;
  import org.springframework.stereotype.Service;
+ import org.springframework.transaction.annotation.Transactional;
 
  import java.util.ArrayList;
  import java.util.HashMap;
@@ -71,9 +72,11 @@ package com.newdeal.ledger.inquiry.service;// package com.newdeal.ledger.inquiry
 
     // 3. 문의 게시판_게시글 1개 작성하기(feat.파일 업로드)
     @Override
+    @Transactional
     public void iWrite(InquiryDto ibdto) {
          // ※ mapper 연결
-         inquiryMapper.iWirte(ibdto);
+         inquiryMapper.iWrite(ibdto);
+        System.out.println("mapper qcontent : "+ibdto.getQcontent());
     }//iWrite(ibdto)
 
     // 4. 문의 게시판_게시글 1개 삭제하기
@@ -82,6 +85,13 @@ package com.newdeal.ledger.inquiry.service;// package com.newdeal.ledger.inquiry
          // ※ mapper 연결
         inquiryMapper.iDelete(qbno);
     }// iDelete(qbno)
+
+    // 5. 문의 게시판_게시글 1개 수정하기
+    @Override
+    public void iDoUpdate(InquiryDto inquiryDto) {
+        // ※ mapper 연결
+        inquiryMapper.iDoUpdate(inquiryDto);
+    }//iDoUpdate(inquiryDto)
 
 
 }//InquiryServiceImpl //서비스 임플

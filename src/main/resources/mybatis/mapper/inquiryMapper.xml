@@ -23,12 +23,17 @@
     </update>
 
     <!--3. 문의게시판 게시글 1개 작성하기(feat.파일저장) -->
-    <insert id="iWrite">
-        insert into qbaord (qbno,email, qtitle,qcontent,qstatus,qdate,qfile) values (qbno.nextval,#{email},#{qtitle},#{qcontent},sysdate,#{qfile})
+    <insert id="iWrite" useGeneratedKeys="true" keyProperty="qbno" >
+        insert into qboard (email, qtitle,qcontent,qstatus,qdate,qfile) values ("jjsd",#{qtitle},#{qcontent},0,NOW(),"")
     </insert>
 
     <!--4. 문의게시판_게시글 1개 삭제하기 -->
-    <delete id="iDelete">
-        delete from qboard where = #{qbno}
+    <delete id="iDelete" parameterType="int">
+        delete from qboard where qbno = #{qbno}
     </delete>
+
+    <!--5. 문의게시판_게시글 1개 수정하기 -->
+    <update id="iDoUpdate">
+        update qboard set qtitle=#{qtitle}, qcontent=#{qcontent},qdate=NOW() where qbno=#{qbno}
+    </update>
 </mapper>

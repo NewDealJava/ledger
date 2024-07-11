@@ -26,6 +26,13 @@ prefix="fn" %> <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%> 
            alert("※ 문의사항 수정 페이지로 이동합니다.");
            $("#inquiryViewFrm").attr("action", "iUpdate").submit();
         }); //#iUpdateBtn
+
+        $("#iDelBtn").click(function(){
+          if(confirm("※ 게시글을 삭제 하시겠습니까?")){
+           $("#inquiryViewFrm").attr("action", "iDelete").submit();
+          }//if(confirm)) // 게시글 삭제 alert
+
+        }); //#iUpdateBtn
     }); //제이쿼리 최신
   </script>
   <body>
@@ -95,8 +102,8 @@ prefix="fn" %> <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%> 
             <a class="button" href="/inquiry">목록보기</a>
           </div>
           <div class="right">
-            <a class="button" id="iUpdateBtn" href="#">수정</a>
-            <a class="button" href="#">삭제</a>
+            <button class="button" id="iUpdateBtn">수정</button>
+            <button class="button" id="iDelBtn">삭제</button>
           </div>
         </div>
       </div>

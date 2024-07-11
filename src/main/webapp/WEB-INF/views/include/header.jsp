@@ -14,7 +14,7 @@
 		<header class="header">
 			<div class="logo">        
 				<h1>VISUAL BANK</h1>
-                <a href="/#menu=dashboard">
+                <a href="/inquiry">
                     x<img src="https://dfrlippt5ud4x.cloudfront.net/web/visual_logo_beta_v3.png" width="160"/>
                 </a>
             </div>

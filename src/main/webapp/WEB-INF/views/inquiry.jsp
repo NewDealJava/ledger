@@ -11,6 +11,8 @@
   </head>
   <!-- ♣♣♣ CSS ♣♣♣ -->
   <link href="../css/inquiry.css?ver=1" rel="stylesheet" />
+  <!-- ♣♣♣ font ♣♣♣ -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
   <!-- JQuery 최신 -->
   <script src="http://code.jquery.com/jquery-latest.min.js"></script>
@@ -90,7 +92,7 @@
 
               <!--이전 페이지-->
               <c:if test="${map.page>=1 }">
-               <li class="pagination-prev-page"><a href="/inquiry?page=${map.page-1 }"><</a></i></li>
+             <a href="/inquiry?page=${map.page-1 }"><i class="fa fa-chevron-left" aria-hidden="true"></i></a></li>
               </c:if>
 
               <!--페이지 넘버링-->
@@ -106,10 +108,10 @@
 
               <!--다음 페이지-->
               <c:if test="${map.page<=map.maxPage }">
-                <li class="pagination-next-page"><a href="/inquiry?page=${map.page+1 }"></a></li>
+                <a href="/inquiry?page=${map.page+1 }"><i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>
               </c:if>
               <c:if test="${map.page>=map.maxPage }">
-                <li class="pagination-next-page"></li>
+                <i class="fa fa-chevron-right" aria-hidden="true"></i>
               </c:if>
               <!-- 마지막 페이지 -->
               <li class="pagination-last-page">

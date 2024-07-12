@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.newdeal.ledger.categorytag.mapper.CategoryMapper">
+
+    <!-- parent_cno가 null인 카테고리 리스트를 조회하는 쿼리 -->
+    <select id="findAll" resultType="com.newdeal.ledger.categorytag.dto.CategoryDto">
+        SELECT
+        cno,
+        type,
+        name,
+        parent_cno as parentCno
+        FROM category
+        WHERE parent_cno IS NULL
+    </select>
+
+</mapper>

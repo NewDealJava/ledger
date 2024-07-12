@@ -1,34 +1,6 @@
 @charset "UTF-8";
 
-.filter-answer-status-area {
-    float: left;
-    padding-bottom: 15px;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-}
-
-.filter-answer-select {
-    display: inline;
-    margin: 0;
-    padding: 0;
-    width: auto;
-    min-width: 0;
-    max-width: none;
-    height: 26px;
-    line-height: 26px;
-    font-size: 12px;
-    color: #666666;
-    border-radius: 0;
-    border: 1px solid #f1f1f1;
-    background: white;
-    vertical-align: middle;
-    box-shadow: none;
-    box-sizing: content-box;
-    text-indent: 0;
-}
-
-.qna-board-list-area {
+.board-list-area {
     float: left;
     width: 100%;
     background-color: white;
@@ -253,4 +225,95 @@
     padding-bottom: 15px;
     width: 100%;
     text-align: right;
+}
+
+/*카드*/
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: calc(33.333% - 20px);
+    box-sizing: border-box;
+    margin-bottom: 20px;
+}
+
+.card-header {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.card-body {
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+
+
+/*탭*/
+
+
+
+.tab-container {
+    display: flex;
+    margin-bottom: 20px;
+}
+.tab {
+    padding: 10px 20px;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    border-bottom: none;
+    background-color: #f2f2f2;
+}
+.tab.active {
+    background-color: #fff;
+    font-weight: bold;
+}
+.tab-content {
+    display: none;
+    border: 1px solid #ddd;
+    padding: 20px;
+    background-color: #fff;
+}
+.tab-content.active {
+    display: block;
+}
+
+
+/*탭2  ajax*/
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 300px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+}
+
+.card-header {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.card-body {
+    font-size: 14px;
+    margin-bottom: 10px;
 }

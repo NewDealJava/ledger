@@ -172,6 +172,11 @@
 </main>
 <!-- jsp:include page="../views/incl/footer.jsp" flush="true" / -->
 <script>
+    // calendar.jsp의 모달을 닫는 함수
+    function closeModalInCalendar() {
+        $('#myModal').hide(); // 모달 숨기기
+    }
+
     $(document).ready(() => {
         const calendarBody = $('#calendar-body');  // 캘린더 본문 요소
         const monthYear = $('#month-year');        // 월과 연도를 표시할 요소

@@ -79,6 +79,19 @@
     // 1. 수정 폼 모달 닫기: 수정 작업 완료 후 현재 열려있는 모달을 닫기
     // 2. 현재 페이지 닫기: 모달을 열었던 부모 페이지도 닫기
 
+    // X 버튼 클릭 이벤트 처리
+    $('.close').click(function() {
+        parent.closeModalInCalendar(); // 부모 창의 모달 닫기 함수 호출
+    });
+
+    // 모달 외부 클릭 시 닫기 처리
+    $(document).on('click', function(event) {
+        if ($(event.target).is('#myModal')) {
+            parent.closeModalInCalendar(); // 부모 창의 모달 닫기 함수 호출
+        }
+    });
+
+
     // expenseDetails.jsp에서의 AJAX 요청 및 처리
     $(document).ready(function() {
         const modal = $('#updateFormModal');  // 모달 요소 가져오기
@@ -93,19 +106,12 @@
         $(document).on('click', function(event) {
             if ($(event.target).is('#updateFormModal')) {
                 closeModal(); // 모달 닫기 함수 호출
-            } else if ($(event.target).is('#content')) {
-                closeContent(); // 콘텐츠 닫기 함수 호출
             }
         });
 
         // 모달을 닫는 함수
         function closeModal() {
             modal.hide(); // 모달 숨기기
-        }
-
-        // 콘텐츠를 닫는 함수
-        function closeContent() {
-            $('#content').hide(); // 콘텐츠 숨기기
         }
 
         // 수정 폼 열기

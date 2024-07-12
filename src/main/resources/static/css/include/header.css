@@ -34,11 +34,13 @@
 }
 
 .nav-bar .sign-in,
-.nav-bar .sign-up {
+.nav-bar .sign-up,
+.nav-bar .user-info {
   color: rgba(0, 0, 0, 1);
 }
 
 .nav-bar .sign-in:hover,
-.nav-bar .sign-up:hover {
+.nav-bar .sign-up:hover,
+.nav-bar .user-info:hover {
   color: rgba(0, 0, 0, 0.6);
 }

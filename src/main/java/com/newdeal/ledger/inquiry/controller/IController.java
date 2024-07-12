@@ -59,32 +59,16 @@ package com.newdeal.ledger.inquiry.controller;// package com.newdeal.ledger.inqu
 		 return "iView";
 	}//iView(qbno, model)
 
-	//3. 문의 게시판_게시글 작성 페이지
+	//3. 문의 게시판_게시글 작성하기 (페이지)
 	@GetMapping ("/iWrite")
 	public String iWrite (){
 		 return "/iWrite";
 	}//iWrite : 문의 게시찬_게시글 작성 페이지
 
 	// 3-ⓐ. 문의 게시판_게시글 1개 작성하기(feat.파일 업로드)
-	@PostMapping("/iWrite")
-	public String iWrite (InquiryDto ibdto, @RequestParam MultipartFile qFile ,Model model) throws Exception {
-		 
-		 // ★ 파일업로드 부분
-		if(!qFile.isEmpty()){
-			String oriFName = qFile.getOriginalFilename();
-			long time = System.currentTimeMillis();
-			String upFName = time + "_" + oriFName;
-			String fupload = "c:/upload/";
-
-			// ↓ 파일업로드 부분
-			File f = new File(fupload + upFName);
-			qFile.transferTo(f);
-
-			// ↓ ibdto ifile추가
-			ibdto.setQfile(upFName);
-		} else {
-			ibdto.setQfile(""); //파일이
-		} // if-else(게시글 작성하기 파일있는 경우 else 없는경우)
+	@PostMapping("/iDoWrite")
+	public String iWrite (InquiryDto ibdto ,Model model) {
+		System.out.println("Write Content : " + ibdto.getQcontent());
 
 		// ▽ service연결 - 파일저장
 		inquiryService.iWrite(ibdto);
@@ -93,22 +77,24 @@ package com.newdeal.ledger.inquiry.controller;// package com.newdeal.ledger.inqu
 		model.addAttribute("result","iWrite-Save");
 
 
-		 return "/iResult";
+		 return "/doIBoard";
 	}//iWrite(ibdto, model)
 
 	// 4. 문의 게시판_게시글 1개 삭제하기
 	@PostMapping("/iDelete")
-	public String iDelete(@RequestParam(defaultValue = "1") int qbno, Model model){
+	public String iDelete(@RequestParam(name = "qbno",defaultValue = "1") int qbno, Model model){
 
+		System.out.println("qdel qbno : "+qbno);
 		// ▽ Service에 연결
 		inquiryService.iDelete(qbno);
 
 		// ▼ model저장 후 전송
 		model.addAttribute("result","iView-Delete");
 
-		 return "/iResult";
+		 return "/doIBoard";
 	}//iDelete(qbno, model)
 
+	// 5. 문의 게시판_게시글 1개 수정하기(페이지 이동)
 	@PostMapping ("/iUpdate")
 	public String iUpdate(@RequestParam (name = "qbno", defaultValue = "1") int qbno, Model model){
 
@@ -120,5 +106,20 @@ package com.newdeal.ledger.inquiry.controller;// package com.newdeal.ledger.inqu
 
 		 return "iUpdate";
 	}//iUpadte(qbno,model)
+
+	// 5. 문의 게시판_게시글 1개 수정하기(수정작성)
+	@PostMapping ("/iDoUpdate")
+	public String iDoUpdate(InquiryDto inquiryDto, Model model){
+		// ▽ service연결 - 게시글 수정
+		inquiryService.iDoUpdate(inquiryDto);
+		System.out.println("qvbno : "+inquiryDto.getQbno());
+		System.out.println("qtitle: "+inquiryDto.getQtitle());
+
+		// ▼ model저장 후 전송
+		model.addAttribute("result","iUpdate-Save");
+
+		 return "doIBoard";
+	}//iDoUpdate(inquiryDto, model)
+
 
  }//IController

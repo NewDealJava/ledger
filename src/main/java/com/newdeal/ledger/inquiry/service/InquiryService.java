@@ -18,5 +18,6 @@ public interface InquiryService {
     // ▶ 4.문의 게시판_게시물 1개 삭제하기
     void iDelete(int qbno);
 
-
+    // ▶ 5.문의 게시판_게시물 1개 수정하기
+    void iDoUpdate(InquiryDto inquiryDto);
 }//InquiryService //서비스

@@ -4,6 +4,7 @@ package com.newdeal.ledger.inquiry.service;// package com.newdeal.ledger.inquiry
  import com.newdeal.ledger.inquiry.mapper.InquiryMapper;
  import org.springframework.beans.factory.annotation.Autowired;
  import org.springframework.stereotype.Service;
+ import org.springframework.transaction.annotation.Transactional;
 
  import java.util.ArrayList;
  import java.util.HashMap;
@@ -35,7 +36,7 @@ package com.newdeal.ledger.inquiry.service;// package com.newdeal.ledger.inquiry
          int endPageNum = (startPageNum + bottomArray) - 1; //게시글 마지막 페이지
          if (endPageNum > maxPage) // *페이지 넘버링 최대페이지가 끝페이지보다 작을경우
              endPageNum = maxPage;
-         int startContRowNum = (page - 1) * contentCount + 1; //page 시작 게시판 번호
+         int startContRowNum = (page - 1) * contentCount; //page 시작 게시판 번호
          int endContRowNum = startContRowNum + contentCount - 1; // page 마지막 게시판 번호
          System.out.println("pg당 첫번째 : "+startContRowNum);
          System.out.println("pg당 마지막째 : "+endContRowNum);
@@ -71,9 +72,11 @@ package com.newdeal.ledger.inquiry.service;// package com.newdeal.ledger.inquiry
 
     // 3. 문의 게시판_게시글 1개 작성하기(feat.파일 업로드)
     @Override
+    @Transactional
     public void iWrite(InquiryDto ibdto) {
          // ※ mapper 연결
-         inquiryMapper.iWirte(ibdto);
+         inquiryMapper.iWrite(ibdto);
+        System.out.println("mapper qcontent : "+ibdto.getQcontent());
     }//iWrite(ibdto)
 
     // 4. 문의 게시판_게시글 1개 삭제하기
@@ -82,6 +85,13 @@ package com.newdeal.ledger.inquiry.service;// package com.newdeal.ledger.inquiry
          // ※ mapper 연결
         inquiryMapper.iDelete(qbno);
     }// iDelete(qbno)
+
+    // 5. 문의 게시판_게시글 1개 수정하기
+    @Override
+    public void iDoUpdate(InquiryDto inquiryDto) {
+        // ※ mapper 연결
+        inquiryMapper.iDoUpdate(inquiryDto);
+    }//iDoUpdate(inquiryDto)
 
 
 }//InquiryServiceImpl //서비스 임플

@@ -1,4 +1,4 @@
-package com.newdeal.ledger.categorytag.controller;
+package com.newdeal.ledger.cardaccount.controller;
 
 import java.util.List;
 
@@ -8,20 +8,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.newdeal.ledger.categorytag.dto.CategoryDto;
-import com.newdeal.ledger.categorytag.service.CategoryService;
+import com.newdeal.ledger.cardaccount.dto.CardDto;
+import com.newdeal.ledger.cardaccount.service.CardService;
 
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping(value = "/api/category")
+@RequestMapping(value = "/api/card")
 @RequiredArgsConstructor
-public class CategoryRestController {
-	private final CategoryService categoryService;
+public class CardRestController {
+	private final CardService cardService;
 
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
-	public List<CategoryDto> getAllCategories() {
-		return categoryService.selectAll();
+	public List<CardDto> getAllCardsByEmail() {
+		String tempEmail = "user1@example.com";
+
+		return cardService.selectAllByEmail(tempEmail);
 	}
 }

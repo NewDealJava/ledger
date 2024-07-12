@@ -9,6 +9,6 @@ public interface CalendarService {
 
     List<TransactionDto> findAll(HashMap<Object, String> map);
     List<TransactionDto> findDetails(String dateString);
-//    int deleteTransaction(Long transactionId);
-//    int updateTransaction(TransactionDto transactionDto);
+    int deleteTransaction(Long tno);
+
 }

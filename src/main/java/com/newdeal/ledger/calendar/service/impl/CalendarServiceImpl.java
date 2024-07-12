@@ -31,13 +31,9 @@ public class CalendarServiceImpl implements CalendarService {
         return calendarMapper.findDetails(dateString);
     }
 
-//    @Override
-//    public int deleteTransaction(Long transactionId) {
-//        return calendarMapper.deleteTransaction(transactionId);
-//    }
-//
-//    @Override
-//    public int updateTransaction(TransactionDto transactionDto) {
-//        return calendarMapper.updateTransaction(transactionDto);
-//    }
+    @Override
+    public int deleteTransaction(Long tno) {
+        return calendarMapper.deleteTransaction(tno);
+    }
+
 }

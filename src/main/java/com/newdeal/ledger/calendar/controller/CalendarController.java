@@ -6,7 +6,9 @@ import com.newdeal.ledger.calendar.dto.TransactionDto;
 import com.newdeal.ledger.calendar.service.CalendarService;
 import com.newdeal.ledger.inquiry.service.InquiryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +20,6 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/calendar")
-// @RequiredArgsConstructor
 public class CalendarController {
 
     private final CalendarService calendarService;
@@ -26,18 +27,29 @@ public class CalendarController {
         this.calendarService=calendarService;
     } //생성자 주입방식
 
-    @GetMapping // JSP를 반환하기 위해 사용
-    public String calendarPage(Model model) {
+    /**
+     * 브라우저에서 특정 년월의 달력 페이지로 이동할 때 사용합니다.
+     * JSP 페이지를 반환하여 해당 달력 페이지를 브라우저에 렌더링합니다. (최종 삭제했을때 이쪽 메서드 경유)
+     * @param model
+     * @return
+     */
+    @GetMapping // 브라우저에서 특정 년월의 달력 페이지로 이동할 때 사용
+    public String calendarPage(@RequestParam(value = "year", required = false) Integer year,
+                               @RequestParam(value = "month", required = false) Integer month,
+                               Model model) {
 
-        System.out.println("값이 없을 때");
-        LocalDate currentDate = LocalDate.now(); // 현재 날짜를 가져옵니다.
-        int year = currentDate.getYear();
-        int month = currentDate.getMonthValue();
+        if (year == null || month == null) {
+            LocalDate currentDate = LocalDate.now(); // 현재 날짜를 가져옵니다.
+            year = currentDate.getYear();
+            month = currentDate.getMonthValue();
+        }
         
         HashMap<Object, String> map = new HashMap<>();
         map.put("year", String.valueOf(year));
+        System.out.println("/calendar = " + map.get("year"));
         map.put("month", String.valueOf(month));
-        // System.out.println("map = " + map); // {month=7, year=2024}
+        System.out.println("/calendar = " + map.get("month"));
+
         List<TransactionDto> calendars = calendarService.findAll(map); // 현재 월달에 대한 거래 내역을 가져옴
         // System.out.println("calendars = " + calendars); // time=2024-07-10 11:58:47.0
         model.addAttribute("calendars", calendars);
@@ -54,14 +66,20 @@ public class CalendarController {
         return "/calendar/calendar"; // calendar.jsp 페이지를 반환
     }
 
+    /**
+     * AJAX 요청 등을 통해 비동기적으로 특정 년월의 데이터를 가져올 때 사용합니다.
+     * JSON 데이터를 반환하여 클라이언트 측에서 데이터를 처리할 수 있습니다.
+     * @param year @param month @param model
+     * @return
+     */
     @GetMapping(value = "/data", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody // JSON 데이터를 반환하기 위해 사용
     public List<TransactionDto> calendar(@RequestParam(value = "year", required = false) Integer year,
                                          @RequestParam(value = "month", required = false) Integer month,
                                          Model model) {
 
-//        System.out.println("year@@@@@@@@@@@@@@ = " + year); // 2024
-//        System.out.println("month@@@@@@@@@@@@@@@@@@ = " + month); // 6
+        System.out.println("/calendar/data = " + year); // 2024
+        System.out.println("/calendar/data = " + month); // 6
 
         LocalDate currentDate = LocalDate.now(); // 현재 날짜를 가져옵니다.
         if (year == null) {
@@ -89,7 +107,7 @@ public class CalendarController {
                               @RequestParam String backyear,
                               @RequestParam String backmonth,
                               Model model) {
-
+        System.out.println("day@@@@@@@@@@ = " + day);
         // monthYear에서 연도와 월 추출
         int year = Integer.parseInt(monthYear.substring(0, 4)); // 2024
         int month = Integer.parseInt(monthYear.substring(6, 7)); // 7
@@ -100,44 +118,87 @@ public class CalendarController {
         String dateString = date.toString(); // LocalDate를 String으로 변환
         // System.out.println("dateString = " + dateString); // 2024-07-05
         
-        List<TransactionDto> calendar = calendarService.findDetails(dateString);
+        List<TransactionDto> calendars = calendarService.findDetails(dateString);
         // System.out.println("calendar = " + calendar);
-        model.addAttribute("calendar", calendar);
+        model.addAttribute("calendars", calendars);
         model.addAttribute("backyear", backyear); // 삭제 후에 돌아오기 위해서
         model.addAttribute("backmonth", backmonth); // ...
 
         return "/calendar/expenseDetails"; // 프래그먼트를 반환
     }
 
-//    @PostMapping("/updateTransaction") // 업데이트 로직 구현
-//    public String updateTransaction(@ModelAttribute TransactionDto transactionDto) {
-//        int success = calendarService.updateTransaction(transactionDto);
-//
-//        return "redirect:/details"; // 수정 후에 칼렌더 페이지로 리다이렉트
-//    }
+    /**
+     * 모델창에서 삭제를 했을 때
+     * 리다이렉트로 페이지 이동 vs JSON 데이터 반환 장단점 확인
+     * @PostMapping(value = "/deleteTransaction", produces = MediaType.APPLICATION_JSON_VALUE)
+     * @ResponseBody // 문제 : 삭제 작업을 처리한 후에 원하는 대로 리다이렉트 또는 달력 데이터를 다시 로드하지 못함 -> 삭제하고 JSON 형식의 문자열을 반환하도록 수정
+     * @param tno @param backyear @param backmonth @param redirectAttributes @param model
+     * @return
+     */
+    @PostMapping("/deleteTransaction") // 삭제 로직 구현
+    // @ResponseBody // JSON 데이터를 반환하기 위해 사용, ResponseEntity<?>
+    public String deleteTransaction(@RequestParam Long tno,
+                                    @RequestParam(value = "backyear", required = false) Integer backyear,
+                                    @RequestParam(value = "backmonth", required = false) Integer backmonth,
+                                    RedirectAttributes redirectAttributes,
+                                    Model model) {
 
-//    @PostMapping("/deleteTransaction") // 삭제 로직 구현
-//    public String deleteTransaction(@RequestParam Long transactionId,
-//                                    @RequestParam(value = "backyear", required = false) Integer backyear,
-//                                    @RequestParam(value = "backmonth", required = false) Integer backmonth,
-//                                    RedirectAttributes redirectAttributes) {
-//
-//        System.out.println("backyear : " + backyear); // 2023
-//        System.out.println("backmonth : " + backmonth); // 2
-//
-//        int success = calendarService.deleteTransaction(transactionId);
-//        if(success == 1){
-//            System.out.println("삭제에 성공하였습니다");
-//        }else{
-//            System.out.println("삭제에 실패하였습니다");
-//        }
-//
-//        // 삭제 후에 다시 해당 년월의 달력 데이터를 요청하기 위해 year와 month 값을 리다이렉트할 URL에 추가
-//        if (backyear != null && backmonth != null) {
-//            redirectAttributes.addAttribute("year", backyear);
-//            redirectAttributes.addAttribute("month", backmonth);
-//        }
-//
-//        return "redirect:/calendar"; // 삭제 후에 칼렌더 페이지로 리다이렉트
-//    }
+        System.out.println("backyear : " + backyear); // 2024
+        System.out.println("backmonth : " + backmonth); // 4
+
+        int success = calendarService.deleteTransaction(tno);
+
+        if (success == 1) {
+            System.out.println("삭제에 성공하였습니다");
+            // 삭제 후 해당 년월의 데이터를 가져옴
+            LocalDate currentDate = LocalDate.now();
+            if (backyear == null) {
+                backyear = currentDate.getYear();
+            }
+            if (backmonth == null) {
+                backmonth = currentDate.getMonthValue();
+            }
+
+            HashMap<Object, String> map = new HashMap<>();
+            map.put("year", String.valueOf(backyear));
+            map.put("month", String.valueOf(backmonth));
+
+            List<TransactionDto> calendars = calendarService.findAll(map);
+            // RedirectAttributes에 데이터 추가
+            redirectAttributes.addFlashAttribute("calendars", calendars);
+            redirectAttributes.addAttribute("year", backyear);
+            redirectAttributes.addAttribute("month", backmonth);
+
+            return "redirect:/calendar";
+        } else {
+            redirectAttributes.addFlashAttribute("error", "삭제에 실패하였습니다.");
+            return "redirect:/error-page"; // 실패 시 에러 페이지로 리다이렉트
+        }
+    }
+
+    /**
+     * 키워드와 금액을 수정
+     * @param tno @param newKeyword @param newAmount @param model
+     * @return
+     */
+    @PostMapping("/updateTransaction")
+    public ResponseEntity<String> updateTransaction(@RequestParam Long tno,
+                                                    @RequestParam String newKeyword,
+                                                    @RequestParam Integer newAmount,
+                                                    Model model) {
+
+        System.out.println("tno = " + tno);
+        System.out.println("newKeyword = " + newKeyword);
+        System.out.println("newAmount = " + newAmount);
+
+        try {
+            // 성공적으로 수정된 경우
+            return ResponseEntity.ok("Transaction updated successfully"); // 성공 응답
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            // 수정 중 에러가 발생한 경우
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating transaction");
+        }
+    }
 }

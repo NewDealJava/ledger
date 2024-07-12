@@ -1,0 +1,172 @@
+.board-detail-title-area {
+  float: left;
+  width: 100%;
+}
+
+.board-detail-title {
+  padding: 12px 22px;
+  color: #545861;
+  font-weight: bold;
+  font-size: 22px;
+  line-height: 30px;
+  text-align: left;
+}
+
+.board-detail-info-area {
+  clear: both;
+  float: left;
+  width: 100%;
+  border-top: 1px solid #f1f1f1;
+  border-bottom: 1px solid #f1f1f1;
+  background-color: #f9f9f9;
+  font-size: 13px;
+}
+
+.board-detail-attr {
+  display: inline-block;
+  zoom: 1;
+  /* float: left; */
+  margin: 0;
+  padding: 12px 35px 12px 22px;
+}
+
+.board-detail-info-name {
+  float: left;
+  font-weight: bold;
+  color: #545861;
+  text-align: right;
+}
+
+.board-detail-info-value {
+  float: left;
+  padding-left: 20px;
+  color: #545861;
+}
+
+.board-detail-content-area {
+  clear: both;
+  float: left;
+  width: 100%;
+  min-height: 200px;
+}
+
+.board-detail-content {
+  margin: 0;
+  padding: 22px;
+  word-break: break-all;
+  line-height: 26px;
+}
+
+.board-detail-comment-area {
+  float: left;
+  width: 100%;
+}
+
+.board-detail-comment-default {
+  display: inline-block;
+  zoom: 1;
+  margin: 0;
+  width: 100%;
+  background-color: #f9f9f9;
+}
+
+.board-detail-comment-wrap {
+  padding: 15px 15px 0 0;
+  overflow: hidden;
+}
+
+.board-detail-comment-header {
+  padding: 0 0 0 15px;
+  overflow: hidden;
+  line-height: 1;
+}
+
+.board-detail-comment-header .comment-count {
+  display: inline;
+  color: #8a8a8a;
+  font-size: 13px;
+}
+
+.board-detail-comment-header .comment-count .comment-total-count {
+  color: #f05726;
+  font-size: 13px;
+}
+
+.board-detail-comment-default hr {
+  clear: both;
+  margin: 0;
+  padding: 5px 0 0 0;
+  height: 0;
+  border: 0;
+  border-bottom: 1px dashed #d8d8d8;
+  background: none;
+}
+
+.board-detail-comment-list {
+  padding: 0 0 0 15px;
+  overflow: hidden;
+}
+
+.board-detail-comment-list ul {
+  margin: 0 !important;
+  padding: 0 !important;
+  list-style: none;
+  border: 0;
+  background: none;
+}
+
+.board-detail-comment-default form {
+  margin: 0;
+  padding: 0;
+}
+
+.board-detail-comment-form {
+  padding: 15px 0 15px 15px;
+  overflow: hidden;
+}
+
+.board-detail-comment-form .comment-field {
+  margin-bottom: 10px;
+  line-height: 28px;
+}
+
+.board-detail-comment-form textarea {
+  margin: 0;
+  padding: 5px;
+  width: 100%;
+  height: 60px;
+  border: 1px solid #eaeaea;
+  font-size: 13px;
+  background-color: white;
+  color: #8a8a8a;
+  vertical-align: top;
+  overflow: hidden;
+  resize: none;
+}
+
+.comment-submit-button {
+  float: right;
+}
+
+.board-detail-comment-form .button {
+  margin: 0;
+  padding: 5px 20px;
+  font-weight: bold;
+  cursor: pointer;
+  text-align: center;
+}
+
+.board-detail-control {
+  float: left;
+  padding: 25px 0;
+  width: 100%;
+}
+
+.board-detail-control .left {
+  float: left;
+}
+
+.board-detail-control .right {
+  float: right;
+  gap: 40px;
+}

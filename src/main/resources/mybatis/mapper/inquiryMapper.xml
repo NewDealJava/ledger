@@ -14,9 +14,13 @@
     </select>
 
     <!--2. 문의게시판 게시글 1개 가져오기 -->
-    <select id="iSelectOne" parameterType="String" resultType="com.newdeal.ledger.inquiry.dto.InquiryDto">
+    <select id="iSelectOne" parameterType="int" resultType="com.newdeal.ledger.inquiry.dto.InquiryDto">
         select * from qboard where qbno =#{qbno}
     </select>
+    <!--2-ⓐ. 문의게시판 게시글 조회수 1증가 -->
+    <update id="iHitUp" parameterType="int">
+        update qboard set qhit=qhit+1 where qbno=#{qbno}
+    </update>
 
     <!--3. 문의게시판 게시글 1개 작성하기(feat.파일저장) -->
     <insert id="iWrite">

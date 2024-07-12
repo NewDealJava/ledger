@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.newdeal.ledger.calendar.mapper.CalendarMapper">
+
+    <!-- List<TransactionDto> findAll(HashMap<Object, String> map); // {month=7, year=2024} -->
+    <select id="findAll" parameterType="java.util.HashMap" resultType="com.newdeal.ledger.calendar.dto.TransactionDto">
+        SELECT *
+        FROM transaction
+        WHERE YEAR(`time`) = #{year}
+          AND MONTH(`time`) = #{month}
+    </select>
+
+    <!-- List<TransactionDto> findDetails(String dateString); // 2024-07-05 -->
+    <select id="findDetails" parameterType="String" resultType="com.newdeal.ledger.calendar.dto.TransactionDto">
+        SELECT *
+        FROM transaction
+        WHERE DATE(`time`) = #{dateString}
+    </select>
+
+</mapper>

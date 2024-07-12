@@ -12,8 +12,7 @@ public interface CalendarMapper {
     List<TransactionDto> findAll(HashMap<Object, String> map); // {month=7, year=2024}
 
     List<TransactionDto> findDetails(String dateString); // // 2024-07-05
-//
-//    int deleteTransaction(Long transactionId);
-//
-//    int updateTransaction(TransactionDto transactionDto);
+
+    int deleteTransaction(Long tno);
+
 }

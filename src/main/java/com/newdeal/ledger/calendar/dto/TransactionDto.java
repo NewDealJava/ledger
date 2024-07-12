@@ -24,5 +24,5 @@ public class TransactionDto {
     private String imageUrl;
     private String tsmemo;
     private Timestamp time;
-    private Integer rtype; // Nullable이므로 Integer로 선언
+    private Integer rtype;
 }

@@ -18,4 +18,10 @@
         WHERE DATE(`time`) = #{dateString}
     </select>
 
+    <!-- int deleteTransaction(Long tno); -->
+    <delete id="deleteTransaction" parameterType="long">
+        DELETE FROM transaction
+        WHERE tno = #{tno}
+    </delete>
+
 </mapper>

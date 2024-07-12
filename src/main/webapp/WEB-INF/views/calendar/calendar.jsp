@@ -173,101 +173,131 @@
 <!-- jsp:include page="../views/incl/footer.jsp" flush="true" / -->
 <script>
     $(document).ready(() => {
-        const calendarBody = $('#calendar-body');
-        const monthYear = $('#month-year');
-        const prevButton = $('#prev');
-        const nextButton = $('#next');
+        const calendarBody = $('#calendar-body');  // 캘린더 본문 요소
+        const monthYear = $('#month-year');        // 월과 연도를 표시할 요소
+        const prevButton = $('#prev');             // 이전 달 버튼
+        const nextButton = $('#next');             // 다음 달 버튼
 
-        // 모달 창
-        const modal = $('#myModal');
-        const modalContent = $('#modal-body'); // 수정된 부분
-        const modalDate = $('#modal-date');
-        const span = $('.close');
+        const modal = $('#myModal');              // 모달 요소
+        const modalContent = $('#modal-body');    // 모달 내용 요소
+        const modalDate = $('#modal-date');       // 모달 날짜 요소
+        const span = $('.close');                // 모달 닫기 버튼
 
-        let currentDate = new Date();
-        let dataWithFields = []; // 서버에서 받아올 데이터를 저장할 배열
+        let currentDate = new Date();            // 현재 날짜 초기화
 
-        var calendarsJson = ${calendarsJson}; // JSP에서 calendarsJson을 JSON.stringify()로 변환한 값으로 설정해야 함
+        // URL에서 year와 month 파라미터를 가져옴
+        const urlParams = new URLSearchParams(window.location.search);
+        const yearParam = parseInt(urlParams.get('year'));
+        const monthParam = parseInt(urlParams.get('month'));
 
-        // calendarsJson 배열에서 각 객체의 date, amount, recordType 필드 값들을 추출하여 새로운 배열을 만듭니다.
-        dataWithFields = calendarsJson.map(function(item) {
-            // 자바스크립트에서 날짜 형식으로 변환
-            var date = new Date(item.time);
-            var year = date.getFullYear();
-            var month = ('0' + (date.getMonth() + 1)).slice(-2); // 두 자리 숫자로 포맷
-            var day = ('0' + date.getDate()).slice(-2); // 두 자리 숫자로 포맷
-            var formattedDate = year + '-' + month + '-' + day;
+        // URL 파라미터가 있으면 해당 연도와 월로 currentDate 설정 (year, month)
+        if (!isNaN(yearParam) && !isNaN(monthParam)) {
+            currentDate = new Date(yearParam, monthParam - 1, 1);
+        }
 
-            return {
-                // 기존 : {date: '2024-07-01', amount: 20, recordType: 'Expense'} ...
-                // date: item.date,
-                // amount: item.amount,
-                // recordType: item.recordType
-
-                // 서버에서 받아온 데이터는 JSON 형태로, 날짜는 밀리초 단위의 타임스탬프로 제공됨
-                // JSON 데이터 : {time: 1720580327000, samount: 5000000, type: "EXPAND"} ...
-                // 타임스탬프를 사람이 읽을 수 있는 형식으로 변환 : {time: "2024-07-10", samount: 5000000, type: "EXPAND"} ...
-                time: formattedDate,
-                samount: item.samount,
-                type: item.type
-            };
-        });
-        // Processed data array : 주로 클라이언트 측에서 서버로부터 받은 데이터를 필요한 형태로 가공하여 사용할 때
+        let dataWithFields = []; // 서버에서 가져온 캘린더 데이터를 저장할 배열
         console.log('첫화면:', dataWithFields);
 
-        // *** 캘린더 렌더링 함수
-        let renderCalendar = (date) => {
-            // console.log(date); // Mon Jul 08 2024 16:08:12 GMT+0900 (한국 표준시)
-            calendarBody.empty();
-            const currentYear = date.getFullYear();
-            // console.log(currentYear); // 2024
-            const currentMonth = date.getMonth();
-            // console.log(currentMonth); // 6
-            monthYear.text(date.toLocaleDateString('ko-KR', { month: 'long', year: 'numeric' }));
-            // console.log(monthYear.text()); // 이동할 때 마다 년월이 콘솔창에 출력이 된다 -> ***예시)2024년 7월
-            const firstDay = new Date(currentYear, currentMonth, 1).getDay(); // 시작일 수 건너 뛴 수 -> 1...
-            const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate(); // 마지막일 수 -> 31...
+        // (전) 서버 측에서 초기 데이터를 JSP에서 클라이언트로 전달하는 방식: 먼저 데이터를 뿌려준다
+        // (후) 삭제와 수정 이후에, 기존 달력에서 해당 달로 이동하지 않는 오류를 수정하기 위해,
+        // AJAX 요청을 통해 서버에서 데이터를 동적으로 가져와서 캘린더를 렌더링하는 방식을 사용함
+        // var calendarsJson = ${calendarsJson}; // JSP에서 calendarsJson을 JSON.stringify()로 변환한 값으로 설정해야 함
 
-            let row = $('<tr>'); // 첫행
+        // AJAX를 통해 서버에서 달력 데이터를 가져와서 달력을 렌더링하는 함수
+        const renderCalendar = (date) => {
+            calendarBody.empty(); // 이전 캘린더 데이터 삭제
+
+            const currentYear = date.getFullYear();
+            const currentMonth = date.getMonth();
+            monthYear.text(date.toLocaleDateString('ko-KR', { month: 'long', year: 'numeric' })); // 월과 연도 텍스트 업데이트
+
+            const firstDay = new Date(currentYear, currentMonth, 1).getDay(); // 이번 달의 첫째 날의 요일 (0은 일요일)
+            const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate(); // 이번 달의 총 일수
+
+            let row = $('<tr>'); // 날짜를 표시할 행 생성
+
+            // 첫째 날짜 이전의 빈 셀 추가
             for (let i = 0; i < firstDay; i++) {
                 row.append($('<td>'));
             }
-            // 예시: dataWithFields 배열에서 time 필드의 값들을 출력
-            // dataWithFields.forEach(item => {
-            //     console.log(item.time); // 각 객체의 time 필드 값 출력
-            // });
-            // 결론 dataWithFields = date:"2024-07-01" 여기에서 textContent=1 day가 동일해야 한다
-            for (let day = 1; day <= daysInMonth; day++) {
-                let cellDate = `${currentYear}-${currentMonth + 1}-${day}`; // 현재 셀의 날짜 문자열
-                let cell = $('<td>').text(day).attr('data-date', cellDate);
-                // console.log(cell.text()); // outerText 출력 -> 1,2,3...
 
-                // td에 있는 outerText와 dataWithFields에 있는 date:"2024-07-01"에 있는 1이 같으면 스타일 적용하도록 if문 작성
-                // 현재 셀의 텍스트(일)와 dataWithFields의 날짜 부분을 비교
+            // 각 날짜에 대해 반복
+            for (let day = 1; day <= daysInMonth; day++) {
+                let cellDate = `${currentYear}-${currentMonth + 1}-${day}`; // 셀의 날짜 문자열
+                let cell = $('<td>').text(day).attr('data-date', cellDate); // 날짜와 data-date 속성을 가진 셀 생성
+
+                // 데이터 배열에서 해당 날짜에 데이터가 있는지 확인
                 let hasData = dataWithFields.some(item => {
-                    let itemDay = new Date(item.time).getDate(); // item.date에서 날짜 부분만 추출
-                    return itemDay === day;
+                    let itemDay = new Date(item.time).getDate(); // 데이터의 일 추출
+                    return itemDay === day && currentMonth === new Date(item.time).getMonth();
                 });
-                // console.log(hasData); // 값을 비교해서 true 또는 false
+
                 if (hasData) {
-                    cell.addClass('has-data'); // 스타일 클래스 추가
+                    cell.addClass('has-data'); // 데이터가 있으면 스타일 클래스 추가
                 }
-                row.append(cell);
+
+                row.append(cell); // 행에 셀 추가
+
                 if (row.children().length === 7) {
-                    calendarBody.append(row);
-                    row = $('<tr>');
+                    calendarBody.append(row); // 행이 가득 차면 달력에 추가
+                    row = $('<tr>'); // 새로운 행 생성
                 }
             }
+
             if (row.children().length > 0) {
-                calendarBody.append(row);
+                calendarBody.append(row); // 남은 마지막 행 추가
             }
         }
 
-        // *** 뒤로 가기 버튼
+        // 기전에는 이전, 다음 달 버튼을 클릭하면 바로 AJAX 요청으로 하였지만 (중복 코드도 해결)
+        // 현재는 fetchCalendarData() 함수를 만들어서 캘린더 데이터를 다시 가져오게 함
+        // 이전 달 버튼 클릭 처리
         prevButton.on('click', () => {
-            currentDate.setMonth(currentDate.getMonth() - 1);
-            renderCalendar(currentDate);
-            // AJAX 요청 추가
+            currentDate.setMonth(currentDate.getMonth() - 1); // 이전 달로 설정
+            renderCalendar(currentDate); // 달력 다시 렌더링
+            fetchCalendarData(); // 캘린더 데이터 다시 가져오기
+        });
+
+        // 다음 달 버튼 클릭 처리
+        nextButton.on('click', () => {
+            currentDate.setMonth(currentDate.getMonth() + 1); // 다음 달로 설정
+            renderCalendar(currentDate); // 달력 다시 렌더링
+            fetchCalendarData(); // 캘린더 데이터 다시 가져오기
+        });
+
+
+        // 날짜 셀 클릭 시 처리
+        calendarBody.on('click', 'td', function() {
+            const selectedDate = $(this).attr('data-date'); // 선택된 날짜 가져오기
+            const cellText = $(this).text(); // 셀에 표시된 텍스트 가져오기
+            const monthYearText = monthYear.text(); // 월과 연도 텍스트 가져오기
+
+            // 월과 연도에서 연도와 월 추출
+            const year = parseInt(monthYearText.substring(0, 4));
+            const month = parseInt(monthYearText.substring(monthYearText.indexOf(' ') + 1, monthYearText.lastIndexOf('월')));
+
+            // 서버로 선택된 날짜 데이터를 전송하여 상세 정보를 가져옵니다.
+            $.ajax({
+                type: 'GET',
+                url: '/calendar/details',
+                data: {
+                    day: cellText, // 클릭된 날짜 데이터 전송
+                    monthYear: monthYearText,
+                    backyear: year, // 되돌아오기 위해 연도 정보 추가
+                    backmonth: month // 되돌아오기 위해 월 정보 추가
+                },
+                success: (response) => {
+                    modalContent.html(response); // 서버에서 받은 내용을 모달 내용에 삽입
+                    modal.show(); // 모달 열기
+                },
+                error: (error) => {
+                    console.error('Error:', error); // 에러 처리
+                }
+            });
+        });
+
+        // 캘린더 데이터를 서버에서 가져오는 함수
+        const fetchCalendarData = () => {
             $.ajax({
                 type: 'GET',
                 url: '/calendar/data',
@@ -275,16 +305,14 @@
                     year: currentDate.getFullYear(),
                     month: currentDate.getMonth() + 1
                 },
-                success: function (response) {
-                    // 데이터 배열로 변환: date, amount, recordType 필드만 포함
-                    dataWithFields = response.map(function(item) {
-                        // 자바스크립트에서 날짜 형식으로 변환
-                        var date = new Date(item.time);
-                        var year = date.getFullYear();
-                        var month = ('0' + (date.getMonth() + 1)).slice(-2); // 두 자리 숫자로 포맷
-                        var day = ('0' + date.getDate()).slice(-2); // 두 자리 숫자로 포맷
-                        var formattedDate = year + '-' + month + '-' + day;
-                        // console.log(formattedDate); // 2024-06-05 ...
+                success: (response) => {
+                    // 서버에서 받은 데이터를 필요한 형식으로 변환하여 저장
+                    dataWithFields = response.map(item => {
+                        let date = new Date(item.time);
+                        let year = date.getFullYear();
+                        let month = ('0' + (date.getMonth() + 1)).slice(-2); // 두 자리 숫자로 포맷
+                        let day = ('0' + date.getDate()).slice(-2); // 두 자리 숫자로 포맷
+                        let formattedDate = year + '-' + month + '-' + day;
 
                         return {
                             // 전송 받은 데이터 : {time: "2024-06-05T00:30:00.000+00:00", samount: 5000000, type: "EXPAND"} ...
@@ -294,107 +322,20 @@
                             type: item.type
                         };
                     });
-                    // Data with fields : 버에서 받은 원본 데이터를 그대로 사용할 때 유용
+                    // dataWithFields : 서버에서 받은 내용을 알맞게 변환해서 사용
                     console.log('이동:', dataWithFields);
-                    renderCalendar(currentDate); // 캘린더를 다시 렌더링
-                },
-                error: function (error) {
-                    console.error('Error fetching calendar data:', error);
-                }
-            });
-        });
-
-        // *** 앞으로 가기
-        nextButton.on('click', () => {
-            currentDate.setMonth(currentDate.getMonth() + 1);
-            renderCalendar(currentDate);
-
-            // AJAX 요청 추가
-            $.ajax({
-                type: 'GET',
-                url: '/calendar/data',
-                data: {
-                    year: currentDate.getFullYear(),
-                    month: currentDate.getMonth() + 1
-                },
-                success: function (response) {
-                    dataWithFields = response.map(function(item) {
-                        // 자바스크립트에서 날짜 형식으로 변환
-                        var date = new Date(item.time);
-                        var year = date.getFullYear();
-                        var month = ('0' + (date.getMonth() + 1)).slice(-2); // 두 자리 숫자로 포맷
-                        var day = ('0' + date.getDate()).slice(-2); // 두 자리 숫자로 포맷
-                        var formattedDate = year + '-' + month + '-' + day;
-                        // console.log(formattedDate); // 2024-06-05 ...
-
-                        return {
-                            time: formattedDate,
-                            samount: item.samount,
-                            type: item.type
-                        };
-                    });
-                    console.log('이동:', dataWithFields);
-                    renderCalendar(currentDate); // 캘린더를 다시 렌더링
-                },
-                error: function (error) {
-                    console.error('Error fetching calendar data:', error);
-                }
-            });
-        });
-
-        // *** 날짜 셀 클릭 이벤트 처리
-        calendarBody.on('click', 'td', function() {
-            const selectedDate = $(this).attr('data-date');
-            // console.log($(this).text()); // 클릭된 셀의 텍스트 출력
-            const cellText = $(this).text();
-            // console.log(cellText); // 4
-            const monthYearText = monthYear.text();
-            // console.log(monthYearText); // 2024년 7월
-
-            // monthYearText에서 연도와 월 추출
-            const year = parseInt(monthYearText.substring(0, 4));
-            // console.log(year); // 2024
-            const month = parseInt(monthYearText.substring(monthYearText.indexOf(' ') + 1, monthYearText.lastIndexOf('월')));
-            // console.log(month); // 6
-
-            $.ajax({
-                type: 'GET',
-                url: '/calendar/details',
-                data: {
-                    day: cellText, // 클릭된 날짜의 데이터를 전송
-                    monthYear: monthYearText,
-                    backyear: year, // 연도 정보 추가 (삭제 후에 돌아오기 위해서)
-                    backmonth: month // 월 정보 추가 ...
-                },
-                success: (response) => {
-                    // 모달 열기 이벤트: 서버에서 받은 데이터를 모달에 표시하고 모달을 연다.
-                    modalContent.html(response); // 서버에서 받은 내용을 모달 창에 삽입
-                    modal.show();
+                    renderCalendar(currentDate); // 달력 다시 렌더링
                 },
                 error: (error) => {
-                    console.error('Error:', error);
-                    // 에러 발생 시 처리
+                    console.error('Error fetching calendar data:', error); // 에러 처리
                 }
             });
-        });
+        };
 
-        // 모달 닫기 이벤트
-        span.on('click', () => {
-            modal.hide();
-        });
-
-        // 모달 닫기 이벤트: 모달 외부 클릭 시 모달 닫기
-        $(window).on('click', (e) => {
-            if ($(e.target).is(modal)) {
-                modal.hide();
-            }
-        });
-
-        renderCalendar(currentDate);
+        // 페이지 로드 시 처음 한 번 데이터 가져오기
+        fetchCalendarData();
     });
 </script>
-
-
 
 </body>
 </html>

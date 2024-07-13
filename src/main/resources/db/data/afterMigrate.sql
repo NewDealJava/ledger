@@ -35,13 +35,13 @@ VALUES ('Groceries', 'user1@example.com'),
 
 SET @cno_food = (SELECT cno
                  FROM category
-                 WHERE name = '식사');
+                 WHERE name = '일식');
 SET @cno_cafe = (SELECT cno
                  FROM category
-                 WHERE name = '카페/간식');
+                 WHERE name = '베이커리');
 SET @cno_income = (SELECT cno
                    FROM category
-                   WHERE name = '주수입');
+                   WHERE name = '기타' AND parent_cno = 24);
 
 -- 기존 프로시저 삭제
 DROP PROCEDURE IF EXISTS GenerateTransactions;
@@ -107,8 +107,9 @@ VALUES (v_email,
         1,
         NULL,
         CONCAT('Memo ', v_count),
-        TIMESTAMP(v_date, '12:00:00'),
-        1);
+--         TIMESTAMP(v_date, '12:00:00'),
+        TIMESTAMP(v_date, SEC_TO_TIME((v_count MOD 24) * 3600 + (v_count MOD 60) * 60)), 1);
+
 
 SET v_count = v_count + 1;
 END WHILE;

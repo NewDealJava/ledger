@@ -72,7 +72,7 @@ CREATE TABLE `transaction`
     `sno`         int         NOT NULL,
     `keyword`     varchar(250) NULL,
     `samount`     bigint      NOT NULL DEFAULT 0 COMMENT '수입: +, 지출: - ',
-    `installment` int         NOT NULL DEFAULT 0 COMMENT '일시불:1, 할부 개월:2~10',
+    `installment` int         NOT NULL DEFAULT 1 COMMENT '일시불:1, 할부 개월:2~10',
     `imageUrl`    text NULL,
     `tsmemo`      text NULL,
     `time`        TimeStamp NULL,

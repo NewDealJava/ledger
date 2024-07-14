@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,7 +22,12 @@ public class CategoryRestController {
 
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
-	public List<CategoryDto> getAllCategories() {
-		return categoryService.selectAll();
+	public List<CategoryDto> getCategories(@RequestParam String type) {
+		return categoryService.getCategoriesByType(type);
+	}
+
+	@GetMapping("/subcategory")
+	public List<CategoryDto> getSubcategories(@RequestParam Integer parentCno) {
+		return categoryService.getSubcategories(parentCno);
 	}
 }

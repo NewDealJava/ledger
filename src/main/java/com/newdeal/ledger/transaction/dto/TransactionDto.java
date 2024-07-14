@@ -4,23 +4,24 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 public class TransactionDto {
-	private int tno;
+	private Integer tno;
 	private String email;
-	private int cno;
-	private String type;
-	private String stype;
-	private int sno;
+	private Integer cno;
+	private TransactionType type;
+	private SourceType stype;
+	private Integer sno;
 	private String keyword;
-	private long samount;
-	private int installment;
+	private Long samount;
+	private Integer installment;
 	private String imageUrl;
 	private String tsmemo;
-	private Timestamp time;
-	private Integer rtype;
+	private LocalDateTime time;
+	private RepeatType rtype;
+
 }

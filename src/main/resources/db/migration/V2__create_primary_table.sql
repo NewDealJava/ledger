@@ -72,11 +72,11 @@ CREATE TABLE `transaction`
     `sno`         int         NOT NULL,
     `keyword`     varchar(250) NULL,
     `samount`     bigint      NOT NULL DEFAULT 0 COMMENT '수입: +, 지출: - ',
-    `installment` int         NOT NULL DEFAULT 1 COMMENT '일시불:1, 할부 개월:2~10',
+    `installment` int         DEFAULT 1 COMMENT '일시불:1, 할부 개월:2~10',
     `imageUrl`    text NULL,
     `tsmemo`      text NULL,
     `time`        TimeStamp NULL,
-    `rtype`       int NULL COMMENT '매일:1, 매주:2, 매월:3',
+    `rtype`       varchar(50) NOT NULL DEFAULT 'NONE' COMMENT '반복 타입: NONE or WEEKLY or MONTHLY',
     FOREIGN KEY (`email`) REFERENCES `ymember` (`email`),
     FOREIGN KEY (`cno`) REFERENCES `category` (`cno`)
 );

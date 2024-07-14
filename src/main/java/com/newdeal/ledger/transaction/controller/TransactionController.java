@@ -30,7 +30,6 @@ public class TransactionController {
 			tempMonth
 		);
 
-		System.out.println("dd");
 		model.addAttribute("transactionDtos", transactionListDtos);
 
 		return "/transaction";

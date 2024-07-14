@@ -7,13 +7,35 @@
 
     <!-- parent_cno가 null인 카테고리 리스트를 조회하는 쿼리 -->
     <select id="findAll" resultType="com.newdeal.ledger.categorytag.dto.CategoryDto">
-        SELECT
-        cno,
-        type,
-        name,
-        parent_cno as parentCno
+        SELECT cno,
+               type,
+               name,
+               parent_cno as parentCno
         FROM category
         WHERE parent_cno IS NULL
+    </select>
+
+    <select id="findAllCategoriesByType" resultType="com.newdeal.ledger.categorytag.dto.CategoryDto"
+            parameterType="String">
+        SELECT cno,
+               type,
+               name,
+               parent_cno as parentCno
+        FROM category
+        WHERE parent_cno IS NULL
+          AND type = #{type}
+
+    </select>
+
+    <select id="findAllSubcategoriesByParentCno" resultType="com.newdeal.ledger.categorytag.dto.CategoryDto"
+            parameterType="Integer">
+        SELECT cno,
+               type,
+               name,
+               parent_cno as parentCno
+        FROM category
+        WHERE parent_cno = #{parentCno}
+
     </select>
 
 </mapper>

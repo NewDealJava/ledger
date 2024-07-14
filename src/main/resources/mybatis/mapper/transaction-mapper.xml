@@ -35,4 +35,67 @@
         t.tno;
     </select>
 
+
+    <select id="findAllSourceByEmail" parameterType="String" resultType="com.newdeal.ledger.transaction.dto.SourceDto">
+        SELECT 'ACCOUNT' as sourceType,
+               CASE type
+                   WHEN 'MONEY' THEN 'MONEY'
+                   ELSE 'ACCOUNT'
+                   END as subSourceType,
+               ano as sno,
+               cname
+        FROM account
+        WHERE email = #{email}
+        UNION
+        SELECT 'CARD' as sourceType,
+               CASE type
+                   WHEN 'CREDIT' THEN 'CREDIT'
+                   ELSE 'CHECK'
+                   END as subSourceType,
+               cno as sno,
+               cname
+        FROM card
+        WHERE email = #{email}
+    </select>
+
+    <insert id="createTransaction" parameterType="map" useGeneratedKeys="true"
+            keyProperty="request.tno">
+        INSERT INTO `transaction`
+        (
+        `email`, `cno`, `type`, `stype`, `sno`, `keyword`,
+        `samount`, `installment`, `imageUrl`, `tsmemo`,
+        `time`, `rtype`
+        )
+        VALUES
+        (
+        #{email},
+        #{request.category},
+        #{request.type},
+        #{request.sourceType},
+        #{request.sno},
+        #{request.keyword},
+        #{request.amount},
+        #{request.installment},
+        #{request.imageUrl},
+        #{request.memo},
+        #{request.dateTime},
+        #{request.rtype}
+        );
+
+    </insert>
+
+
+    <insert id="createTransactionTagMapper" parameterType="com.newdeal.ledger.transaction.dto.TransactionTagDto">
+        INSERT INTO `transactiontag`
+        (
+        `tgno`, `tsno`
+        )
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (
+            #{item.tgno},
+            #{item.tsno}
+            )
+        </foreach>
+    </insert>
 </mapper>

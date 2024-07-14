@@ -8,25 +8,32 @@
     <meta charset="UTF-8"/>
     <title>가계부</title>
     <link href="../css/cardaccount.css?ver=1" rel="stylesheet"/>
+    <style>
+        .main-content {
+            margin-left: 180px; /* Adjust according to the width of the sidebar */
+            padding: 0px;
+        }
+    </style>
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 </head>
 
 <body>
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
-
-<div class="board-title-container">
-    <div class="board-title-area">
+<%@ include file="/WEB-INF/views/include/sidebar.jsp" %>
+<div class="main-content">
+    <div class="board-title-container">
+        <div class="board-title-area">
         <h1 class="board-title">카드/계좌</h1>
     </div>
 
     <!-- Tabs for Card and Account -->
-    <div class="tab-container">
+        <div class="tab-container">
         <div class="tab active" data-tab="credit">카드</div>
         <div class="tab" data-tab="account">계좌</div>
     </div>
 
     <!-- Board for Card and Account -->
-    <div class="board-container">
+        <div class="board-container">
         <!-- credit List -->
         <div id="credit" class="tab-content active">
             <div class="card-container" id="credit-container">
@@ -40,7 +47,7 @@
                 <!-- Account cards will be loaded here by AJAX -->
             </div>
         </div>
-
+    </div>
     </div>
 </div>
 

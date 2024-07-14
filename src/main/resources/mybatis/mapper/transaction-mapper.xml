@@ -35,4 +35,27 @@
         t.tno;
     </select>
 
+
+    <select id="findAllSourceByEmail" parameterType="String" resultType="com.newdeal.ledger.transaction.dto.SourceDto">
+        SELECT 'ACCOUNT' as sourceType,
+               CASE type
+                   WHEN 'MONEY' THEN 'MONEY'
+                   ELSE 'ACCOUNT'
+                   END as subSourceType,
+               ano as sno,
+               cname
+        FROM account
+        WHERE email = #{email}
+        UNION
+        SELECT 'CARD' as sourceType,
+               CASE type
+                   WHEN 'CREDIT' THEN 'CREDIT'
+                   ELSE 'CHECK'
+                   END as subSourceType,
+               cno as sno,
+               cname
+        FROM card
+        WHERE email = #{email}
+    </select>
+
 </mapper>

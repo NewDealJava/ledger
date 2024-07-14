@@ -5,7 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import com.newdeal.ledger.transaction.dto.TransactionDto;
+import com.newdeal.ledger.transaction.dto.SourceDto;
 import com.newdeal.ledger.transaction.dto.TransactionListDto;
 
 @Mapper
@@ -15,4 +15,6 @@ public interface TransactionMapper {
 		@Param("year") int year,
 		@Param("month") int month
 	);
+
+	List<SourceDto> findAllSourceByEmail(String email);
 }

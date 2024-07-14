@@ -13,9 +13,9 @@ import com.newdeal.ledger.transaction.service.TransactionService;
 import lombok.RequiredArgsConstructor;
 
 @Controller
-@RequestMapping("/transaction")
+@RequestMapping("/view/transaction")
 @RequiredArgsConstructor
-public class TransactionController {
+public class TransactionViewController {
 	private final TransactionService transactionService;
 
 	@GetMapping
@@ -32,6 +32,6 @@ public class TransactionController {
 
 		model.addAttribute("transactionDtos", transactionListDtos);
 
-		return "/transaction";
+		return "/transaction/transaction";
 	}
 }

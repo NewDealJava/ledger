@@ -76,7 +76,7 @@ CREATE TABLE `transaction`
     `imageUrl`    text NULL,
     `tsmemo`      text NULL,
     `time`        TimeStamp NULL,
-    `rtype`       int NULL COMMENT '매일:1, 매주:2, 매월:3',
+    `rtype`       varchar(50) NOT NULL DEFAULT 'NONE' COMMENT '반복 타입: NONE or WEEKLY or MONTHLY',
     FOREIGN KEY (`email`) REFERENCES `ymember` (`email`),
     FOREIGN KEY (`cno`) REFERENCES `category` (`cno`)
 );

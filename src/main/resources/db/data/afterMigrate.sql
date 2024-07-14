@@ -108,7 +108,8 @@ VALUES (v_email,
         NULL,
         CONCAT('Memo ', v_count),
 --         TIMESTAMP(v_date, '12:00:00'),
-        TIMESTAMP(v_date, SEC_TO_TIME((v_count MOD 24) * 3600 + (v_count MOD 60) * 60)), 1);
+        TIMESTAMP(v_date, SEC_TO_TIME((v_count MOD 24) * 3600 + (v_count MOD 60) * 60)),
+        'NONE');
 
 
 SET v_count = v_count + 1;

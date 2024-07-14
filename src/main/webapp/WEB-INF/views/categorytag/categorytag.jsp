@@ -8,13 +8,21 @@
     <meta charset="UTF-8"/>
     <title>가계부</title>
     <link href="../css/categorytag.css?ver=1" rel="stylesheet"/>
+    <style>
+        .main-content {
+            margin-left: 180px; /* Adjust according to the width of the sidebar */
+            padding: 0px;
+        }
+    </style>
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 </head>
 
 <body>
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
+<%@ include file="/WEB-INF/views/include/sidebar.jsp" %>
 
-<div class="board-title-container">
+<div class="main-content">
+    <div class="board-title-container">
     <div class="board-title-area">
         <h1 class="board-title">카테고리/태그</h1>
     </div>
@@ -43,17 +51,19 @@
 
     </div>
 </div>
-
+</div>
 <script>
     $(document).ready(function () {
 
         function loadContent(type) {
             console.log(type);
+
             $.ajax({
-                url: type === 'tag' ? '/api/tag' : '/api/category',
+                url: type === 'tag' ? '/api/tag' : '/api/category/all',
                 method: 'GET',
                 success: function (data) {
                     var container = type === 'tag' ? '#tag-container' : '#category-container';
+
 
                     $(container).html('');
                     data.forEach(function (item) {

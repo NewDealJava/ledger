@@ -9,4 +9,8 @@ import com.newdeal.ledger.categorytag.dto.CategoryDto;
 @Mapper
 public interface CategoryMapper {
 	List<CategoryDto> findAll();
+
+	List<CategoryDto> findAllCategoriesByType(String type);
+
+	List<CategoryDto> findAllSubcategoriesByParentCno(Integer parentCno);
 }

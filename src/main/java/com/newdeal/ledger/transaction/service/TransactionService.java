@@ -4,10 +4,13 @@ import java.util.List;
 
 import com.newdeal.ledger.transaction.dto.SourceDto;
 import com.newdeal.ledger.transaction.dto.TransactionListDto;
+import com.newdeal.ledger.transaction.dto.TransactionRequest;
 
 public interface TransactionService {
 
 	List<TransactionListDto> selectAllByMonth(String email, int year, int month);
 
 	List<SourceDto> selectAllSourceByEmail(String email);
+
+	void createTransaction(String email, TransactionRequest.Create request);
 }

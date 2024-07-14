@@ -26,7 +26,9 @@ public class TransactionRestController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public void createTransaction(@ModelAttribute TransactionRequest.Create request) {
 
-		System.out.println("ddd");
+		String tempEmail = "user1@example.com";
+		transactionService.createTransaction(tempEmail, request);
+
 	}
 
 	@GetMapping("/source")
@@ -34,7 +36,7 @@ public class TransactionRestController {
 	public List<SourceDto> getSource() {
 		String tempEmail = "user1@example.com";
 		List<SourceDto> sourceDtos = transactionService.selectAllSourceByEmail(tempEmail);
-		System.out.println("ddd");
+
 
 		return sourceDtos;
 	}

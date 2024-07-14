@@ -1,0 +1,1064 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.4); /* Black with opacity */
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .container {
+            display: flex;
+            justify-content: flex-end;
+            padding: 20px;
+        }
+
+        .open-modal-button {
+            background-color: #dda0dd; /* Light purple */
+            border: none;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 24px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            line-height: 60px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .open-modal-button:hover {
+            background-color: #ba86ba; /* Slightly darker purple */
+        }
+
+        .tab {
+            overflow: hidden;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .tab button {
+            background-color: inherit;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 14px 16px;
+            transition: 0.3s;
+            font-size: 17px;
+        }
+
+        .tab button:hover {
+            background-color: #ddd;
+        }
+
+        .tab button.active {
+            background-color: #ccc;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 6px 12px;
+            border: 1px solid #ccc;
+            border-top: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .form-row {
+            display: flex;
+            align-items: center;
+        }
+
+        .form-row label {
+            margin-right: 10px;
+        }
+
+        .form-row input {
+            margin-right: 20px;
+        }
+
+        .tag-button {
+            display: inline-block;
+            padding: 10px 15px;
+            margin: 5px;
+            background-color: #f1f1f1;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .tag-button.selected {
+            background-color: #4CAF50;
+            color: white;
+        }
+    </style>
+
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script>
+        function submitExpenseForm(event) {
+            event.preventDefault();
+            const form = document.getElementById("expense-form");
+            const formData = new FormData(form);
+            const jsonObject = {};
+
+            let sourceData = formData.get('source').split(' - ');
+            jsonObject['sourceType'] = sourceData[0];
+            jsonObject['sno'] = sourceData[1];
+
+            let installmentValue = formData.get('installment');
+            if (installmentValue === '일시불') {
+                jsonObject['installment'] = 1;
+            } else {
+                jsonObject['installment'] = parseInt(installmentValue.replace('개월', ''));
+            }
+
+            let rtypeValue = formData.get('rtype');
+            jsonObject['rtype'] = rtypeValue;
+
+            formData.forEach((value, key) => {
+                if (key !== 'installment' && key !== 'rtype' && key !== 'source') {
+                    jsonObject[key] = value;
+                }
+            });
+
+            fetch('/api/transaction', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams(jsonObject).toString()
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    resetFormAndCloseModal('expense-form');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+
+        function submitIncomeForm(event) {
+            event.preventDefault();
+            const form = document.getElementById("income-form");
+            const formData = new FormData(form);
+            const jsonObject = {};
+
+            let sourceData = formData.get('source').split(' - ');
+            jsonObject['sourceType'] = sourceData[0];
+            jsonObject['sno'] = sourceData[1];
+
+            let rtypeValue = formData.get('rtype');
+            jsonObject['rtype'] = rtypeValue;
+
+            formData.forEach((value, key) => {
+                if (key !== 'rtype' && key !== 'source') {
+                    jsonObject[key] = value;
+                }
+            });
+
+            fetch('/api/transaction', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams(jsonObject).toString()
+            })
+                .then(response => {
+
+                    console.log(response);
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    resetFormAndCloseModal('income-form');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+
+        function resetFormAndCloseModal(formId) {
+
+            const form = document.getElementById(formId);
+            form.reset();
+            var modal = document.getElementById("myModal");
+            modal.style.display = "none";
+            const selectedButtons = form.querySelectorAll(".tag-button.selected");
+            selectedButtons.forEach(button => {
+                button.classList.remove("selected");
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            var modal = document.getElementById("myModal");
+            var btn = document.getElementById("openModalButton");
+            var span = document.getElementsByClassName("close")[0];
+
+            btn.onclick = function() {
+                modal.style.display = "block";
+                openTab(event, 'Expense');
+            }
+
+            span.onclick = function() {
+                modal.style.display = "none";
+            }
+
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+
+            loadCategories('EXPENSE');
+            loadCategories('INCOME');
+            loadTags('EXPENSE');
+            loadTags('INCOME');
+            loadSources('EXPENSE');
+            loadSources('INCOME');
+        });
+
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+
+        function loadCategories(type) {
+            const categorySelect = type === 'EXPENSE' ? document.getElementById("expense-category") : document.getElementById("income-category");
+
+            $.ajax({
+                url: '/api/category',
+                method: 'GET',
+                data: { type: type },
+                dataType: 'json',
+                success: function(data) {
+                    data.forEach(function(category) {
+                        const option = document.createElement("option");
+                        option.value = category.cno;
+                        option.text = category.name;
+                        categorySelect.add(option);
+                    });
+
+                    updateSubcategories(type);
+                },
+                error: function(error) {
+                    console.error('Error loading categories:', error);
+                }
+            });
+        }
+
+        function updateSubcategories(type) {
+            const categorySelect = type === 'EXPENSE' ? document.getElementById("expense-category") : document.getElementById("income-category");
+            const subcategorySelect = type === 'EXPENSE' ? document.getElementById("expense-subcategory") : document.getElementById("income-subcategory");
+            const selectedCategory = categorySelect.value;
+
+            subcategorySelect.innerHTML = "";
+
+            $.ajax({
+                url: '/api/category/subcategory',
+                method: 'GET',
+                data: { parentCno: selectedCategory },
+                dataType: 'json',
+                success: function(data) {
+                    data.forEach(function(subcategory) {
+                        const option = document.createElement("option");
+                        option.value = subcategory.cno;
+                        option.text = subcategory.name;
+                        subcategorySelect.add(option);
+                    });
+                },
+                error: function(error) {
+                    console.error('Error loading subcategories:', error);
+                }
+            });
+        }
+
+        function loadTags(type) {
+            const tagContainer = type === 'EXPENSE' ? document.getElementById("expense-tag-container") : document.getElementById("income-tag-container");
+            const hiddenInput = type === 'EXPENSE' ? document.getElementById("expense-tags") : document.getElementById("income-tags");
+
+            $.ajax({
+                url: '/api/tag',
+                method: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    data.forEach(function(tag) {
+                        const button = document.createElement("button");
+                        button.type = "button";
+                        button.className = "tag-button";
+                        button.textContent = tag.name;
+                        button.dataset.tagId = tag.tno;
+                        button.onclick = function() {
+                            this.classList.toggle("selected");
+                            updateSelectedTags(hiddenInput, tagContainer);
+                        };
+                        tagContainer.appendChild(button);
+                    });
+                },
+                error: function(error) {
+                    console.error('Error loading tags:', error);
+                }
+            });
+        }
+
+        function updateSelectedTags(hiddenInput, tagContainer) {
+            const selectedTags = [];
+            const buttons = tagContainer.getElementsByClassName("tag-button");
+            for (let button of buttons) {
+                if (button.classList.contains("selected")) {
+                    selectedTags.push(button.dataset.tagId);
+                }
+            }
+            hiddenInput.value = selectedTags.join(",");
+        }
+
+        function loadSources(type) {
+            const sourceSelect = type === 'EXPENSE' ? document.getElementById("expense-source") : document.getElementById("income-source");
+
+            $.ajax({
+                url: '/api/transaction/source',
+                method: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    data.forEach(function(source) {
+                        const option = document.createElement("option");
+                        option.value = source.sourceType + ' - ' + source.sno;
+                        option.text = source.sourceType + ' - ' + source.subSourceType + ' - ' + source.cname;
+                        sourceSelect.add(option);
+                    });
+
+                },
+                error: function(error) {
+                    console.error('Error loading sources:', error);
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+
+<div class="container">
+    <!-- Trigger/Open The Modal -->
+    <button id="openModalButton" class="open-modal-button">+</button>
+</div>
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+        <span class="close">&times;</span>
+
+        <!-- Tab links -->
+        <div class="tab">
+            <button class="tablinks" onclick="openTab(event, 'Expense')">지출</button>
+            <button class="tablinks" onclick="openTab(event, 'Income')">수입</button>
+        </div>
+
+        <!-- Tab content -->
+        <div id="Expense" class="tab-content">
+            <form id="expense-form" onsubmit="submitExpenseForm(event)">
+                <h3>지출</h3>
+
+                <label for="expense-type">타입:</label>
+                <input type="text" id="expense-type" name="type" value="EXPENSE" readonly><br><br>
+
+                <label for="expense-category">카테고리:</label>
+                <select id="expense-category" name="category" onchange="updateSubcategories('EXPENSE')">
+                    <!-- Category options will be populated dynamically -->
+                </select><br><br>
+
+                <label for="expense-subcategory">세부카테고리:</label>
+                <select id="expense-subcategory" name="subcategory">
+                    <!-- Subcategory options will be populated based on category selection -->
+                </select><br><br>
+
+                <label for="expense-source">거래수단: </label>
+                <select id="expense-source" name="source">
+                    <!-- Source options will be populated dynamically -->
+                </select><br><br>
+
+                <label for="expense-keyword">지출내역: </label>
+                <input type="text" id="expense-keyword" name="keyword"><br><br>
+
+                <label for="expense-amount">지출금액:</label>
+                <input type="number" id="expense-amount" name="amount" required><br><br>
+
+                <label for="expense-installment">할부: </label>
+                <select id="expense-installment" name="installment">
+                    <option value="일시불">일시불</option>
+                    <% for (int i = 2; i <= 36; i++) { %>
+                    <option value="<%= i %>개월"><%= i %>개월</option>
+                    <% } %>
+                </select><br><br>
+
+                <label for="expense-tag-container">태그: </label>
+                <div id="expense-tag-container">
+                    <!-- Tag buttons will be populated dynamically -->
+                </div>
+                <input type="hidden" id="expense-tags" name="tags"><br><br>
+
+                <div class="form-row">
+                    <label for="expense-date">날짜: </label>
+                    <input type="date" id="expense-date" name="date" required>
+                    <label for="expense-time">시간: </label>
+                    <input type="time" id="expense-time" name="time" required>
+                </div><br>
+
+                <label for="expense-rtype">반복주기: </label>
+                <select id="expense-rtype" name="rtype">
+                    <option value="NONE">없음</option>
+                    <option value="MONTHLY">월간</option>
+                    <option value="WEEKLY">주간</option>
+                </select><br><br>
+
+                <label for="expense-memo">메모:</label>
+                <textarea id="expense-memo" name="memo"></textarea><br><br>
+
+                <label for="expense-imageUrl">이미지: </label>
+                <input type="text" id="expense-imageUrl" name="imageUrl"><br><br>
+
+                <input type="submit" value="거래내역 추가">
+            </form>
+        </div>
+
+        <div id="Income" class="tab-content">
+            <form id="income-form" onsubmit="submitIncomeForm(event)">
+                <h3>수입</h3>
+
+                <label for="income-type">타입:</label>
+                <input type="text" id="income-type" name="type" value="INCOME" readonly><br><br>
+
+                <label for="income-category">카테고리:</label>
+                <select id="income-category" name="category" onchange="updateSubcategories('INCOME')">
+                    <!-- Category options will be populated dynamically -->
+                </select><br><br>
+
+                <label for="income-subcategory">서브카테고리:</label>
+                <select id="income-subcategory" name="subcategory">
+                    <!-- Subcategory options will be populated based on category selection -->
+                </select><br><br>
+
+                <label for="income-source">거래수단: </label>
+                <select id="income-source" name="source">
+                    <!-- Source options will be populated dynamically -->
+                </select><br><br>
+
+                <label for="income-keyword">수입내역:</label>
+                <input type="text" id="income-keyword" name="keyword"><br><br>
+
+                <label for="income-amount">수입금액:</label>
+                <input type="text" id="income-amount" name="amount"><br><br>
+
+                <label for="income-tag-container">태그:</label>
+                <div id="income-tag-container">
+                    <!-- Tag buttons will be populated dynamically -->
+                </div>
+                <input type="hidden" id="income-tags" name="tags"><br><br>
+
+                <div class="form-row">
+                    <label for="income-date">날짜: </label>
+                    <input type="date" id="income-date" name="date" required>
+                    <label for="income-time">시간: </label>
+                    <input type="time" id="income-time" name="time" required>
+                </div><br>
+
+                <label for="income-rtype">반복주기: </label>
+                <select id="income-rtype" name="rtype">
+                    <option value="NONE">없음</option>
+                    <option value="MONTHLY">월간</option>
+                    <option value="WEEKLY">주간</option>
+                </select><br><br>
+
+                <label for="income-memo">메모:</label>
+                <textarea id="income-memo" name="memo"></textarea><br><br>
+
+                <label for="income-imageUrl">이미지: </label>
+                <input type="text" id="income-imageUrl" name="imageUrl"><br><br>
+
+                <input type="submit" value="거래내역 추가">
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
+
+
+<%--<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>--%>
+<%--<!DOCTYPE html>--%>
+<%--<html>--%>
+<%--<head>--%>
+<%--    <meta charset="UTF-8">--%>
+<%--    <style>--%>
+<%--        .modal {--%>
+<%--            display: none; /* Hidden by default */--%>
+<%--            position: fixed;--%>
+<%--            z-index: 1;--%>
+<%--            left: 0;--%>
+<%--            top: 0;--%>
+<%--            width: 100%;--%>
+<%--            height: 100%;--%>
+<%--            overflow: auto;--%>
+<%--            background-color: rgb(0, 0, 0);--%>
+<%--            background-color: rgba(0, 0, 0, 0.4); /* Black with opacity */--%>
+<%--        }--%>
+
+<%--        .modal-content {--%>
+<%--            background-color: #fefefe;--%>
+<%--            margin: 15% auto;--%>
+<%--            padding: 20px;--%>
+<%--            border: 1px solid #888;--%>
+<%--            width: 80%;--%>
+<%--        }--%>
+
+<%--        .close {--%>
+<%--            color: #aaa;--%>
+<%--            float: right;--%>
+<%--            font-size: 28px;--%>
+<%--            font-weight: bold;--%>
+<%--        }--%>
+
+<%--        .close:hover,--%>
+<%--        .close:focus {--%>
+<%--            color: black;--%>
+<%--            text-decoration: none;--%>
+<%--            cursor: pointer;--%>
+<%--        }--%>
+
+<%--        .container {--%>
+<%--            display: flex;--%>
+<%--            justify-content: flex-end;--%>
+<%--            padding: 20px;--%>
+<%--        }--%>
+
+<%--        .open-modal-button {--%>
+<%--            background-color: #dda0dd; /* Light purple */--%>
+<%--            border: none;--%>
+<%--            color: white;--%>
+<%--            text-align: center;--%>
+<%--            text-decoration: none;--%>
+<%--            display: inline-block;--%>
+<%--            font-size: 24px;--%>
+<%--            margin: 4px 2px;--%>
+<%--            cursor: pointer;--%>
+<%--            border-radius: 50%;--%>
+<%--            width: 60px;--%>
+<%--            height: 60px;--%>
+<%--            line-height: 60px;--%>
+<%--            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);--%>
+<%--        }--%>
+
+<%--        .open-modal-button:hover {--%>
+<%--            background-color: #ba86ba; /* Slightly darker purple */--%>
+<%--        }--%>
+
+<%--        .tab {--%>
+<%--            overflow: hidden;--%>
+<%--            border-bottom: 1px solid #ccc;--%>
+<%--        }--%>
+
+<%--        .tab button {--%>
+<%--            background-color: inherit;--%>
+<%--            float: left;--%>
+<%--            border: none;--%>
+<%--            outline: none;--%>
+<%--            cursor: pointer;--%>
+<%--            padding: 14px 16px;--%>
+<%--            transition: 0.3s;--%>
+<%--            font-size: 17px;--%>
+<%--        }--%>
+
+<%--        .tab button:hover {--%>
+<%--            background-color: #ddd;--%>
+<%--        }--%>
+
+<%--        .tab button.active {--%>
+<%--            background-color: #ccc;--%>
+<%--        }--%>
+
+<%--        .tab-content {--%>
+<%--            display: none;--%>
+<%--            padding: 6px 12px;--%>
+<%--            border: 1px solid #ccc;--%>
+<%--            border-top: none;--%>
+<%--        }--%>
+
+<%--        .tab-content.active {--%>
+<%--            display: block;--%>
+<%--        }--%>
+
+<%--        .form-row {--%>
+<%--            display: flex;--%>
+<%--            align-items: center;--%>
+<%--        }--%>
+
+<%--        .form-row label {--%>
+<%--            margin-right: 10px;--%>
+<%--        }--%>
+
+<%--        .form-row input {--%>
+<%--            margin-right: 20px;--%>
+<%--        }--%>
+
+<%--        .tag-button {--%>
+<%--            display: inline-block;--%>
+<%--            padding: 10px 15px;--%>
+<%--            margin: 5px;--%>
+<%--            background-color: #f1f1f1;--%>
+<%--            border: 1px solid #ccc;--%>
+<%--            border-radius: 5px;--%>
+<%--            cursor: pointer;--%>
+<%--        }--%>
+
+<%--        .tag-button.selected {--%>
+<%--            background-color: #4CAF50;--%>
+<%--            color: white;--%>
+<%--        }--%>
+<%--    </style>--%>
+
+<%--    <script src="http://code.jquery.com/jquery-latest.min.js"></script>--%>
+<%--    <script>--%>
+<%--        function submitExpenseForm(event) {--%>
+<%--            event.preventDefault();--%>
+<%--            const form = document.getElementById("expense-form");--%>
+<%--            const formData = new FormData(form);--%>
+<%--            const jsonObject = {};--%>
+
+<%--            let sourceData = formData.get('source').split(' - ');--%>
+<%--            jsonObject['sourceType'] = sourceData[0];--%>
+<%--            jsonObject['sno'] = sourceData[1];--%>
+
+<%--            let installmentValue = formData.get('installment');--%>
+<%--            if (installmentValue === '일시불') {--%>
+<%--                jsonObject['installment'] = 1;--%>
+<%--            } else {--%>
+<%--                jsonObject['installment'] = parseInt(installmentValue.replace('개월', ''));--%>
+<%--            }--%>
+
+<%--            let rtypeValue = formData.get('rtype');--%>
+<%--            jsonObject['rtype'] = rtypeValue;--%>
+
+<%--            formData.forEach((value, key) => {--%>
+<%--                if (key !== 'installment' && key !== 'rtype' && key !== 'source') {--%>
+<%--                    jsonObject[key] = value;--%>
+<%--                }--%>
+<%--            });--%>
+
+<%--            fetch('/api/transaction', {--%>
+<%--                method: 'POST',--%>
+<%--                headers: {--%>
+<%--                    'Content-Type': 'application/x-www-form-urlencoded'--%>
+<%--                },--%>
+<%--                body: new URLSearchParams(jsonObject).toString()--%>
+<%--            })--%>
+<%--                .then(response => {--%>
+<%--                    if (!response.ok) {--%>
+<%--                        throw new Error('Network response was not ok');--%>
+<%--                    }--%>
+<%--                    return response.json();--%>
+<%--                })--%>
+<%--                .then(data => {--%>
+<%--                    console.log('Success:', data);--%>
+<%--                })--%>
+<%--                .catch(error => {--%>
+<%--                    console.error('Error:', error);--%>
+<%--                });--%>
+<%--        }--%>
+
+<%--        function submitIncomeForm(event) {--%>
+<%--            event.preventDefault();--%>
+<%--            const form = document.getElementById("income-form");--%>
+<%--            const formData = new FormData(form);--%>
+<%--            const jsonObject = {};--%>
+
+<%--            let sourceData = formData.get('source').split(' - ');--%>
+<%--            jsonObject['sourceType'] = sourceData[0];--%>
+<%--            jsonObject['sno'] = sourceData[1];--%>
+
+<%--            let rtypeValue = formData.get('rtype');--%>
+<%--            jsonObject['rtype'] = rtypeValue;--%>
+
+<%--            formData.forEach((value, key) => {--%>
+<%--                if (key !== 'rtype' && key !== 'source') {--%>
+<%--                    jsonObject[key] = value;--%>
+<%--                }--%>
+<%--            });--%>
+
+<%--            fetch('/api/transaction', {--%>
+<%--                method: 'POST',--%>
+<%--                headers: {--%>
+<%--                    'Content-Type': 'application/x-www-form-urlencoded'--%>
+<%--                },--%>
+<%--                body: new URLSearchParams(jsonObject).toString()--%>
+<%--            })--%>
+<%--                .then(response => {--%>
+<%--                    if (!response.ok) {--%>
+<%--                        throw new Error('Network response was not ok');--%>
+<%--                    }--%>
+<%--                    return response.json();--%>
+<%--                })--%>
+<%--                .then(data => {--%>
+<%--                    console.log('Success:', data);--%>
+<%--                })--%>
+<%--                .catch(error => {--%>
+<%--                    console.error('Error:', error);--%>
+<%--                });--%>
+<%--        }--%>
+
+<%--        document.addEventListener('DOMContentLoaded', (event) => {--%>
+<%--            var modal = document.getElementById("myModal");--%>
+<%--            var btn = document.getElementById("openModalButton");--%>
+<%--            var span = document.getElementsByClassName("close")[0];--%>
+
+<%--            btn.onclick = function() {--%>
+<%--                modal.style.display = "block";--%>
+<%--                openTab(event, 'Expense');--%>
+<%--            }--%>
+
+<%--            span.onclick = function() {--%>
+<%--                modal.style.display = "none";--%>
+<%--            }--%>
+
+<%--            window.onclick = function(event) {--%>
+<%--                if (event.target == modal) {--%>
+<%--                    modal.style.display = "none";--%>
+<%--                }--%>
+<%--            }--%>
+
+<%--            loadCategories('EXPENSE');--%>
+<%--            loadCategories('INCOME');--%>
+<%--            loadTags('EXPENSE');--%>
+<%--            loadTags('INCOME');--%>
+<%--            loadSources('EXPENSE');--%>
+<%--            loadSources('INCOME');--%>
+<%--        });--%>
+
+<%--        function openTab(evt, tabName) {--%>
+<%--            var i, tabcontent, tablinks;--%>
+
+<%--            tabcontent = document.getElementsByClassName("tab-content");--%>
+<%--            for (i = 0; i < tabcontent.length; i++) {--%>
+<%--                tabcontent[i].style.display = "none";--%>
+<%--            }--%>
+
+<%--            tablinks = document.getElementsByClassName("tablinks");--%>
+<%--            for (i = 0; i < tablinks.length; i++) {--%>
+<%--                tablinks[i].className = tablinks[i].className.replace(" active", "");--%>
+<%--            }--%>
+
+<%--            document.getElementById(tabName).style.display = "block";--%>
+<%--            evt.currentTarget.className += " active";--%>
+<%--        }--%>
+
+<%--        function loadCategories(type) {--%>
+<%--            const categorySelect = type === 'EXPENSE' ? document.getElementById("expense-category") : document.getElementById("income-category");--%>
+
+<%--            $.ajax({--%>
+<%--                url: '/api/category',--%>
+<%--                method: 'GET',--%>
+<%--                data: { type: type },--%>
+<%--                dataType: 'json',--%>
+<%--                success: function(data) {--%>
+<%--                    data.forEach(function(category) {--%>
+<%--                        const option = document.createElement("option");--%>
+<%--                        option.value = category.cno;--%>
+<%--                        option.text = category.name;--%>
+<%--                        categorySelect.add(option);--%>
+<%--                    });--%>
+
+<%--                    updateSubcategories(type);--%>
+<%--                },--%>
+<%--                error: function(error) {--%>
+<%--                    console.error('Error loading categories:', error);--%>
+<%--                }--%>
+<%--            });--%>
+<%--        }--%>
+
+<%--        function updateSubcategories(type) {--%>
+<%--            const categorySelect = type === 'EXPENSE' ? document.getElementById("expense-category") : document.getElementById("income-category");--%>
+<%--            const subcategorySelect = type === 'EXPENSE' ? document.getElementById("expense-subcategory") : document.getElementById("income-subcategory");--%>
+<%--            const selectedCategory = categorySelect.value;--%>
+
+<%--            subcategorySelect.innerHTML = "";--%>
+
+<%--            $.ajax({--%>
+<%--                url: '/api/category/subcategory',--%>
+<%--                method: 'GET',--%>
+<%--                data: { parentCno: selectedCategory },--%>
+<%--                dataType: 'json',--%>
+<%--                success: function(data) {--%>
+<%--                    data.forEach(function(subcategory) {--%>
+<%--                        const option = document.createElement("option");--%>
+<%--                        option.value = subcategory.cno;--%>
+<%--                        option.text = subcategory.name;--%>
+<%--                        subcategorySelect.add(option);--%>
+<%--                    });--%>
+<%--                },--%>
+<%--                error: function(error) {--%>
+<%--                    console.error('Error loading subcategories:', error);--%>
+<%--                }--%>
+<%--            });--%>
+<%--        }--%>
+
+<%--        function loadTags(type) {--%>
+<%--            const tagContainer = type === 'EXPENSE' ? document.getElementById("expense-tag-container") : document.getElementById("income-tag-container");--%>
+<%--            const hiddenInput = type === 'EXPENSE' ? document.getElementById("expense-tags") : document.getElementById("income-tags");--%>
+
+<%--            $.ajax({--%>
+<%--                url: '/api/tag',--%>
+<%--                method: 'GET',--%>
+<%--                dataType: 'json',--%>
+<%--                success: function(data) {--%>
+<%--                    data.forEach(function(tag) {--%>
+<%--                        const button = document.createElement("button");--%>
+<%--                        button.type = "button";--%>
+<%--                        button.className = "tag-button";--%>
+<%--                        button.textContent = tag.name;--%>
+<%--                        button.dataset.tagId = tag.tno;--%>
+<%--                        button.onclick = function() {--%>
+<%--                            this.classList.toggle("selected");--%>
+<%--                            updateSelectedTags(hiddenInput, tagContainer);--%>
+<%--                        };--%>
+<%--                        tagContainer.appendChild(button);--%>
+<%--                    });--%>
+<%--                },--%>
+<%--                error: function(error) {--%>
+<%--                    console.error('Error loading tags:', error);--%>
+<%--                }--%>
+<%--            });--%>
+<%--        }--%>
+
+<%--        function updateSelectedTags(hiddenInput, tagContainer) {--%>
+<%--            const selectedTags = [];--%>
+<%--            const buttons = tagContainer.getElementsByClassName("tag-button");--%>
+<%--            for (let button of buttons) {--%>
+<%--                if (button.classList.contains("selected")) {--%>
+<%--                    selectedTags.push(button.dataset.tagId);--%>
+<%--                }--%>
+<%--            }--%>
+<%--            hiddenInput.value = selectedTags.join(",");--%>
+<%--        }--%>
+
+<%--        function loadSources(type) {--%>
+<%--            const sourceSelect = type === 'EXPENSE' ? document.getElementById("expense-source") : document.getElementById("income-source");--%>
+
+<%--            $.ajax({--%>
+<%--                url: '/api/transaction/source',--%>
+<%--                method: 'GET',--%>
+<%--                dataType: 'json',--%>
+<%--                success: function(data) {--%>
+<%--                    data.forEach(function(source) {--%>
+<%--                        const option = document.createElement("option");--%>
+<%--                        option.value = source.sourceType + ' - ' + source.sno;--%>
+<%--                        option.text = source.sourceType + ' - ' + source.subSourceType + ' - ' + source.cname;--%>
+<%--                        sourceSelect.add(option);--%>
+<%--                    });--%>
+
+<%--                },--%>
+<%--                error: function(error) {--%>
+<%--                    console.error('Error loading sources:', error);--%>
+<%--                }--%>
+<%--            });--%>
+<%--        }--%>
+<%--    </script>--%>
+<%--</head>--%>
+<%--<body>--%>
+
+<%--<div class="container">--%>
+<%--    <!-- Trigger/Open The Modal -->--%>
+<%--    <button id="openModalButton" class="open-modal-button">+</button>--%>
+<%--</div>--%>
+
+<%--<!-- The Modal -->--%>
+<%--<div id="myModal" class="modal">--%>
+
+<%--    <!-- Modal content -->--%>
+<%--    <div class="modal-content">--%>
+<%--        <span class="close">&times;</span>--%>
+
+<%--        <!-- Tab links -->--%>
+<%--        <div class="tab">--%>
+<%--            <button class="tablinks" onclick="openTab(event, 'Expense')">지출</button>--%>
+<%--            <button class="tablinks" onclick="openTab(event, 'Income')">수입</button>--%>
+<%--        </div>--%>
+
+<%--        <!-- Tab content -->--%>
+<%--        <div id="Expense" class="tab-content">--%>
+<%--            <form id="expense-form" onsubmit="submitExpenseForm(event)">--%>
+<%--                <h3>지출</h3>--%>
+
+<%--                <label for="expense-type">타입:</label>--%>
+<%--                <input type="text" id="expense-type" name="type" value="EXPENSE" readonly><br><br>--%>
+
+<%--                <label for="expense-category">카테고리:</label>--%>
+<%--                <select id="expense-category" name="category" onchange="updateSubcategories('EXPENSE')">--%>
+<%--                    <!-- Category options will be populated dynamically -->--%>
+<%--                </select><br><br>--%>
+
+<%--                <label for="expense-subcategory">세부카테고리:</label>--%>
+<%--                <select id="expense-subcategory" name="subcategory">--%>
+<%--                    <!-- Subcategory options will be populated based on category selection -->--%>
+<%--                </select><br><br>--%>
+
+<%--                <label for="expense-source">거래수단: </label>--%>
+<%--                <select id="expense-source" name="source">--%>
+<%--                    <!-- Source options will be populated dynamically -->--%>
+<%--                </select><br><br>--%>
+
+<%--                <label for="expense-keyword">지출내역: </label>--%>
+<%--                <input type="text" id="expense-keyword" name="keyword"><br><br>--%>
+
+<%--                <label for="expense-amount">지출금액:</label>--%>
+<%--                <input type="number" id="expense-amount" name="amount" required><br><br>--%>
+
+<%--                <label for="expense-installment">할부: </label>--%>
+<%--                <select id="expense-installment" name="installment">--%>
+<%--                    <option value="일시불">일시불</option>--%>
+<%--                    <% for (int i = 2; i <= 36; i++) { %>--%>
+<%--                    <option value="<%= i %>개월"><%= i %>개월</option>--%>
+<%--                    <% } %>--%>
+<%--                </select><br><br>--%>
+
+<%--                <label for="expense-tag-container">태그: </label>--%>
+<%--                <div id="expense-tag-container">--%>
+<%--                    <!-- Tag buttons will be populated dynamically -->--%>
+<%--                </div>--%>
+<%--                <input type="hidden" id="expense-tags" name="tags"><br><br>--%>
+
+<%--                <div class="form-row">--%>
+<%--                    <label for="expense-date">날짜: </label>--%>
+<%--                    <input type="date" id="expense-date" name="date" required>--%>
+<%--                    <label for="expense-time">시간: </label>--%>
+<%--                    <input type="time" id="expense-time" name="time" required>--%>
+<%--                </div><br>--%>
+
+<%--                <label for="expense-rtype">반복주기: </label>--%>
+<%--                <select id="expense-rtype" name="rtype">--%>
+<%--                    <option value="NONE">없음</option>--%>
+<%--                    <option value="MONTHLY">월간</option>--%>
+<%--                    <option value="WEEKLY">주간</option>--%>
+<%--                </select><br><br>--%>
+
+<%--                <label for="expense-memo">메모:</label>--%>
+<%--                <textarea id="expense-memo" name="memo"></textarea><br><br>--%>
+
+<%--                <label for="expense-imageUrl">이미지: </label>--%>
+<%--                <input type="text" id="expense-imageUrl" name="imageUrl"><br><br>--%>
+
+<%--                <input type="submit" value="거래내역 추가">--%>
+<%--            </form>--%>
+<%--        </div>--%>
+
+<%--        <div id="Income" class="tab-content">--%>
+<%--            <form id="income-form" onsubmit="submitIncomeForm(event)">--%>
+<%--                <h3>수입</h3>--%>
+
+<%--                <label for="income-type">타입:</label>--%>
+<%--                <input type="text" id="income-type" name="type" value="INCOME" readonly><br><br>--%>
+
+<%--                <label for="income-category">카테고리:</label>--%>
+<%--                <select id="income-category" name="category" onchange="updateSubcategories('INCOME')">--%>
+<%--                    <!-- Category options will be populated dynamically -->--%>
+<%--                </select><br><br>--%>
+
+<%--                <label for="income-subcategory">서브카테고리:</label>--%>
+<%--                <select id="income-subcategory" name="subcategory">--%>
+<%--                    <!-- Subcategory options will be populated based on category selection -->--%>
+<%--                </select><br><br>--%>
+
+<%--                <label for="income-source">거래수단: </label>--%>
+<%--                <select id="income-source" name="source">--%>
+<%--                    <!-- Source options will be populated dynamically -->--%>
+<%--                </select><br><br>--%>
+
+<%--                <label for="income-keyword">수입내역:</label>--%>
+<%--                <input type="text" id="income-keyword" name="keyword"><br><br>--%>
+
+<%--                <label for="income-amount">수입금액:</label>--%>
+<%--                <input type="text" id="income-amount" name="amount"><br><br>--%>
+
+<%--                <label for="income-tag-container">태그:</label>--%>
+<%--                <div id="income-tag-container">--%>
+<%--                    <!-- Tag buttons will be populated dynamically -->--%>
+<%--                </div>--%>
+<%--                <input type="hidden" id="income-tags" name="tags"><br><br>--%>
+
+<%--                <div class="form-row">--%>
+<%--                    <label for="income-date">날짜: </label>--%>
+<%--                    <input type="date" id="income-date" name="date" required>--%>
+<%--                    <label for="income-time">시간: </label>--%>
+<%--                    <input type="time" id="income-time" name="time" required>--%>
+<%--                </div><br>--%>
+
+<%--                <label for="income-rtype">반복주기: </label>--%>
+<%--                <select id="income-rtype" name="rtype">--%>
+<%--                    <option value="NONE">없음</option>--%>
+<%--                    <option value="MONTHLY">월간</option>--%>
+<%--                    <option value="WEEKLY">주간</option>--%>
+<%--                </select><br><br>--%>
+
+<%--                <label for="income-memo">메모:</label>--%>
+<%--                <textarea id="income-memo" name="memo"></textarea><br><br>--%>
+
+<%--                <label for="income-imageUrl">이미지: </label>--%>
+<%--                <input type="text" id="income-imageUrl" name="imageUrl"><br><br>--%>
+
+<%--                <input type="submit" value="거래내역 추가">--%>
+<%--            </form>--%>
+<%--        </div>--%>
+<%--    </div>--%>
+<%--</div>--%>
+
+<%--</body>--%>
+<%--</html>--%>

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,9 +20,20 @@ import lombok.RequiredArgsConstructor;
 public class CategoryRestController {
 	private final CategoryService categoryService;
 
+	@GetMapping("/all")
+	@ResponseStatus(HttpStatus.OK)
+	public List<CategoryDto> getCategories() {
+		return categoryService.selectAll();
+	}
+
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
-	public List<CategoryDto> getAllCategory() {
-		return categoryService.selectAll();
+	public List<CategoryDto> getCategoriesByType(@RequestParam String type) {
+		return categoryService.getCategoriesByType(type);
+	}
+
+	@GetMapping("/subcategory")
+	public List<CategoryDto> getSubcategories(@RequestParam Integer parentCno) {
+		return categoryService.getSubcategories(parentCno);
 	}
 }

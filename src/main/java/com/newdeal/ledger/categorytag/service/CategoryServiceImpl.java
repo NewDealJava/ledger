@@ -18,4 +18,14 @@ public class CategoryServiceImpl implements CategoryService {
 		return mapper.findAll();
 	}
 
+	public List<CategoryDto> getCategoriesByType(String type){
+		List<CategoryDto> allCategoriesByType = mapper.findAllCategoriesByType(type);
+
+		return allCategoriesByType;
+	}
+
+	public List<CategoryDto> getSubcategories(Integer parentCno){
+		return mapper.findAllSubcategoriesByParentCno(parentCno);
+	}
+
 }

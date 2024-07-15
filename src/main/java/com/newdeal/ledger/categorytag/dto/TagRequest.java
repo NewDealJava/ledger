@@ -8,4 +8,9 @@ public class TagRequest {
 	public static class Create {
 		public String name;
 	}
+
+	@Data
+	public static class Update {
+		public String name;
+	}
 }

@@ -9,4 +9,8 @@ public interface TagService {
 	List<TagDto> selectAllByEmail(String email);
 
 	void createTag(String email, TagRequest.Create request);
+
+	void updateTag(Integer tagId, TagRequest.Update request);
+
+	void deleteTag(Integer tagId);
 }

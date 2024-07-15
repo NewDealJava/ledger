@@ -16,4 +16,22 @@
         VALUES (#{request.name}, #{email})
     </insert>
 
+    <update id="updateTag" parameterType="map">
+        UPDATE tag
+        SET name = #{request.name}
+        WHERE tno = #{tagId}
+    </update>
+
+    <delete id="deleteTag">
+        DELETE
+        FROM tag
+        WHERE tno = #{tagId}
+    </delete>
+
+    <delete id="deleteTransactionTagByTagId">
+        DELETE
+        FROM transactiontag
+        WHERE tgno = #{tagId}
+    </delete>
+
 </mapper>

@@ -96,6 +96,12 @@
             <label for="card-total-amount">누적금액:</label>
             <input type="number" id="card-total-amount" name="amount" required><br><br>
 
+            <label for="card-memo">메모:</label>
+            <textarea id="card-memo" name="memo"></textarea><br><br>
+
+            <label for="card-imgUrl">이미지 URL:</label>
+            <input type="text" id="card-imgUrl" name="imgUrl"><br><br>
+
             <input type="submit" value="생성하기">
         </form>
     </div>

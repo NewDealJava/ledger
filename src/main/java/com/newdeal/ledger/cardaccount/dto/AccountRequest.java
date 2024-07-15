@@ -2,14 +2,13 @@ package com.newdeal.ledger.cardaccount.dto;
 
 import lombok.Data;
 
-public class CardRequest {
+public class AccountRequest {
 
 	@Data
 	public static class Create {
-		public CardType type;
+		public AccountType type;
 		public String name;
 		public String cname;
-		public Integer bday;
 		public Long amount;
 		public String memo;
 		public String imgUrl;

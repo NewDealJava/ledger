@@ -16,4 +16,10 @@
         VALUES (#{request.name}, #{email})
     </insert>
 
+    <update id="updateTag" parameterType="map">
+        UPDATE tag
+        SET name = #{request.name}
+        WHERE tno = #{tagId}
+    </update>
+
 </mapper>

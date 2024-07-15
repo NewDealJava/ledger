@@ -15,4 +15,6 @@ public interface TagMapper {
 
 	Integer createTag(@Param("email") String email, @Param("request") TagRequest.Create request);
 
+	Integer updateTag(@Param("tagId") Integer tagId, @Param("request") TagRequest.Update request);
+
 }

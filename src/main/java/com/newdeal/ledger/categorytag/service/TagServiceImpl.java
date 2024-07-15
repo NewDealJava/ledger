@@ -22,4 +22,9 @@ public class TagServiceImpl implements TagService {
 	public void createTag(String email, TagRequest.Create request) {
 		mapper.createTag(email, request);
 	}
+
+	public void updateTag(Integer tagId, TagRequest.Update request) {
+		mapper.updateTag(tagId, request);
+	}
+
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.newdeal.ledger.categorytag.dto.TagDto;
+import com.newdeal.ledger.categorytag.dto.TagRequest;
 import com.newdeal.ledger.categorytag.mapper.TagMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -16,5 +17,9 @@ public class TagServiceImpl implements TagService {
 
 	public List<TagDto> selectAllByEmail(String email) {
 		return mapper.findAllByEmail(email);
+	}
+
+	public void createTag(String email, TagRequest.Create request) {
+		mapper.createTag(email, request);
 	}
 }

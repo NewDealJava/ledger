@@ -45,6 +45,7 @@
                         throw new Error('Network response was not ok');
                     }
                     resetFormAndCloseModal('expense-form');
+                    window.location.reload();
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -84,6 +85,7 @@
                         throw new Error('Network response was not ok');
                     }
                     resetFormAndCloseModal('income-form');
+                    window.location.reload();
                 })
                 .catch(error => {
                     console.error('Error:', error);

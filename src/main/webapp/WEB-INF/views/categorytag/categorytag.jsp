@@ -13,6 +13,17 @@
             margin-left: 180px; /* Adjust according to the width of the sidebar */
             padding: 0px;
         }
+
+        .modal-container {
+            display: none; /* Initially hide the modal container */
+        }
+
+        .button-container {
+            height: 40px; /* Set a fixed height */
+            position: relative;
+            margin-bottom: 20px;
+        }
+
     </style>
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 </head>
@@ -20,41 +31,45 @@
 <body>
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
 <%@ include file="/WEB-INF/views/include/sidebar.jsp" %>
-
 <div class="main-content">
     <div class="board-title-container">
-    <div class="board-title-area">
-        <h1 class="board-title">카테고리/태그</h1>
-    </div>
+        <div class="board-title-area">
+            <h1 class="board-title">카테고리/태그</h1>
+        </div>
 
-    <!-- Tabs for Tag and Category -->
-    <div class="tab-container">
-        <div class="tab active" data-tab="tag">태그</div>
-        <div class="tab" data-tab="category">카테고리</div>
-    </div>
+        <!-- Tabs for Tag and Category -->
+        <div class="tab-container">
+            <div class="tab active" data-tab="tag">태그</div>
+            <div class="tab" data-tab="category">카테고리</div>
+        </div>
 
-    <!-- Board for Tag and Category -->
-    <div class="board-container">
-        <!-- Tag List -->
-        <div id="tag" class="tab-content active">
-            <div class="card-container" id="tag-container">
-                <!-- Tag cards will be loaded here by AJAX -->
+        <div class="button-container">
+            <div id="modal-container" class="modal-container">
+                <%@ include file="/WEB-INF/views/categorytag/createTagModal.jsp" %>
             </div>
         </div>
 
-        <!-- Category List -->
-        <div id="category" class="tab-content">
-            <div class="card-container" id="category-container">
-                <!-- Category cards will be loaded here by AJAX -->
+        <!-- Board for Tag and Category -->
+        <div class="board-container">
+            <!-- Tag List -->
+            <div id="tag" class="tab-content active">
+                <div class="card-container" id="tag-container">
+                    <!-- Tag cards will be loaded here by AJAX -->
+                </div>
+            </div>
+
+            <!-- Category List -->
+            <div id="category" class="tab-content">
+                <div class="card-container" id="category-container">
+                    <!-- Category cards will be loaded here by AJAX -->
+                </div>
             </div>
         </div>
-
     </div>
 </div>
-</div>
+
 <script>
     $(document).ready(function () {
-
         function loadContent(type) {
             console.log(type);
 
@@ -64,17 +79,15 @@
                 success: function (data) {
                     var container = type === 'tag' ? '#tag-container' : '#category-container';
 
-
                     $(container).html('');
                     data.forEach(function (item) {
-
                         var card = $('<div>', {class: 'card'});
                         var cardBody = $('<div>', {class: 'card-body'});
 
                         var nameDiv = $('<div>').append(
                             $('<strong>').text(type === 'tag' ? '태그 이름: ' : '카테고리 이름: '),
                             $('<span>').text(item.name)
-                        );
+                            );
 
                         cardBody.append(nameDiv);
 
@@ -82,7 +95,7 @@
                             var typeDiv = $('<div>').append(
                                 $('<strong>').text('카테고리 타입: '),
                                 $('<span>').text(item.type)
-                            );
+                                );
                             cardBody.append(typeDiv);
                         }
 
@@ -106,10 +119,18 @@
             $("#" + tab_id).addClass('active');
 
             loadContent(tab_id);
+
+            // Show or hide the modal container based on the active tab
+            if (tab_id === 'tag') {
+                $('#modal-container').show();
+            } else {
+                $('#modal-container').hide();
+            }
         });
 
-        // Load tags by default
+        // Load tags by default and show the modal container
         loadContent('tag');
+        $('#modal-container').show();
     });
 </script>
 

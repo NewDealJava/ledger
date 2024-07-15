@@ -4,11 +4,14 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.newdeal.ledger.categorytag.dto.TagDto;
+import com.newdeal.ledger.categorytag.dto.TagRequest;
 import com.newdeal.ledger.categorytag.service.TagService;
 
 import lombok.RequiredArgsConstructor;
@@ -25,4 +28,13 @@ public class TagRestController {
 		String tempEmail = "user1@example.com";
 		return tagService.selectAllByEmail(tempEmail);
 	}
+
+	@PostMapping
+	@ResponseStatus(HttpStatus.CREATED)
+	public void createTag(@ModelAttribute TagRequest.Create request){
+		String tempEmail = "user1@example.com";
+
+		tagService.createTag(tempEmail,request);
+	}
+
 }

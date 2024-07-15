@@ -23,4 +23,10 @@
             email = #{email}
     </select>
 
+    <insert id="createAccount" parameterType="map">
+        INSERT INTO account (email, name, cname, type, imgUrl, memo, amount)
+        VALUES (#{email}, #{request.name}, #{request.cname}, #{request.type}, #{request.imgUrl}, #{request.memo},
+                #{request.amount})
+    </insert>
+
 </mapper>

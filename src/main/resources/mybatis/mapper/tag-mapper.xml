@@ -11,4 +11,9 @@
         WHERE email = #{email}
     </select>
 
+    <insert id="createTag" parameterType="map">
+        INSERT INTO tag (name, email)
+        VALUES (#{request.name}, #{email})
+    </insert>
+
 </mapper>

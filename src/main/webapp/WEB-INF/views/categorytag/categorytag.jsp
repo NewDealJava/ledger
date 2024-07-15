@@ -253,13 +253,38 @@
             var modalAction = document.getElementById("modal-action");
             var modalBody = document.getElementById("modal-body");
 
+            // debugger;
             if (action === 'edit') {
                 modalTitle.innerText = "수정";
                 modalAction.value = "edit";
-                modalBody.innerHTML = `
-                    <label for="edit-name">이름:</label>
-                    <input type="text" id="edit-name" name="name" value="${item.name}" required><br><br>
-                `;
+
+                // Create label
+                var label = document.createElement('label');
+                label.setAttribute('for', 'edit-name');
+                label.innerText = '이름:';
+
+                // Create input for name
+                var inputName = document.createElement('input');
+                inputName.setAttribute('type', 'text');
+                inputName.setAttribute('id', 'edit-name');
+                inputName.setAttribute('name', 'name');
+                inputName.setAttribute('value', item.name);
+                inputName.required = true;
+
+                // Create hidden input for id
+                var inputId = document.createElement('input');
+                inputId.setAttribute('type', 'hidden');
+                inputId.setAttribute('id', 'edit-id');
+                inputId.setAttribute('name', 'id');
+                inputId.setAttribute('value', item.tno);
+
+                // Append elements to modal body
+                modalBody.appendChild(label);
+                modalBody.appendChild(inputName);
+                modalBody.appendChild(document.createElement('br'));
+                modalBody.appendChild(document.createElement('br'));
+                modalBody.appendChild(inputId);
+
             } else if (action === 'delete') {
                 modalTitle.innerText = "삭제";
                 modalAction.value = "delete";
@@ -276,11 +301,30 @@
             event.preventDefault();
             var action = $("#modal-action").val();
             if (action === "edit") {
+
                 // Edit action
-                var id = $("#delete-id").val();
+                var id = $("#edit-id").val();  // 수정된 부분
                 var name = $("#edit-name").val();
-                // Call your API to edit the item
-                // $.ajax({ ... });
+
+                $.ajax({
+                    url: '/api/tag/' + id,
+                    type: 'PUT',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        name: name
+                    }),
+                    success: function(response) {
+                        // Handle success
+                        alert('Tag updated successfully.');
+                        modal.style.display = "none";
+                        loadContent($('.tab.active').data('tab'));
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle error
+                        alert('Failed to update tag: ' + xhr.responseText);
+                    }
+                });
+
             } else if (action === "delete") {
                 // Delete action
                 var id = $("#delete-id").val();

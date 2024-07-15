@@ -11,4 +11,5 @@ public interface CalendarService {
     List<TransactionDto> findDetails(String dateString);
     int deleteTransaction(Long tno);
 
+    TransactionDto getTransactionDetails(int tno);
 }

@@ -170,7 +170,7 @@
         </div>
     </section>
 </main>
-<!-- jsp:include page="../views/incl/footer.jsp" flush="true" / -->
+
 <script>
     // calendar.jsp의 모달을 닫는 함수
     function closeModalInCalendar() {
@@ -210,7 +210,7 @@
         const yearParam = parseInt(urlParams.get('year'));
         const monthParam = parseInt(urlParams.get('month'));
 
-        // URL 파라미터가 있으면 해당 연도와 월로 currentDate 설정 (year, month)
+        // **URL 파라미터가 있으면 해당 연도와 월로 currentDate 설정 (year, month)
         if (!isNaN(yearParam) && !isNaN(monthParam)) {
             currentDate = new Date(yearParam, monthParam - 1, 1);
         }

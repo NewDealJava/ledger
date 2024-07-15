@@ -36,4 +36,8 @@ public class CalendarServiceImpl implements CalendarService {
         return calendarMapper.deleteTransaction(tno);
     }
 
+    @Override
+    public TransactionDto getTransactionDetails(int tno) {
+        return null; // calendarMapper.findTransactionByTno(tno);
+    }
 }

@@ -32,7 +32,7 @@
         <div class="board-title-area">
             <h1 class="board-title">거래 내역</h1>
         </div>
-        <%@ include file="/WEB-INF/views/createTransactionModel.jsp" %>
+        <%@ include file="/WEB-INF/views/transaction/createTransactionModal.jsp" %>
         <div class="board-container">
             <div class="qna-board-list-area">
                 <table>

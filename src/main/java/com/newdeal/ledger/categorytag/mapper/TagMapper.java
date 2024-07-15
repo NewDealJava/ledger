@@ -17,4 +17,7 @@ public interface TagMapper {
 
 	Integer updateTag(@Param("tagId") Integer tagId, @Param("request") TagRequest.Update request);
 
+	void deleteTransactionTagByTagId(Integer tagId);
+
+	void deleteTag(Integer tagId);
 }

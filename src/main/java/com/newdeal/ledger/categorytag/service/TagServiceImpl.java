@@ -27,4 +27,9 @@ public class TagServiceImpl implements TagService {
 		mapper.updateTag(tagId, request);
 	}
 
+	public void deleteTag(Integer tagId) {
+		mapper.deleteTransactionTagByTagId(tagId);
+		mapper.deleteTag(tagId);
+	}
+
 }

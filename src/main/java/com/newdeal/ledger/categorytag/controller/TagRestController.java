@@ -3,6 +3,7 @@ package com.newdeal.ledger.categorytag.controller;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,11 +43,15 @@ public class TagRestController {
 	@PutMapping(value = "/{tagId}")
 	@ResponseStatus(HttpStatus.OK)
 	public void updateTag(@PathVariable Integer tagId, @RequestBody TagRequest.Update request) {
-
-		System.out.println("ddd");
 		tagService.updateTag(tagId, request);
+
 	}
 
+	@DeleteMapping(value = "/{tagId}")
+	@ResponseStatus(HttpStatus.OK)
+	public void deleteTag(@PathVariable Integer tagId) {
+		tagService.deleteTag(tagId);
 
+	}
 
 }

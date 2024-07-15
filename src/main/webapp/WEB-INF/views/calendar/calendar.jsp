@@ -176,7 +176,22 @@
     function closeModalInCalendar() {
         $('#myModal').hide(); // 모달 숨기기
     }
+    // X 버튼 클릭 이벤트 처리
+    $('.close').click(function() {
+        closeModalInCalendar(); // 부모 창의 모달 닫기 함수 호출
+    });
 
+    // 모달 외부 클릭 시 닫기 처리
+    $(document).on('click', function(event) {
+        if ($(event.target).is('#myModal')) {
+            closeModalInCalendar(); // 부모 창의 모달 닫기 함수 호출
+        }
+    });
+
+    // function closeModalInCalendar()는 별도로 유지합니다.
+    function closeModalInCalendar() {
+        $('#myModal').hide(); // 부모 창의 모달 숨기기
+    }
     $(document).ready(() => {
         const calendarBody = $('#calendar-body');  // 캘린더 본문 요소
         const monthYear = $('#month-year');        // 월과 연도를 표시할 요소

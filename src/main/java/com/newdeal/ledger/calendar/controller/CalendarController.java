@@ -4,9 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.newdeal.ledger.calendar.dto.TransactionDto;
 import com.newdeal.ledger.calendar.service.CalendarService;
-import com.newdeal.ledger.inquiry.service.InquiryService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -176,29 +174,40 @@ public class CalendarController {
         }
     }
 
-    /**
-     * 키워드와 금액을 수정
-     * @param tno @param newKeyword @param newAmount @param model
-     * @return
-     */
-    @PostMapping("/updateTransaction")
-    public ResponseEntity<String> updateTransaction(@RequestParam Long tno,
-                                                    @RequestParam String newKeyword,
-                                                    @RequestParam Integer newAmount,
-                                                    Model model) {
+//    /**
+//     * @param tno @param newKeyword @param newAmount @param model
+//     * @return
+//     */
+//    @PostMapping("/updateTransaction")
+//    public ResponseEntity<String> updateTransaction(@RequestParam Long tno,
+//                                                    @RequestParam String newKeyword,
+//                                                    @RequestParam Integer newAmount,
+//                                                    Model model) {
+//
+//        System.out.println("tno = " + tno);
+//        System.out.println("newKeyword = " + newKeyword);
+//        System.out.println("newAmount = " + newAmount);
+//
+//        try {
+//            // 성공적으로 수정된 경우
+//            return ResponseEntity.ok("Transaction updated successfully"); // 성공 응답
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            // 수정 중 에러가 발생한 경우
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating transaction");
+//        }
+//    }
 
+    @GetMapping("/getTransactionDetails")
+    public ResponseEntity<TransactionDto> getTransactionDetails(@RequestParam("tno") int tno) {
         System.out.println("tno = " + tno);
-        System.out.println("newKeyword = " + newKeyword);
-        System.out.println("newAmount = " + newAmount);
+        TransactionDto transactionDetails = calendarService.getTransactionDetails(tno);
 
-        try {
-            // 성공적으로 수정된 경우
-            return ResponseEntity.ok("Transaction updated successfully"); // 성공 응답
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            // 수정 중 에러가 발생한 경우
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating transaction");
+        if (transactionDetails != null) {
+            return ResponseEntity.ok(transactionDetails);
+        } else {
+            return ResponseEntity.notFound().build();
         }
     }
 }

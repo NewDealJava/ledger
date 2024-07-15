@@ -14,7 +14,7 @@ import java.sql.Timestamp;
 public class TransactionDto {
     private int tno;
     private String email;
-    private int cno;
+    private Integer cno;
     private String type;
     private String stype;
     private int sno;
@@ -24,5 +24,5 @@ public class TransactionDto {
     private String imageUrl;
     private String tsmemo;
     private Timestamp time;
-    private Integer rtype;
+    private String rtype;
 }

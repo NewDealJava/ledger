@@ -7,53 +7,63 @@
 <head>
     <meta charset="UTF-8"/>
     <title>가계부</title>
-    <link href="../css/cardaccount.css?ver=1" rel="stylesheet"/>
+    <link href="../css/categorytag.css?ver=1" rel="stylesheet"/>
+    <style>
+        .main-content {
+            margin-left: 180px; /* Adjust according to the width of the sidebar */
+            padding: 0px;
+        }
+    </style>
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 </head>
 
 <body>
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
+<%@ include file="/WEB-INF/views/include/sidebar.jsp" %>
 
-<div class="board-title-container">
+<div class="main-content">
+    <div class="board-title-container">
     <div class="board-title-area">
-        <h1 class="board-title">카드/계좌</h1>
+        <h1 class="board-title">카테고리/태그</h1>
     </div>
 
-    <!-- Tabs for Card and Account -->
+    <!-- Tabs for Tag and Category -->
     <div class="tab-container">
-        <div class="tab active" data-tab="credit">카드</div>
-        <div class="tab" data-tab="account">계좌</div>
+        <div class="tab active" data-tab="tag">태그</div>
+        <div class="tab" data-tab="category">카테고리</div>
     </div>
 
-    <!-- Board for Card and Account -->
+    <!-- Board for Tag and Category -->
     <div class="board-container">
-        <!-- credit List -->
-        <div id="credit" class="tab-content active">
-            <div class="card-container" id="credit-container">
-                <!-- card cards will be loaded here by AJAX -->
+        <!-- Tag List -->
+        <div id="tag" class="tab-content active">
+            <div class="card-container" id="tag-container">
+                <!-- Tag cards will be loaded here by AJAX -->
             </div>
         </div>
 
-        <!-- Account List -->
-        <div id="account" class="tab-content">
-            <div class="card-container" id="account-container">
-                <!-- Account cards will be loaded here by AJAX -->
+        <!-- Category List -->
+        <div id="category" class="tab-content">
+            <div class="card-container" id="category-container">
+                <!-- Category cards will be loaded here by AJAX -->
             </div>
         </div>
 
     </div>
 </div>
-
+</div>
 <script>
     $(document).ready(function () {
 
         function loadContent(type) {
             console.log(type);
+
             $.ajax({
-                url: type === 'card' ? '/api/card' : '/api/account',
+                url: type === 'tag' ? '/api/tag' : '/api/category/all',
                 method: 'GET',
                 success: function (data) {
-                    var container = type === 'card' ? '#credit-container' : '#account-container';
+                    var container = type === 'tag' ? '#tag-container' : '#category-container';
+
 
                     $(container).html('');
                     data.forEach(function (item) {
@@ -62,18 +72,19 @@
                         var cardBody = $('<div>', {class: 'card-body'});
 
                         var nameDiv = $('<div>').append(
-                            $('<strong>').text(type === 'card' ? '카드 이름: ' : '계좌 이름: '),
-                            $('<span>').text(item.cname)
+                            $('<strong>').text(type === 'tag' ? '태그 이름: ' : '카테고리 이름: '),
+                            $('<span>').text(item.name)
                         );
 
                         cardBody.append(nameDiv);
 
-                        var typeDiv = $('<div>').append(
-                            $('<strong>').text('타입: '),
-                            $('<span>').text(item.type)
-                        );
-
-                        cardBody.append(typeDiv);
+                        if (type !== 'tag') {
+                            var typeDiv = $('<div>').append(
+                                $('<strong>').text('카테고리 타입: '),
+                                $('<span>').text(item.type)
+                            );
+                            cardBody.append(typeDiv);
+                        }
 
                         card.append(cardBody);
                         $(container).append(card);
@@ -98,7 +109,7 @@
         });
 
         // Load tags by default
-        loadContent('card');
+        loadContent('tag');
     });
 </script>
 

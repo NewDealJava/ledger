@@ -5,12 +5,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping(value = "/cardaccount")
-public class CardAccountController {
+@RequestMapping(value = "/view/cardaccount")
+public class CardAccountViewController {
 
 	@GetMapping
 	public String getCardAccount() {
-		return "/cardaccount";
+		return "/cardaccount/cardaccount";
 	}
 
 }

@@ -20,9 +20,15 @@ import lombok.RequiredArgsConstructor;
 public class CategoryRestController {
 	private final CategoryService categoryService;
 
+	@GetMapping("/all")
+	@ResponseStatus(HttpStatus.OK)
+	public List<CategoryDto> getCategories() {
+		return categoryService.selectAll();
+	}
+
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
-	public List<CategoryDto> getCategories(@RequestParam String type) {
+	public List<CategoryDto> getCategoriesByType(@RequestParam String type) {
 		return categoryService.getCategoriesByType(type);
 	}
 

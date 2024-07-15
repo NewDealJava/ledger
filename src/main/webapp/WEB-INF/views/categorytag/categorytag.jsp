@@ -288,10 +288,21 @@
             } else if (action === 'delete') {
                 modalTitle.innerText = "삭제";
                 modalAction.value = "delete";
-                modalBody.innerHTML = `
-                    <p>정말로 삭제하시겠습니까?</p>
-                    <input type="hidden" id="delete-id" name="id" value="${item.id}">
-                `;
+
+                // Create paragraph
+                var paragraph = document.createElement('p');
+                paragraph.innerText = '정말로 삭제하시겠습니까?';
+
+                // Create hidden input for id
+                var inputId = document.createElement('input');
+                inputId.setAttribute('type', 'hidden');
+                inputId.setAttribute('id', 'delete-id');
+                inputId.setAttribute('name', 'id');
+                inputId.setAttribute('value', item.tno);  // Ensure this is the correct property
+
+                // Append elements to modal body
+                modalBody.appendChild(paragraph);
+                modalBody.appendChild(inputId);
             }
 
             modal.style.display = "block";
@@ -327,9 +338,25 @@
 
             } else if (action === "delete") {
                 // Delete action
-                var id = $("#delete-id").val();
+                var tagId = $("#delete-id").val();
                 // Call your API to delete the item
                 // $.ajax({ ... });
+
+                $.ajax({
+                    url: '/api/tag/' + tagId,
+                    type: 'DELETE',
+                    success: function(response) {
+                        // Handle success
+                        alert('Tag deleted successfully.');
+                        modal.style.display = "none";
+                        loadContent($('.tab.active').data('tab'));
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle error
+                        alert('Failed to delete tag: ' + xhr.responseText);
+                    }
+                });
+
             }
             modal.style.display = "none";
             loadContent($('.tab.active').data('tab'));

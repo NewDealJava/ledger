@@ -15,16 +15,16 @@
     </select> -->
 
     <insert id="insert" parameterType="com.newdeal.ledger.user.dto.UserDto" >
-        INSERT INTO user (email, password, name, phone, address)
+        INSERT INTO ymember (email, password, name, phone, address)
         VALUES (#{email}, #{password}, #{name}, #{phone}, #{address})
     </insert>
 
     <select id="existsByEmail" resultType="boolean" >
-        SELECT IF(COUNT(*) = 1, 1, 0) FROM user WHERE email = #{email}
+        SELECT IF(COUNT(*) = 1, 1, 0) FROM ymember WHERE email = #{email}
     </select>
 
     <select id="findByEmail" parameterType="String" resultType="com.newdeal.ledger.user.dto.UserDto">
-        SELECT * FROM user WHERE email = #{email}
+        SELECT * FROM ymember WHERE email = #{email}
     </select>
 
     <!-- <update id="update" parameterType="com.newdeal.ledger.sample.dto.SampleDto">

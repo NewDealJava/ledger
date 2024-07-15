@@ -1,12 +1,14 @@
 package com.newdeal.ledger.user.controller;
 
+import java.net.URI;
+
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.newdeal.ledger.user.dto.UserDto;
@@ -17,7 +19,6 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Controller
-@RequestMapping("/user/")
 @RequiredArgsConstructor
 public class UserController {
 	private final UserService userService;
@@ -29,7 +30,7 @@ public class UserController {
 	}
 
 	// 회원가입시 중복확인 버튼 처리 로직
-	@GetMapping("check-email")
+	@GetMapping("/user/check-email")
 	public ResponseEntity<Boolean> findByEmail(@RequestParam String email) {
 		boolean findByEmail = userService.findByEmail(email);
 		return ResponseEntity.status(HttpStatus.OK).body(findByEmail);
@@ -42,31 +43,36 @@ public class UserController {
 	}
 
 	// 마이페이지 화면 뷰 페이지
-	@GetMapping("mypage")
+	@GetMapping("/user/mypage")
 	public String mypage() {
 		return "/user/mypage";
 	}
 
 	// 회원가입 처리 로직
-	@PostMapping("sign-up")
-	public String signUp(UserDto user, Model model) {
-		userService.signUp(user);
-		return "redirect:/user/sign-in";
+	@PostMapping("/user/sign-up")
+	public ResponseEntity<Void> signUp(@RequestBody UserDto dto) {
+		boolean isSignUp = userService.signUp(dto);
+		if (isSignUp) {
+			HttpHeaders headers = new HttpHeaders();
+			headers.setLocation(URI.create("/sign-in"));
+			return new ResponseEntity<>(headers, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 	}
 
 	// 로그인 처리 로직
-	@PostMapping("sign-in")
-	public String signIn(@RequestParam("email") String email, @RequestParam("password") String password, Model model,
-			HttpServletRequest request) {
-		UserDto dto = userService.selectByEmail(email);
-
-		if (dto != null && userService.matchesPassword(password, dto.getPassword())) {
+	@PostMapping("/user/sign-in")
+	public ResponseEntity<Void> signIn(@RequestBody UserDto requestDto, HttpServletRequest request) {
+		UserDto responseDto = userService.selectByEmail(requestDto.getEmail());
+		if (responseDto != null && userService.matchesPassword(requestDto.getPassword(), responseDto.getPassword())) {
 			HttpSession session = request.getSession();
-			session.setAttribute("user", dto);
-			return "redirect:/user/mypage";
+			HttpHeaders headers = new HttpHeaders();
+			session.setAttribute("user", responseDto);
+			headers.setLocation(URI.create("/user/mypage"));
+			return new ResponseEntity<>(headers, HttpStatus.OK);
 		} else {
-			model.addAttribute("error", "이메일과 비밀번호를 정확하게 입력해주세요.");
-			return "/user/sign-in";
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
 

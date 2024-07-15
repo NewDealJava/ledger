@@ -16,30 +16,25 @@ public class UserServiceImpl implements UserService {
 
 	private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-	public void signUp(UserDto user) {
+	public boolean signUp(UserDto dto) {
 
 		try {
-			String email = user.getEmail();
-			String encodedPassword = passwordEncoder.encode(user.getPassword());
+			String email = dto.getEmail();
+			String encodedPassword = passwordEncoder.encode(dto.getPassword());
 			boolean existsByEmail = userMapper.existsByEmail(email);
 			if (existsByEmail)
-				return;
-			if (user.getRole() == null) {
-				user.setRole("USER");
+				return false;
+			if (dto.getRole() == null) {
+				dto.setRole("USER");
 			}
-			// if (user.getProfileImage() == null) {
-			// user.setProfileImage("resources/static/img/default-profile-image.png");
-			// }
-
-			user.setPassword(encodedPassword);
-
+			dto.setPassword(encodedPassword);
+			userMapper.insert(dto);
 		} catch (Exception e) {
 
 			e.printStackTrace();
-			return;
+			return false;
 		}
-
-		userMapper.insert(user);
+		return true;
 	}
 
 	@Override

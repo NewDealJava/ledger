@@ -24,4 +24,9 @@
             email = #{email}
     </select>
 
+    <insert id="createCard" parameterType="map">
+        INSERT INTO card (email, name, cname, type, bday, amount)
+        VALUES (#{email}, #{request.name}, #{request.cname}, #{request.type}, #{request.bday}, #{request.amount})
+    </insert>
+
 </mapper>

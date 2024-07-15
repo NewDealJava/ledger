@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.newdeal.ledger.cardaccount.dto.CardDto;
+import com.newdeal.ledger.cardaccount.dto.CardRequest;
 import com.newdeal.ledger.cardaccount.mapper.CardMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,10 @@ public class CardServiceImpl implements CardService {
 
 	public List<CardDto> selectAllByEmail(String email) {
 		return mapper.findAllByEmail(email);
+	}
+
+	public void createCard(String email, CardRequest.Create request){
+		mapper.createCard(email, request);
 	}
 
 }

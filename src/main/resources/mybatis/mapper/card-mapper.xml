@@ -7,26 +7,24 @@
 
     <!-- 이메일로 모든 카드 정보를 조회하는 SQL 쿼리 -->
     <select id="findAllByEmail" resultType="com.newdeal.ledger.cardaccount.dto.CardDto" parameterType="String">
-        SELECT
-            cno,
-            email,
-            name,
-            cname,
-            type,
-            bday AS bDay,
-            imgUrl,
-            memo,
-            amount,
-            isExcept
-        FROM
-            card
-        WHERE
-            email = #{email}
+        SELECT cno,
+               email,
+               name,
+               cname,
+               type,
+               bday AS bDay,
+               imgUrl,
+               memo,
+               amount,
+               isExcept
+        FROM card
+        WHERE email = #{email}
     </select>
 
     <insert id="createCard" parameterType="map">
-        INSERT INTO card (email, name, cname, type, bday, amount)
-        VALUES (#{email}, #{request.name}, #{request.cname}, #{request.type}, #{request.bday}, #{request.amount})
+        INSERT INTO card (email, name, cname, type, bday, imgurl, memo, amount)
+        VALUES (#{email}, #{request.name}, #{request.cname}, #{request.type}, #{request.bday}, #{request.imgUrl},
+                #{request.memo}, #{request.amount})
     </insert>
 
 </mapper>

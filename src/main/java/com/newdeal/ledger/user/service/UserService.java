@@ -4,7 +4,7 @@ import com.newdeal.ledger.user.dto.UserDto;
 
 public interface UserService {
 
-	void signUp(UserDto user);
+	boolean signUp(UserDto user);
 
 	boolean findByEmail(String email);
 

@@ -16,7 +16,7 @@ prefix="fn" %> <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
     <!-- JQuery 최신 -->
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-    
+
     <!---JQuery Validate--->
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"
@@ -24,13 +24,33 @@ prefix="fn" %> <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
+
+    <!-- Kakao Postcode -->
+    <script
+      type="text/javascript"
+      src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"
+    ></script>
+    <script type="text/javascript" src="/js/kakao-postcode.js"></script>
+
+    <!-- Sweet Alert -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
+    <script type="text/javascript" src="/js/toast-alert.js"></script>
   </head>
   <script>
+  let isEmailChecked = false;
+  
     $(document).ready(() => {
       $("#checkBtn").click(() => {
         let email = $("#email").val();
         if (!email) {
-          alert("이메일을 입력해주세요.");
+          Toast.fire({
+            icon: "error",
+            title: "이메일을 입력하세요.",
+          });
           return;
         }
         $.ajax({
@@ -39,9 +59,16 @@ prefix="fn" %> <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
           data: { email: email },
           success: (response) => {
             if (response) {
-              alert("입력하신 이메일은 이미 존재합니다.");
+              Toast.fire({
+                icon: "error",
+                title: "입력하신 이메일은 이미 존재합니다.",
+              });
             } else {
-              alert("입력하신 이메일은 사용이 가능합니다.");
+              Toast.fire({
+                icon: "success",
+                title: "입력하신 이메일은 사용 가능합니다.",
+              });
+              return isEmailChecked = true;
             }
           },
         });
@@ -115,9 +142,65 @@ prefix="fn" %> <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
         },
       });
     });
+
+$(document).ready(() => {
+  $("#signUpForm").submit((e) => {
+    e.preventDefault();
+    if (!isEmailChecked) {
+      Toast.fire({
+        icon: "error",
+        title: "이메일 중복확인을 해주세요.",
+      });
+      return;
+    }
+    let email = $("#email").val();
+    let password = $("#password").val();
+    let name = $("#name").val();
+    let phone = $("#phone").val();
+    let address = $("#address").val();
+    if (!email || !password || !name || !phone || !address) {
+      Toast.fire({
+        icon: "error",
+        title: "모든 필드를 반드시 입력하세요.",
+      });
+      return false;
+      
+    }
+    $.ajax({
+      url: "/user/sign-up",
+      type: "POST",
+      data: JSON.stringify({
+        email: email,
+        password: password,
+        name: name,
+        phone: phone,
+        address: address,
+      }),
+      contentType: "application/json; charset=utf-8",
+      dataType: "text",
+      success: (data, textStatus, jqXHR) => {
+        const redirectUrl = jqXHR.getResponseHeader("Location");
+        if (redirectUrl) {
+          sessionStorage.setItem(
+            "successMessage",
+            "회원가입에 성공하였습니다!"
+          );
+          window.location.href = redirectUrl;
+        }
+      },
+      error: (jqXHR, textStatus, errorThrown) => {
+        Toast.fire({
+          icon: "error",
+          title: "회원가입 실패: 서버 오류입니다.",
+        });
+      },
+    });
+  });
+});
+
   </script>
   <body>
-    <form id="signUpForm" action="/user/sign-up" method="post">
+    <form id="signUpForm">
       <div id="auth">
         <div class="sign-up-card">
           <div class="auth-card-box sign-up">
@@ -191,13 +274,16 @@ prefix="fn" %> <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
                   class="input"
                   type="text"
                   placeholder="주소"
+                  onclick="kakaoPostcode()"
                   required
                 />
               </div>
               <p for="address" style="color: red"></p>
             </div>
-            <button type="submit" class="login-button">회원가입</button>
-            <div><a href="sign-in" class="sign-text">로그인</a></div>
+            <button id="signUpBtn" type="submit" class="login-button">
+              회원가입
+            </button>
+            <div><a href="/sign-in" class="sign-text">로그인</a></div>
           </div>
         </div>
       </div>

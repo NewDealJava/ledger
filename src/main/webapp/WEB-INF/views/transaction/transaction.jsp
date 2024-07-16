@@ -110,15 +110,11 @@
                             $('#expense-amount').val(transaction.amount);
                             $('#expense-installment').val(transaction.installment);
 
-                            // debugger;
-                            const transactionDateTime = transaction.time; // 예: '2024-07-01T14:30:00'
-                            const [datePart, timePart] = transactionDateTime.split('T'); // ['2024-07-01', '14:30:00']
+                            const transactionDateTime = transaction.time;
+                            const [datePart, timePart] = transactionDateTime.split('T');
 
-                            const dateStr = datePart; // '2024-07-01'
-                            const timeStr = timePart.slice(0, 5); // '14:30'
-                            // const transactionDate = new Date(transaction.time);
-                            // const dateStr = transactionDate.toISOString().split('T')[0];
-                            // const timeStr = transactionDate.toTimeString().split(' ')[0].slice(0, 5);
+                            const dateStr = datePart;
+                            const timeStr = timePart.slice(0, 5);
                             $('#expense-date').val(dateStr);
                             $('#expense-time').val(timeStr);
                             $('#expense-memo').val(transaction.memo);
@@ -126,8 +122,39 @@
                             // Open the modal
                             $('#myModal').css('display', 'block');
 
-                        } else if (transaction.type === 'INCOME') {
+                        } else if (transaction.transactionType === 'INCOME') {
                             openTab(event, 'Income');
+
+                            const loadExpenseTagContainer = document.getElementById("income-tag-container");
+                            transaction.tagIdList.forEach(function(tno) {
+                                const button = loadExpenseTagContainer.querySelector("button[data-tag-id='" + tno + "']");
+                                if (button) {
+                                    button.classList.toggle('selected');
+                                }
+                            });
+
+                            $('#income-transactionId').val(transaction.transactionId);
+
+                            $('#income-rtype').val(transaction.repeatType);
+
+                            const sourceValue = transaction.sourceType + ' - ' + transaction.sourceId;
+                            $('#income-source').val(sourceValue);
+                            $('#income-category').val(transaction.categoryId);
+                            $('#income-subcategory').val(transaction.subCategoryId);
+                            $('#income-keyword').val(transaction.keyword);
+                            $('#income-amount').val(transaction.amount);
+
+                            const transactionDateTime = transaction.time;
+                            const [datePart, timePart] = transactionDateTime.split('T');
+
+                            const dateStr = datePart;
+                            const timeStr = timePart.slice(0, 5);
+                            $('#income-date').val(dateStr);
+                            $('#income-time').val(timeStr);
+                            $('#income-memo').val(transaction.memo);
+
+                            // Open the modal
+                            $('#myModal').css('display', 'block');
                         }
 
 

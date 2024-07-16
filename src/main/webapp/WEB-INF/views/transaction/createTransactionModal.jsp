@@ -63,23 +63,6 @@
 
             }
 
-            // fetch('/api/transaction', {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/x-www-form-urlencoded'
-            //     },
-            //     body: new URLSearchParams(jsonObject).toString()
-            // })
-            //     .then(response => {
-            //         if (!response.ok) {
-            //             throw new Error('Network response was not ok');
-            //         }
-            //         resetFormAndCloseModal('expense-form');
-            //         window.location.reload();
-            //     })
-            //     .catch(error => {
-            //         console.error('Error:', error);
-            //     });
         }
 
         function submitIncomeForm(event) {
@@ -389,6 +372,9 @@
         <div id="Income" class="tab-content">
             <form id="income-form" onsubmit="submitIncomeForm(event)">
                 <h3>수입</h3>
+
+                <label for="income-transactionId">ID:</label>
+                <input type="hidden" id="income-transactionId" name="transactionId"><br><br>
 
                 <label for="income-type">타입:</label>
                 <input type="text" id="income-type" name="type" value="INCOME" readonly><br><br>

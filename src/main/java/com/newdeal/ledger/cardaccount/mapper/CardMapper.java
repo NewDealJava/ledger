@@ -14,5 +14,7 @@ public interface CardMapper {
 
 	void createCard(@Param("email") String email, @Param("request") CardRequest.Create request);
 
-	void update(@Param("cardId") Integer cardId, @Param("request") CardRequest.Update request);
+	void updateCard(@Param("cardId") Integer cardId, @Param("request") CardRequest.Update request);
+
+	void deleteCard(Integer cardId);
 }

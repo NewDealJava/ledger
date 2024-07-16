@@ -24,6 +24,11 @@ public class CardServiceImpl implements CardService {
 	}
 
 	public void updateCard(Integer cardId, CardRequest.Update request){
-		mapper.update( cardId, request);
+		mapper.updateCard( cardId, request);
+	}
+
+	@Override
+	public void deleteCard(Integer cardId) {
+		mapper.deleteCard(cardId);
 	}
 }

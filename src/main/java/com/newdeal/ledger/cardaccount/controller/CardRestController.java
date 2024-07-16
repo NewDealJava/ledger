@@ -3,6 +3,7 @@ package com.newdeal.ledger.cardaccount.controller;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,6 +46,12 @@ public class CardRestController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public void updateCard (@PathVariable Integer cardId, @RequestBody CardRequest.Update request) {
 		cardService.updateCard(cardId, request);
+	}
+
+	@DeleteMapping(value = "/{cardId}")
+	@ResponseStatus(HttpStatus.OK)
+	public void deleteTag(@PathVariable Integer cardId) {
+		cardService.deleteCard(cardId);
 	}
 
 }

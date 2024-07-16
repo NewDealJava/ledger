@@ -491,8 +491,20 @@
 
             } else if (action === "delete") {
                 var id = $("#delete-id-card").val();
-                // Call your API to delete the card
-                // $.ajax({ ... });
+
+                $.ajax({
+                    url: '/api/card/' + id,
+                    type: 'DELETE',
+                    success: function(response) {
+                        alert("Card deleted successfully.");
+                        document.getElementById("modal-body-card").innerHTML = '';
+                        window.location.reload();
+                    },
+                    error: function(xhr, status, error) {
+                        document.getElementById("modal-body-card").innerHTML = '';
+                        alert("Error deleting card: " + error);
+                    }
+                });
             }
             cardModal.style.display = "none";
             loadContent('credit');

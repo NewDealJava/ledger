@@ -11,4 +11,6 @@ public interface CardService {
 	void createCard(String tempEmail, CardRequest.Create request);
 
 	void updateCard(Integer cardId, CardRequest.Update request);
+
+	void deleteCard(Integer cardId);
 }

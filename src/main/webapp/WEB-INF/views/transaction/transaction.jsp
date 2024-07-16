@@ -82,44 +82,55 @@
             }
 
             function loadTransactionById(id) {
-                // debugger;
+
                 $.ajax({
                     url: '/api/transaction/' + id,
                     type: 'GET',
                     success: function (transaction) {
-                        // debugger;
-                        if (transaction.type === 'EXPENSE') {
+                        if (transaction.transactionType === 'EXPENSE') {
                             openTab(event, 'Expense');
+
+                            const loadExpenseTagContainer = document.getElementById("expense-tag-container");
+                            transaction.tagIdList.forEach(function(tno) {
+                                const button = loadExpenseTagContainer.querySelector("button[data-tag-id='" + tno + "']");
+                                if (button) {
+                                    button.classList.toggle('selected');
+                                }
+                            });
+
+                            $('#expense-transactionId').val(transaction.transactionId);
+
+                            $('#expense-rtype').val(transaction.repeatType);
+
+                            const sourceValue = transaction.sourceType + ' - ' + transaction.sourceId;
+                            $('#expense-source').val(sourceValue);
+                            $('#expense-category').val(transaction.categoryId);
+                            $('#expense-subcategory').val(transaction.subCategoryId);
+                            $('#expense-keyword').val(transaction.keyword);
+                            $('#expense-amount').val(transaction.amount);
+                            $('#expense-installment').val(transaction.installment);
+
+                            // debugger;
+                            const transactionDateTime = transaction.time; // 예: '2024-07-01T14:30:00'
+                            const [datePart, timePart] = transactionDateTime.split('T'); // ['2024-07-01', '14:30:00']
+
+                            const dateStr = datePart; // '2024-07-01'
+                            const timeStr = timePart.slice(0, 5); // '14:30'
+                            // const transactionDate = new Date(transaction.time);
+                            // const dateStr = transactionDate.toISOString().split('T')[0];
+                            // const timeStr = transactionDate.toTimeString().split(' ')[0].slice(0, 5);
+                            $('#expense-date').val(dateStr);
+                            $('#expense-time').val(timeStr);
+                            $('#expense-memo').val(transaction.memo);
+
+                            // Open the modal
+                            $('#myModal').css('display', 'block');
+
                         } else if (transaction.type === 'INCOME') {
                             openTab(event, 'Income');
                         }
 
-                        // Load categories and subcategories first
-                        // loadCategories('EXPENSE', function() {
-                        //     loadSubcategories(transaction.category, 'EXPENSE', function() {
-                        //         $('#expense-category').val(transaction.category);
-                        //         $('#expense-subcategory').val(transaction.subCategory);
-                        //     });
-                        // });
-                        // loadTags('EXPENSE', function() {
-                        //     $('#expense-tags').val(transaction.tags);
-                        //     matchTags(transaction.tags, 'EXPENSE');
-                        // });
-                        // loadSources('EXPENSE', function() {
-                        //     $('#expense-source').val(transaction.source);
-                        // });
 
-                        // Populate the form with the transaction data
-                        // $('#transaction-id').val(transaction.id);
-                        $('#expense-keyword').val(transaction.keyword);
-                        $('#expense-amount').val(transaction.samount);
-                        $('#expense-installment').val(transaction.installment);
-                        $('#expense-date').val(transaction.date);
-                        $('#expense-time').val(transaction.time);
-                        $('#expense-memo').val(transaction.memo);
-
-                        // Open the modal
-                        $('#myModal').css('display', 'block');
                     },
                     error: function (xhr, status, error) {
                         alert("Error loading transaction: " + error);

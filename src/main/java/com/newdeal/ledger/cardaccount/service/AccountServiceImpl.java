@@ -15,11 +15,18 @@ import lombok.RequiredArgsConstructor;
 public class AccountServiceImpl implements AccountService {
 	private final AccountMapper mapper;
 
+	@Override
 	public List<AccountDto> selectAllByEmail(String email) {
 		return mapper.findAllByEmail(email);
 	}
 
+	@Override
 	public void createAccount(String email, AccountRequest.Create request){
 		mapper.createAccount(email, request);
+	}
+
+	@Override
+	public void updateAccount(Integer accountId, AccountRequest.Update request) {
+		mapper.updateAccount(accountId, request);
 	}
 }

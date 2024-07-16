@@ -13,4 +13,14 @@ public class AccountRequest {
 		public String memo;
 		public String imgUrl;
 	}
+
+	@Data
+	public static class Update {
+		public AccountType type;
+		public String name;
+		public String cname;
+		public Long amount;
+		public String memo;
+		public String imgUrl;
+	}
 }

@@ -15,15 +15,15 @@ public class TransactionRequest {
 
 	@Data
 	public static class Create {
-		private Integer tno;
-		private TransactionType type;
-		private Integer category;
-		private Integer subcategory;
-		private List<Integer> tags;
+		private Integer transactionId;
+		private TransactionType transactionType;
+		private Integer categoryId;
+		private Integer subCategoryId;
+		private List<Integer> tagIdList;
 
 		private SourceType sourceType;
-		private Integer sno;
-		private RepeatType rtype;
+		private Integer sourceId;
+		private RepeatType repeatType;
 
 		private String keyword;
 		private Long amount;
@@ -42,6 +42,7 @@ public class TransactionRequest {
 
 	@Data
 	public static class Update {
+		private Integer transactionId;
 		private String email;
 		private Integer categoryId;
 		private Integer subCategoryId;

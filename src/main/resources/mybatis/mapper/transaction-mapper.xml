@@ -111,7 +111,7 @@
     </select>
 
     <insert id="createTransaction" parameterType="map" useGeneratedKeys="true"
-            keyProperty="request.tno">
+            keyProperty="request.transactionId">
         INSERT INTO `transaction`
         (
         `email`, `cno`, `type`, `stype`, `sno`, `keyword`,
@@ -121,17 +121,17 @@
         VALUES
         (
         #{email},
-        #{request.category},
-        #{request.type},
+        #{request.subCategoryId},
+        #{request.transactionType},
         #{request.sourceType},
-        #{request.sno},
+        #{request.sourceId},
         #{request.keyword},
         #{request.amount},
         #{request.installment},
         #{request.imageUrl},
         #{request.memo},
         #{request.dateTime},
-        #{request.rtype}
+        #{request.repeatType}
         );
 
     </insert>
@@ -172,7 +172,6 @@
     <update id="updateTransactionById" parameterType="map">
         UPDATE `transaction`
         SET
-            `email` = #{request.email},
             `cno` = #{request.subCategoryId},
             `type` = #{request.transactionType},
             `stype` = #{request.sourceType},

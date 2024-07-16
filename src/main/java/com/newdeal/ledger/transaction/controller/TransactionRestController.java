@@ -38,8 +38,6 @@ public class TransactionRestController {
 	@PutMapping(value = "/{transactionId}")
 	@ResponseStatus(HttpStatus.OK)
 	public void updateTransactionById(@PathVariable Integer transactionId, @ModelAttribute TransactionRequest.Update request){
-		String tempEmail = "user1@example.com";
-
 		transactionService.updateTransactionById(transactionId, request);
 	}
 

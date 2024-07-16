@@ -264,18 +264,22 @@
 
         cardSpan.onclick = function () {
             cardModal.style.display = "none";
+            document.getElementById("modal-body-card").innerHTML = '';
         }
 
         accountSpan.onclick = function () {
             accountModal.style.display = "none";
+            document.getElementById("modal-body-account").innerHTML = '';
         }
 
         window.onclick = function (event) {
             if (event.target == cardModal) {
                 cardModal.style.display = "none";
+                document.getElementById("modal-body-card").innerHTML = '';
             }
             if (event.target == accountModal) {
                 accountModal.style.display = "none";
+                document.getElementById("modal-body-account").innerHTML = '';
             }
         }
 
@@ -285,20 +289,142 @@
                 var modalAction = document.getElementById("modal-action-card");
                 var modalBody = document.getElementById("modal-body-card");
 
+
+
                 if (action === 'edit') {
                     modalTitle.innerText = "카드 수정";
                     modalAction.value = "edit";
-                    modalBody.innerHTML = `
-                        <label for="edit-name-card">이름:</label>
-                        <input type="text" id="edit-name-card" name="name" value="${item.cname}" required><br><br>
-                    `;
+                    var labelType = document.createElement('label');
+                    labelType.setAttribute('for', 'edit-type-card');
+                    labelType.innerText = '타입:';
+                    modalBody.appendChild(labelType);
+
+                    var selectType = document.createElement('select');
+                    selectType.setAttribute('id', 'edit-type-card');
+                    selectType.setAttribute('name', 'type');
+                    selectType.required = true;
+                    var optionCredit = document.createElement('option');
+                    optionCredit.setAttribute('value', 'CREDIT');
+                    optionCredit.innerText = '신용';
+                    if (item.type === 'CREDIT') optionCredit.selected = true;
+                    selectType.appendChild(optionCredit);
+                    var optionCheck = document.createElement('option');
+                    optionCheck.setAttribute('value', 'CHECK');
+                    optionCheck.innerText = '체크';
+                    if (item.type === 'CHECK') optionCheck.selected = true;
+                    selectType.appendChild(optionCheck);
+                    modalBody.appendChild(selectType);
+                    modalBody.appendChild(document.createElement('br'));
+                    modalBody.appendChild(document.createElement('br'));
+
+                    var labelName = document.createElement('label');
+                    labelName.setAttribute('for', 'edit-name-card');
+                    labelName.innerText = '이름:';
+                    modalBody.appendChild(labelName);
+
+                    var inputName = document.createElement('input');
+                    inputName.setAttribute('type', 'text');
+                    inputName.setAttribute('id', 'edit-name-card');
+                    inputName.setAttribute('name', 'name');
+                    inputName.setAttribute('value', item.name);
+                    inputName.required = true;
+                    modalBody.appendChild(inputName);
+                    modalBody.appendChild(document.createElement('br'));
+                    modalBody.appendChild(document.createElement('br'));
+
+                    var labelCname = document.createElement('label');
+                    labelCname.setAttribute('for', 'edit-cname-card');
+                    labelCname.innerText = '별칭:';
+                    modalBody.appendChild(labelCname);
+
+                    var inputCname = document.createElement('input');
+                    inputCname.setAttribute('type', 'text');
+                    inputCname.setAttribute('id', 'edit-cname-card');
+                    inputCname.setAttribute('name', 'cname');
+                    inputCname.setAttribute('value', item.cname);
+                    inputCname.required = true;
+                    modalBody.appendChild(inputCname);
+                    modalBody.appendChild(document.createElement('br'));
+                    modalBody.appendChild(document.createElement('br'));
+
+                    var labelBday = document.createElement('label');
+                    labelBday.setAttribute('for', 'edit-bday-card');
+                    labelBday.innerText = '기준일:';
+                    modalBody.appendChild(labelBday);
+
+                    var inputBday = document.createElement('input');
+                    inputBday.setAttribute('type', 'number');
+                    inputBday.setAttribute('id', 'edit-bday-card');
+                    inputBday.setAttribute('name', 'bday');
+                    inputBday.setAttribute('value', item.bday);
+                    inputBday.required = true;
+                    modalBody.appendChild(inputBday);
+                    modalBody.appendChild(document.createElement('br'));
+                    modalBody.appendChild(document.createElement('br'));
+
+                    var labelAmount = document.createElement('label');
+                    labelAmount.setAttribute('for', 'edit-amount-card');
+                    labelAmount.innerText = '금액:';
+                    modalBody.appendChild(labelAmount);
+
+                    var inputAmount = document.createElement('input');
+                    inputAmount.setAttribute('type', 'number');
+                    inputAmount.setAttribute('id', 'edit-amount-card');
+                    inputAmount.setAttribute('name', 'amount');
+                    inputAmount.setAttribute('value', item.amount);
+                    inputAmount.required = true;
+                    modalBody.appendChild(inputAmount);
+                    modalBody.appendChild(document.createElement('br'));
+                    modalBody.appendChild(document.createElement('br'));
+
+                    var labelMemo = document.createElement('label');
+                    labelMemo.setAttribute('for', 'edit-memo-card');
+                    labelMemo.innerText = '메모:';
+                    modalBody.appendChild(labelMemo);
+
+                    var textareaMemo = document.createElement('textarea');
+                    textareaMemo.setAttribute('id', 'edit-memo-card');
+                    textareaMemo.setAttribute('name', 'memo');
+                    textareaMemo.innerText = item.memo;
+                    modalBody.appendChild(textareaMemo);
+                    modalBody.appendChild(document.createElement('br'));
+                    modalBody.appendChild(document.createElement('br'));
+
+                    var labelImgUrl = document.createElement('label');
+                    labelImgUrl.setAttribute('for', 'edit-imgUrl-card');
+                    labelImgUrl.innerText = '이미지 URL:';
+                    modalBody.appendChild(labelImgUrl);
+
+                    var inputImgUrl = document.createElement('input');
+                    inputImgUrl.setAttribute('type', 'text');
+                    inputImgUrl.setAttribute('id', 'edit-imgUrl-card');
+                    inputImgUrl.setAttribute('name', 'imgUrl');
+                    inputImgUrl.setAttribute('value', item.imgUrl);
+                    modalBody.appendChild(inputImgUrl);
+                    modalBody.appendChild(document.createElement('br'));
+                    modalBody.appendChild(document.createElement('br'));
+
+                    var inputId = document.createElement('input');
+                    inputId.setAttribute('type', 'hidden');
+                    inputId.setAttribute('id', 'edit-id-card');
+                    inputId.setAttribute('name', 'id');
+                    inputId.setAttribute('value', item.cno);
+                    modalBody.appendChild(inputId);
+
                 } else if (action === 'delete') {
                     modalTitle.innerText = "카드 삭제";
                     modalAction.value = "delete";
-                    modalBody.innerHTML = `
-                        <p>정말로 삭제하시겠습니까?</p>
-                        <input type="hidden" id="delete-id-card" name="id" value="${item.id}">
-                    `;
+
+                    var p = document.createElement('p');
+                    p.innerText = '정말로 삭제하시겠습니까?';
+                    modalBody.appendChild(p);
+
+                    var inputId = document.createElement('input');
+                    inputId.setAttribute('type', 'hidden');
+                    inputId.setAttribute('id', 'delete-id-card');
+                    inputId.setAttribute('name', 'id');
+                    inputId.setAttribute('value', item.cno);
+                    modalBody.appendChild(inputId);
                 }
 
                 cardModal.style.display = "block";
@@ -329,13 +455,40 @@
         }
 
         $("#edit-delete-card-form").submit(function (event) {
+
             event.preventDefault();
             var action = $("#modal-action-card").val();
             if (action === "edit") {
-                var id = $("#delete-id-card").val();
-                var name = $("#edit-name-card").val();
-                // Call your API to edit the card
-                // $.ajax({ ... });
+
+                var id = $("#edit-id-card").val();
+                var data = {
+                    type: $("#edit-type-card").val(),
+                    name: $("#edit-name-card").val(),
+                    cname: $("#edit-cname-card").val(),
+                    bday: $("#edit-bday-card").val(),
+                    amount: $("#edit-amount-card").val(),
+                    memo: $("#edit-memo-card").val(),
+                    imgUrl: $("#edit-imgUrl-card").val()
+                };
+
+                // Call your API to edit the cardcardSpan.onclick
+                $.ajax({
+                    url: '/api/card/' + id,
+                    type: 'PUT',
+                    contentType: 'application/json',
+                    data: JSON.stringify(data),
+                    success: function(response) {
+                        cardModal.style.display = "none";
+                        document.getElementById("modal-body-card").innerHTML = '';
+                        loadContent('credit');
+                    },
+                    error: function(xhr, status, error) {
+                        document.getElementById("modal-body-card").innerHTML = '';
+                        console.error("AJAX Error: ", status, error);
+                    }
+                });
+
+
             } else if (action === "delete") {
                 var id = $("#delete-id-card").val();
                 // Call your API to delete the card

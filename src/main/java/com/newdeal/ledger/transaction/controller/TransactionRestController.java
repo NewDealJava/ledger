@@ -7,10 +7,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.newdeal.ledger.transaction.dto.SourceDto;
+import com.newdeal.ledger.transaction.dto.TransactionListDto;
 import com.newdeal.ledger.transaction.dto.TransactionRequest;
 import com.newdeal.ledger.transaction.service.TransactionService;
 
@@ -31,14 +33,19 @@ public class TransactionRestController {
 
 	}
 
+	@GetMapping
+	@ResponseStatus(HttpStatus.OK)
+	public List<TransactionListDto> getTransactions(@RequestParam int year, @RequestParam int month) {
+		String tempEmail = "user1@example.com";
+
+		return transactionService.selectAllByMonth(tempEmail, year, month);
+	}
+
 	@GetMapping("/source")
 	@ResponseStatus(HttpStatus.OK)
 	public List<SourceDto> getSource() {
 		String tempEmail = "user1@example.com";
 		List<SourceDto> sourceDtos = transactionService.selectAllSourceByEmail(tempEmail);
-
-
 		return sourceDtos;
 	}
-
 }

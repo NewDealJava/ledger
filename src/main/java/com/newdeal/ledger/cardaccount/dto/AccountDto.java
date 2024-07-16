@@ -1,5 +1,7 @@
 package com.newdeal.ledger.cardaccount.dto;
 
+import com.newdeal.ledger.cardaccount.dto.type.AccountType;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;

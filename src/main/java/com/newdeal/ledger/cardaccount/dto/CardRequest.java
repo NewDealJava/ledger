@@ -1,5 +1,7 @@
 package com.newdeal.ledger.cardaccount.dto;
 
+import com.newdeal.ledger.cardaccount.dto.type.CardType;
+
 import lombok.Data;
 
 public class CardRequest {

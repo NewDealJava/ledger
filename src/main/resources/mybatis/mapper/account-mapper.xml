@@ -29,4 +29,22 @@
                 #{request.amount})
     </insert>
 
+    <update id="updateAccount" parameterType="map">
+        UPDATE account
+        SET
+            type = #{request.type},
+            name = #{request.name},
+            cname = #{request.cname},
+            amount = #{request.amount},
+            memo = #{request.memo},
+            imgUrl = #{request.imgUrl}
+        WHERE ano = #{accountId}
+    </update>
+
+    <delete id="deleteAccount">
+        DELETE
+        FROM account
+        WHERE ano = #{accountId}
+    </delete>
+
 </mapper>

@@ -43,7 +43,7 @@ public class CardRestController {
 	}
 
 	@PutMapping(value = "/{cardId}")
-	@ResponseStatus(HttpStatus.CREATED)
+	@ResponseStatus(HttpStatus.OK)
 	public void updateCard (@PathVariable Integer cardId, @RequestBody CardRequest.Update request) {
 		cardService.updateCard(cardId, request);
 	}

@@ -10,4 +10,8 @@ public interface AccountService {
 	List<AccountDto> selectAllByEmail(String email);
 
 	void createAccount(String tempEmail, AccountRequest.Create request);
+
+	void updateAccount(Integer accountId, AccountRequest.Update request);
+
+	void deleteAccount(Integer accountId);
 }

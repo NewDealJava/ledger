@@ -24,4 +24,12 @@
         WHERE tno = #{tno}
     </delete>
 
+    <!-- TransactionDto getTransactionDetails(int tno); -->
+    <select id="getTransactionDetails" parameterType="int" resultType="com.newdeal.ledger.calendar.dto.TransactionDto">
+        SELECT tno, email, cno, `type`, stype, sno, keyword,
+               samount, installment, imageUrl, tsmemo, `time`, rtype
+        FROM transaction
+        where tno = #{tno};
+    </select>
+
 </mapper>

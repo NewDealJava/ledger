@@ -1,5 +1,6 @@
 package com.newdeal.ledger.inquiry.mapper;// package com.newdeal.ledger.inquiry.mapper;
 
+ import com.newdeal.ledger.inquiry.dto.CommentDto;
  import com.newdeal.ledger.inquiry.dto.InquiryDto;
  import org.apache.ibatis.annotations.Mapper;
  import org.apache.ibatis.annotations.Param;
@@ -28,4 +29,12 @@ package com.newdeal.ledger.inquiry.mapper;// package com.newdeal.ledger.inquiry.
 
      // 5.문의 게시판_게시글 1개 수정하기
      void iDoUpdate(InquiryDto inquiryDto);
+     
+     // 6. 문의 게시판_하단댓글 모두 가져오기
+     ArrayList<CommentDto> iCommentSelectAll(int qbno);
+     // ※ 6-ⓐ. 문의 게시판_하단댓글 모두 가져오기
+     int iCommentContSelectAll(int qbno);
+
+
+
 }//InquiryMapper

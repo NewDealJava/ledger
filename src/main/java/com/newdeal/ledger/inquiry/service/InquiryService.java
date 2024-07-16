@@ -10,7 +10,7 @@ public interface InquiryService {
  	Map<String, Object> iSelectAll(int page);
 
     // ▶ 2.문의 게시판_게시물 1개 가져오기
-    InquiryDto iSelectOne(int qbno);
+    Map<String, Object> iSelectOne(int qbno);
 
     // ▶ 3.문의 게시판_게시물 1개 작성하기(feat.파일업로드)
     void iWrite(InquiryDto ibdto);

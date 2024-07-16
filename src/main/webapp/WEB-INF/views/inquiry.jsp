@@ -65,26 +65,27 @@
                 </tr>
               </thead>
               <tbody>
-              <c:forEach var="ibdto" items="${map.list}">
+                 <c:forEach var="ibdto" items="${map.list}">
                     <tr class="qna-board-list-body">
-                      <td class="qna-board-list-uid">${ibdto.qbno}</td>
-                      <td class="qna-board-list-title">
-                        <a href="">
-                          <div class="default-cut-strings"><a href="/iView?qbno=${ibdto.qbno }">${ibdto.qtitle}</a></div>
-                        </a>
-                      </td>
-                      <td class="qna-board-list-user">${ibdto.email}</td>
-                      <td class="qna-board-list-date"><fmt:formatDate value="${ibdto.qdate}" pattern="YYYY-MM-dd"/></td>
-                      <td class="qna-board-list-status">
-                       <c:if test="${ibdto.qstatus<=0}"><strong style="color : red;">답변대기</strong></c:if>
-                       <c:if test="${ibdto.qstatus>0}"><strong style="color : blue;">답변완료</strong></c:if>
-                      </td>
-                      <td class="qna-board-list-view">${ibdto.qhit}</td>
+                        <td class="qna-board-list-uid">${ibdto.qbno}</td>
+                        <td class="qna-board-list-title">
+                            <a href="/iView?qbno=${ibdto.qbno}"><div class="default-cut-strings">${ibdto.qtitle}</div></a>
+                        </td>
+                        <td class="qna-board-list-user">${ibdto.email}</td>
+                        <td class="qna-board-list-date"><fmt:formatDate value="${ibdto.qdate}" pattern="yyyy-MM-dd"/></td>
+                        <td class="qna-board-list-status">
+                            <c:choose>
+                                <c:when test="${ibdto.commentCount <= 0}"> <strong style="color: red;">답변대기</strong></c:when>
+                                <c:otherwise><strong style="color: blue;">답변완료</strong></c:otherwise>
+                            </c:choose>
+                        </td>
+                        <td class="qna-board-list-view">${ibdto.qhit}</td>
                     </tr>
                 </c:forEach>
               </tbody>
             </table>
           </div>
+            <!--페이징-->
           <div class="pagination-area">
             <ul id="pagination">
               <!--첫번째 페이지-->
@@ -92,7 +93,7 @@
 
               <!--이전 페이지-->
               <c:if test="${map.page>=1 }">
-             <a href="/inquiry?page=${map.page-1 }"><i class="fa fa-chevron-left" aria-hidden="true"></i></a></li>
+                <a href="/inquiry?page=${map.page-1 }&SearchCategory=${map.SearchCategory}&SearchWord=${map.SearchWord}"><i class="fa fa-chevron-left" aria-hidden="true"></i></a></li>
               </c:if>
 
               <!--페이지 넘버링-->
@@ -101,38 +102,35 @@
                     <li class="pagination-number">${i}</li>
                 </c:if>
                 <c:if test="${map.page!=i }">
-                    <li class="pagination-number"><a href="/inquiry?page=${i}">${i}</a></li>
+                    <li class="pagination-number"><a href="/inquiry?page=${i}&SearchCategory=${map.SearchCategory}&SearchWord=${map.SearchWord}">${i}</a></li>
                 </c:if>
               </c:forEach>
               <!--페이지 넘버링-->
 
               <!--다음 페이지-->
               <c:if test="${map.page<map.maxPage }">
-                <a href="/inquiry?page=${map.page+1 }"><i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>
+                <a href="/inquiry?page=${map.page+1 }&SearchCategory=${map.SearchCategory}&SearchWord=${map.SearchWord}"><i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>
               </c:if>
               <c:if test="${map.page>=map.maxPage }">
                 <i class="fa fa-chevron-right" aria-hidden="true"></i>
               </c:if>
               <!-- 마지막 페이지 -->
               <li class="pagination-last-page">
-                <a href="/inquiry?page=${map.maxPage }">마지막</a>
+                <a href="/inquiry?page=${map.maxPage }&SearchCategory=${map.SearchCategory}&SearchWord=${map.SearchWord}">마지막</a>
               </li>
             </ul>
           </div>
           <div class="search-area">
-            <select class="search-word-select">
-              <option value="All" selected="selected">전체</option>
-              <option value="qtitle">제목</option>
-              <option value="qcontent">내용</option>
-              <option value="Id">작성자</option>
-            </select>
-            <input
-              type="text"
-              class="search-word-input"
-              id="searchWord"
-              name="searchWord"
-            />
-            <button id="searchBtn" class="search-word-button">검색</button>
+          <form action="/inquiry" method="get" name="SearchFrm">
+                <select class="search-word-select" name="SearchCategory">
+                  <option value="All" selected="selected">전체</option>
+                  <option value="qtitle">제목</option>
+                  <option value="qcontent">내용</option>
+                  <option value="Id">작성자</option>
+                </select>
+                <input type="text"class="search-word-input"id="searchWord" name="searchWord" placeholder=" ※검색어를 입력하세요."/>
+                <button id="searchBtn" class="search-word-button">검색</button>
+            </form>
           </div>
           <div class="control-area">
             <a class="button" href="/iWrite">글쓰기</a>

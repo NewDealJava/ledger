@@ -34,7 +34,7 @@ package com.newdeal.ledger.inquiry.controller;// package com.newdeal.ledger.inqu
 	 
 	 // 1. 문의 게시판_전체 리스트 가져오기.
  	@GetMapping("/inquiry")
- 	public String index(@RequestParam(name ="page", defaultValue = "1" ) int page, Model model) {
+ 	public String index(@RequestParam(name ="page", defaultValue = "1" ) int page, @RequestParam(name="SearchCategory", defaultValue = "All") String SearchCategory, @RequestParam(name = "SearchWord", required = false) String SearchWord,  Model model) {
 
 		// ▽ Service에 연결
  		Map<String, Object> map = inquiryService.iSelectAll(page);
@@ -51,10 +51,10 @@ package com.newdeal.ledger.inquiry.controller;// package com.newdeal.ledger.inqu
 	public String iView(@RequestParam (name = "qbno", defaultValue = "1") int qbno, Model model){
 
 	 	// ▽ Service에 연결
-		InquiryDto ibdto = inquiryService.iSelectOne(qbno);
+		Map<String, Object> map = inquiryService.iSelectOne(qbno);
 
 		// ▼ model저장 후 전송
-		model.addAttribute("ibdto",ibdto);
+		model.addAttribute("map",map);
 
 		 return "iView";
 	}//iView(qbno, model)
@@ -99,10 +99,10 @@ package com.newdeal.ledger.inquiry.controller;// package com.newdeal.ledger.inqu
 	public String iUpdate(@RequestParam (name = "qbno", defaultValue = "1") int qbno, Model model){
 
 		// ▽ Service에 연결
-		InquiryDto ibdto = inquiryService.iSelectOne(qbno);
+		Map<String, Object> map = inquiryService.iSelectOne(qbno);
 
 		// ▼ model저장 후 전송
-		model.addAttribute("ibdto",ibdto);
+		model.addAttribute("map",map);
 
 		 return "iUpdate";
 	}//iUpadte(qbno,model)

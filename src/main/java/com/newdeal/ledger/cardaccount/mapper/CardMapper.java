@@ -13,4 +13,6 @@ public interface CardMapper {
 	List<CardDto> findAllByEmail(String email);
 
 	void createCard(@Param("email") String email, @Param("request") CardRequest.Create request);
+
+	void update(@Param("cardId") Integer cardId, @Param("request") CardRequest.Update request);
 }

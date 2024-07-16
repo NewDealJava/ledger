@@ -9,4 +9,6 @@ public interface CardService {
 	List<CardDto> selectAllByEmail(String email);
 
 	void createCard(String tempEmail, CardRequest.Create request);
+
+	void updateCard(Integer cardId, CardRequest.Update request);
 }

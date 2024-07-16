@@ -239,11 +239,13 @@
         var span = document.getElementsByClassName("close")[0];
 
         span.onclick = function () {
+            document.getElementById("modal-body").innerHTML = '';
             modal.style.display = "none";
         }
 
         window.onclick = function (event) {
             if (event.target == modal) {
+                document.getElementById("modal-body").innerHTML = '';
                 modal.style.display = "none";
             }
         }
@@ -349,10 +351,12 @@
                         // Handle success
                         alert('Tag deleted successfully.');
                         modal.style.display = "none";
+                        document.getElementById("modal-body").innerHTML = '';
                         loadContent($('.tab.active').data('tab'));
                     },
                     error: function(xhr, status, error) {
                         // Handle error
+                        document.getElementById("modal-body").innerHTML = '';
                         alert('Failed to delete tag: ' + xhr.responseText);
                     }
                 });

@@ -55,9 +55,25 @@
                                 '<td class="qna-board-list-memo">' + transaction.memo + '</td>' +
                                 '<td class="qna-board-list-tags">' + transaction.tags + '</td>' +
                                 '<td class="qna-board-list-installment">' + transaction.installment + '</td>' +
+                                '<td><button class="edit-button" data-id="' + transaction.tno + '">수정</button></td>' +
+                                '<td><button class="delete-button" data-id="' + transaction.tno + '">삭제</button></td>' +
                                 '</tr>';
                             tbody.append(row);
                         });
+
+                        // Add click event for edit buttons
+                        $('.edit-button').click(function () {
+                            var id = $(this).data('id');
+                            loadTransactionById(id);
+                        });
+
+                        // Add click event for delete buttons
+                        $('.delete-button').click(function () {
+                            var id = $(this).data('id');
+                            deleteTransactionById(id);
+                        });
+
+
                     },
                     error: function (xhr, status, error) {
                         alert("Error fetching transactions: " + error);
@@ -65,11 +81,77 @@
                 });
             }
 
+            function loadTransactionById(id) {
+                // debugger;
+                $.ajax({
+                    url: '/api/transaction/' + id,
+                    type: 'GET',
+                    success: function (transaction) {
+                        // debugger;
+                        if (transaction.type === 'EXPENSE') {
+                            openTab(event, 'Expense');
+                        } else if (transaction.type === 'INCOME') {
+                            openTab(event, 'Income');
+                        }
+
+                        // Load categories and subcategories first
+                        // loadCategories('EXPENSE', function() {
+                        //     loadSubcategories(transaction.category, 'EXPENSE', function() {
+                        //         $('#expense-category').val(transaction.category);
+                        //         $('#expense-subcategory').val(transaction.subCategory);
+                        //     });
+                        // });
+                        // loadTags('EXPENSE', function() {
+                        //     $('#expense-tags').val(transaction.tags);
+                        //     matchTags(transaction.tags, 'EXPENSE');
+                        // });
+                        // loadSources('EXPENSE', function() {
+                        //     $('#expense-source').val(transaction.source);
+                        // });
+
+                        // Populate the form with the transaction data
+                        // $('#transaction-id').val(transaction.id);
+                        $('#expense-keyword').val(transaction.keyword);
+                        $('#expense-amount').val(transaction.samount);
+                        $('#expense-installment').val(transaction.installment);
+                        $('#expense-date').val(transaction.date);
+                        $('#expense-time').val(transaction.time);
+                        $('#expense-memo').val(transaction.memo);
+
+                        // Open the modal
+                        $('#myModal').css('display', 'block');
+                    },
+                    error: function (xhr, status, error) {
+                        alert("Error loading transaction: " + error);
+                    }
+                });
+            }
+
+            function deleteTransactionById(id) {
+                if (confirm("Are you sure you want to delete this transaction?")) {
+                    $.ajax({
+                        url: '/api/transaction/' + id,
+                        type: 'DELETE',
+                        success: function (result) {
+                            alert("Transaction deleted successfully");
+                            var selectedDate = $('#year-month-select').val();
+                            var [selectedYear, selectedMonth] = selectedDate.split('-');
+                            loadTransactions(selectedYear, selectedMonth);
+                        },
+                        error: function (xhr, status, error) {
+                            alert("Error deleting transaction: " + error);
+                        }
+                    });
+                }
+            }
+
+
             $('#filter-button').click(function () {
                 var selectedDate = $('#year-month-select').val();
                 var [selectedYear, selectedMonth] = selectedDate.split('-');
                 loadTransactions(selectedYear, selectedMonth);
             });
+
 
             // Load transactions for the current year and month on page load
             loadTransactions(year, month);

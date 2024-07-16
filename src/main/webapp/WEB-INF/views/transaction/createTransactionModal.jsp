@@ -17,21 +17,22 @@
             jsonObject['sourceType'] = sourceData[0];
             jsonObject['sno'] = sourceData[1];
 
-            let installmentValue = formData.get('installment');
-            if (installmentValue === '일시불') {
-                jsonObject['installment'] = 1;
-            } else {
-                jsonObject['installment'] = parseInt(installmentValue.replace('개월', ''));
-            }
+            // let installmentValue = formData.get('installment');
+            // if (installmentValue === '일시불') {
+            //     jsonObject['installment'] = 1;
+            // } else {
+            //     jsonObject['installment'] = parseInt(installmentValue.replace('개월', ''));
+            // }
 
             let rtypeValue = formData.get('rtype');
             jsonObject['rtype'] = rtypeValue;
 
             formData.forEach((value, key) => {
-                if (key !== 'installment' && key !== 'rtype' && key !== 'source') {
+                if (key !== 'rtype' && key !== 'source') {
                     jsonObject[key] = value;
                 }
             });
+
 
             fetch('/api/transaction', {
                 method: 'POST',
@@ -312,9 +313,9 @@
 
                 <label for="expense-installment">할부: </label>
                 <select id="expense-installment" name="installment">
-                    <option value="일시불">일시불</option>
+                    <option value=1>일시불</option>
                     <% for (int i = 2; i <= 36; i++) { %>
-                    <option value="<%= i %>개월"><%= i %>개월</option>
+                    <option value="<%= i %>"><%= i %>개월</option>
                     <% } %>
                 </select><br><br>
 

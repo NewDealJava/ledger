@@ -27,4 +27,23 @@
                 #{request.memo}, #{request.amount})
     </insert>
 
+    <update id="updateCard" parameterType="map">
+        UPDATE card
+        SET
+            type = #{request.type},
+            name = #{request.name},
+            cname = #{request.cname},
+            bday = #{request.bday},
+            imgUrl = #{request.imgUrl},
+            memo = #{request.memo},
+            amount = #{request.amount}
+        WHERE cno = #{cardId}
+    </update>
+
+    <delete id="deleteCard">
+        DELETE
+        FROM card
+        WHERE cno = #{cardId}
+    </delete>
+
 </mapper>

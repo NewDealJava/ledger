@@ -38,6 +38,6 @@ public class CalendarServiceImpl implements CalendarService {
 
     @Override
     public TransactionDto getTransactionDetails(int tno) {
-        return null; // calendarMapper.findTransactionByTno(tno);
+        return calendarMapper.getTransactionDetails(tno);
     }
 }

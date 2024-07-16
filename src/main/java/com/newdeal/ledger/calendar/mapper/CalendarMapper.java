@@ -15,5 +15,5 @@ public interface CalendarMapper {
 
     int deleteTransaction(Long tno);
 
-    TransactionDto findTransactionByTno(int tno);
+    TransactionDto getTransactionDetails(int tno);
 }

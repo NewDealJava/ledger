@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.newdeal.ledger.calendar.dto.TransactionDto;
 import com.newdeal.ledger.calendar.service.CalendarService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -20,6 +22,7 @@ import java.util.List;
 @RequestMapping("/calendar")
 public class CalendarController {
 
+    private static final Logger log = LoggerFactory.getLogger(CalendarController.class);
     private final CalendarService calendarService;
     public CalendarController(CalendarService calendarService){
         this.calendarService=calendarService;
@@ -105,7 +108,7 @@ public class CalendarController {
                               @RequestParam String backyear,
                               @RequestParam String backmonth,
                               Model model) {
-        System.out.println("day@@@@@@@@@@ = " + day);
+        // System.out.println("day details = " + day);
         // monthYear에서 연도와 월 추출
         int year = Integer.parseInt(monthYear.substring(0, 4)); // 2024
         int month = Integer.parseInt(monthYear.substring(6, 7)); // 7
@@ -199,15 +202,17 @@ public class CalendarController {
 //        }
 //    }
 
+    /**
+     * 달력 상세보기 수정을 위한 메서드
+     * @param tno 수정할 거래 번호
+     * @return 수정된 거래 정보 (TransactionDto)
+     */
     @GetMapping("/getTransactionDetails")
-    public ResponseEntity<TransactionDto> getTransactionDetails(@RequestParam("tno") int tno) {
-        System.out.println("tno = " + tno);
+    @ResponseBody
+    public ResponseEntity<TransactionDto> getTransactionDetails(@RequestParam("tno") Integer tno) {
+        log.info("tno = " + tno); // 1921
         TransactionDto transactionDetails = calendarService.getTransactionDetails(tno);
-
-        if (transactionDetails != null) {
-            return ResponseEntity.ok(transactionDetails);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        log.info("transactionDetails = " + transactionDetails);
+        return ResponseEntity.ok(transactionDetails);
     }
 }

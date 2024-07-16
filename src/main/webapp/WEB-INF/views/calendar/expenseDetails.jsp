@@ -8,7 +8,7 @@
 <div class="container">
     <!-- Trigger/Open The Modal -->
     <button id="openModalButton" class="open-modal-button">+</button>
-</div>
+</div>`
 
 <div id="content">
     <h2>
@@ -205,60 +205,90 @@
     </div>
 </div>
 
-
 <%--<script src="/js/calendar.js"></script>--%>
 
 <script>
 
-    // **수정 버튼 클릭 시 모달 열기 함수
+    // **수정 버튼 클릭 시 모달 열기 함수 -> AJAX 요청을 통해 데이터 가져오기
     function openCustomModal(tno, type) {
-        console.log(tno); // 1891
-        console.log(type); // EXPAND
-        const modal = document.getElementById("expenseIncomeModal");
+
+        // const url = `/calendar/getTransactionDetails?tno=${tno}`; // 이렇게 하면 tno가 전송이 안됨
+        const url = '/calendar/getTransactionDetails?tno=' + tno;
 
         // AJAX 요청 설정
         $.ajax({
             type: "GET",
-            url: `/calendar/getTransactionDetails/${tno}`, // tno를 URL에 포함하여 전달
-            success: function(data) {
-                console.log('Transaction details:', data);
-
-                // 데이터가 null인 경우 처리
-                if (!data) {
-                    console.error('Transaction details not found');
-                    return;
-                }
-
-                // EXPAND(지출)인 경우
+            url: url, // 올바르게 구성된 URL 사용
+            success: function(response) {
+                // console.log("성공:", response);
+                // 데이터를 받아온 후, 분류에 따라 폼 열기 함수 호출
                 if (type === 'EXPAND') {
+                    openExpenseForm(response); // 지출 폼 열기 함수 호출
+                } else if(type === 'INCOME') {
+                    openIncomeForm(response); // 수입 폼 열기 함수 호출
                 }
-                // INCOME(수입)인 경우
-                else if (type === 'INCOME') {
-                }
-
-                // 모달을 보이도록 설정
-                modal.style.display = "block";
             },
             error: function(error) {
-                console.error('Error fetching transaction details:', error);
-                // 에러 발생 시 예외 처리
-                alert('Error fetching transaction details');
+                console.error("실패:", error);
             }
         });
-
-        // 모달 닫기 버튼 설정
-        const span = document.getElementsByClassName("close")[0];
-        span.onclick = function() {
-            modal.style.display = "none";
-        };
-
-        // 모달 외부 클릭 시 닫기 설정
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
-        };
     }
+
+    // INCOME 수정 -> 수입 모달 열기 처리
+    function openIncomeForm(data) {
+        console.log(data)
+
+        // 수입 모달 필드 채우기
+        $('#income-keyword').val(data.keyword); // 수입내역
+        $('#income-amount').val(data.samount); // 수입금액
+
+        // 카테고리, 서브카테고리, 거래수단 등의 데이터 로드
+        loadCategories('INCOME');
+        loadTags('INCOME');
+        loadSources('INCOME');
+
+        // 날짜와 시간 필드 채우기 (예시에서는 텍스트로 받은 날짜를 JavaScript Date 객체로 변환)
+        var date = new Date(data.time);
+        $('#income-date').val(date.toISOString().split('T')[0]); // 날짜 필드 채우기 (YYYY-MM-DD)
+        $('#income-time').val(date.toISOString().split('T')[1].substring(0, 5)); // 시간 필드 채우기 (HH:MM)
+
+        // 반복주기, 메모, 이미지 등 필드 채우기
+        $('#income-rtype').val(data.rtype); // 반복주기
+        $('#income-memo').val(data.tsmemo); // 메모
+        $('#income-imageUrl').val(data.imageUrl); // 이미지 URL
+
+        // openExpenseIncomeModal(); // 보완해야함
+    }
+
+    // EXPAND 수정 -> 지출 모달 열기 처리
+    function openExpenseForm(data) {
+        console.log(data)
+
+        // 지출 모달 필드 채우기
+        $('#expense-keyword').val(data.keyword); // 지출내역
+        $('#expense-amount').val(data.samount); // 지출금액
+
+        // 카테고리, 서브카테고리, 거래수단 등의 데이터 로드
+        loadCategories('EXPENSE');
+        loadTags('EXPENSE');
+        loadSources('EXPENSE');
+
+        // 날짜와 시간 필드 채우기 (예시에서는 텍스트로 받은 날짜를 JavaScript Date 객체로 변환)
+        var date = new Date(data.time);
+        $('#expense-date').val(date.toISOString().split('T')[0]); // 날짜 필드 채우기 (YYYY-MM-DD)
+        $('#expense-time').val(date.toISOString().split('T')[1].substring(0, 5)); // 시간 필드 채우기 (HH:MM)
+
+        // 반복주기, 메모, 이미지 등 필드 채우기
+        $('#expense-rtype').val(data.rtype); // 반복주기
+        $('#expense-memo').val(data.tsmemo); // 메모
+        $('#expense-imageUrl').val(data.imageUrl); // 이미지 URL
+
+        // openExpenseIncomeModal(); // 보완해야함
+    }
+
+
+
+    // ---
 
     // 거래수단 로드
     function loadSources(type) {

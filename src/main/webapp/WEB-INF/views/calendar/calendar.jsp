@@ -7,9 +7,15 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calendar</title>
+    <title>달력</title>
+    <link href="../css/inquiry.css?ver=1" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- 분리 예정 -->
     <style>
+        .main-content {
+            margin-left: 180px; /* Adjust according to the width of the sidebar */
+            padding: 0px;
+        }
         body {
             font-family: Arial, sans-serif;
         }
@@ -111,7 +117,16 @@
 </head>
 <body>
 <!-- jsp:include page="../views/incl/header_on.jsp" flush="true" / -->
+<%@ include file="/WEB-INF/views/include/header.jsp" %>
+<%@ include file="/WEB-INF/views/include/sidebar.jsp" %>
 
+<div class="main-content">
+    <div class="board-title-container">
+        <div class="board-title-area">
+            <h1 class="board-title">달력</h1>
+        </div>
+    </div>
+</div>
 
 <!-- 모달 창 구조 추가 -->
 <div id="myModal" class="modal">
@@ -170,6 +185,8 @@
         </div>
     </section>
 </main>
+
+
 
 <script>
     // calendar.jsp의 모달을 닫는 함수

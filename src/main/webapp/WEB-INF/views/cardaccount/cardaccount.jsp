@@ -435,143 +435,130 @@
 
                 // 계좌 수정/삭제 모달 내용
                 if (action === 'edit') {
-                    if (action === 'edit') {
-                        modalTitle.innerText = "계좌 수정";
-                        modalAction.value = "edit";
+                    modalTitle.innerText = "계좌 수정";
+                    modalAction.value = "edit";
 
-                        // Clear previous content
-                        modalBody.innerHTML = '';
+                    // Clear previous content
+                    modalBody.innerHTML = '';
 
-                        // Create and append elements
-                        var labelType = document.createElement('label');
-                        labelType.setAttribute('for', 'edit-type-account');
-                        labelType.innerText = '타입:';
-                        modalBody.appendChild(labelType);
+                    // Create and append elements
+                    var labelType = document.createElement('label');
+                    labelType.setAttribute('for', 'edit-type-account');
+                    labelType.innerText = '타입:';
+                    modalBody.appendChild(labelType);
 
-                        var selectType = document.createElement('select');
-                        selectType.setAttribute('id', 'edit-type-account');
-                        selectType.setAttribute('name', 'type');
-                        selectType.required = true;
-                        var optionMoney = document.createElement('option');
-                        optionMoney.setAttribute('value', 'MONEY');
-                        optionMoney.innerText = '현금';
-                        if (item.type === 'MONEY') optionMoney.selected = true;
-                        selectType.appendChild(optionMoney);
-                        var optionAccount = document.createElement('option');
-                        optionAccount.setAttribute('value', 'ACCOUNT');
-                        optionAccount.innerText = '계좌';
-                        if (item.type === 'ACCOUNT') optionAccount.selected = true;
-                        selectType.appendChild(optionAccount);
-                        modalBody.appendChild(selectType);
-                        modalBody.appendChild(document.createElement('br'));
-                        modalBody.appendChild(document.createElement('br'));
+                    var selectType = document.createElement('select');
+                    selectType.setAttribute('id', 'edit-type-account');
+                    selectType.setAttribute('name', 'type');
+                    selectType.required = true;
+                    var optionMoney = document.createElement('option');
+                    optionMoney.setAttribute('value', 'MONEY');
+                    optionMoney.innerText = '현금';
+                    if (item.type === 'MONEY') optionMoney.selected = true;
+                    selectType.appendChild(optionMoney);
+                    var optionAccount = document.createElement('option');
+                    optionAccount.setAttribute('value', 'ACCOUNT');
+                    optionAccount.innerText = '계좌';
+                    if (item.type === 'ACCOUNT') optionAccount.selected = true;
+                    selectType.appendChild(optionAccount);
+                    modalBody.appendChild(selectType);
+                    modalBody.appendChild(document.createElement('br'));
+                    modalBody.appendChild(document.createElement('br'));
 
-                        var labelName = document.createElement('label');
-                        labelName.setAttribute('for', 'edit-name-account');
-                        labelName.innerText = '이름:';
-                        modalBody.appendChild(labelName);
+                    var labelName = document.createElement('label');
+                    labelName.setAttribute('for', 'edit-name-account');
+                    labelName.innerText = '이름:';
+                    modalBody.appendChild(labelName);
 
-                        var inputName = document.createElement('input');
-                        inputName.setAttribute('type', 'text');
-                        inputName.setAttribute('id', 'edit-name-account');
-                        inputName.setAttribute('name', 'name');
-                        inputName.setAttribute('value', item.name);
-                        inputName.required = true;
-                        modalBody.appendChild(inputName);
-                        modalBody.appendChild(document.createElement('br'));
-                        modalBody.appendChild(document.createElement('br'));
+                    var inputName = document.createElement('input');
+                    inputName.setAttribute('type', 'text');
+                    inputName.setAttribute('id', 'edit-name-account');
+                    inputName.setAttribute('name', 'name');
+                    inputName.setAttribute('value', item.name);
+                    inputName.required = true;
+                    modalBody.appendChild(inputName);
+                    modalBody.appendChild(document.createElement('br'));
+                    modalBody.appendChild(document.createElement('br'));
 
-                        var labelCname = document.createElement('label');
-                        labelCname.setAttribute('for', 'edit-cname-account');
-                        labelCname.innerText = '별칭:';
-                        modalBody.appendChild(labelCname);
+                    var labelCname = document.createElement('label');
+                    labelCname.setAttribute('for', 'edit-cname-account');
+                    labelCname.innerText = '별칭:';
+                    modalBody.appendChild(labelCname);
 
-                        var inputCname = document.createElement('input');
-                        inputCname.setAttribute('type', 'text');
-                        inputCname.setAttribute('id', 'edit-cname-account');
-                        inputCname.setAttribute('name', 'cname');
-                        inputCname.setAttribute('value', item.cname);
-                        inputCname.required = true;
-                        modalBody.appendChild(inputCname);
-                        modalBody.appendChild(document.createElement('br'));
-                        modalBody.appendChild(document.createElement('br'));
+                    var inputCname = document.createElement('input');
+                    inputCname.setAttribute('type', 'text');
+                    inputCname.setAttribute('id', 'edit-cname-account');
+                    inputCname.setAttribute('name', 'cname');
+                    inputCname.setAttribute('value', item.cname);
+                    inputCname.required = true;
+                    modalBody.appendChild(inputCname);
+                    modalBody.appendChild(document.createElement('br'));
+                    modalBody.appendChild(document.createElement('br'));
 
-                        var labelAmount = document.createElement('label');
-                        labelAmount.setAttribute('for', 'edit-amount-account');
-                        labelAmount.innerText = '금액:';
-                        modalBody.appendChild(labelAmount);
+                    var labelAmount = document.createElement('label');
+                    labelAmount.setAttribute('for', 'edit-amount-account');
+                    labelAmount.innerText = '금액:';
+                    modalBody.appendChild(labelAmount);
 
-                        var inputAmount = document.createElement('input');
-                        inputAmount.setAttribute('type', 'number');
-                        inputAmount.setAttribute('id', 'edit-amount-account');
-                        inputAmount.setAttribute('name', 'amount');
-                        inputAmount.setAttribute('value', item.amount);
-                        inputAmount.required = true;
-                        modalBody.appendChild(inputAmount);
-                        modalBody.appendChild(document.createElement('br'));
-                        modalBody.appendChild(document.createElement('br'));
+                    var inputAmount = document.createElement('input');
+                    inputAmount.setAttribute('type', 'number');
+                    inputAmount.setAttribute('id', 'edit-amount-account');
+                    inputAmount.setAttribute('name', 'amount');
+                    inputAmount.setAttribute('value', item.amount);
+                    inputAmount.required = true;
+                    modalBody.appendChild(inputAmount);
+                    modalBody.appendChild(document.createElement('br'));
+                    modalBody.appendChild(document.createElement('br'));
 
-                        var labelMemo = document.createElement('label');
-                        labelMemo.setAttribute('for', 'edit-memo-account');
-                        labelMemo.innerText = '메모:';
-                        modalBody.appendChild(labelMemo);
+                    var labelMemo = document.createElement('label');
+                    labelMemo.setAttribute('for', 'edit-memo-account');
+                    labelMemo.innerText = '메모:';
+                    modalBody.appendChild(labelMemo);
 
-                        var textareaMemo = document.createElement('textarea');
-                        textareaMemo.setAttribute('id', 'edit-memo-account');
-                        textareaMemo.setAttribute('name', 'memo');
-                        textareaMemo.innerText = item.memo;
-                        modalBody.appendChild(textareaMemo);
-                        modalBody.appendChild(document.createElement('br'));
-                        modalBody.appendChild(document.createElement('br'));
+                    var textareaMemo = document.createElement('textarea');
+                    textareaMemo.setAttribute('id', 'edit-memo-account');
+                    textareaMemo.setAttribute('name', 'memo');
+                    textareaMemo.innerText = item.memo;
+                    modalBody.appendChild(textareaMemo);
+                    modalBody.appendChild(document.createElement('br'));
+                    modalBody.appendChild(document.createElement('br'));
 
-                        var labelImgUrl = document.createElement('label');
-                        labelImgUrl.setAttribute('for', 'edit-imgUrl-account');
-                        labelImgUrl.innerText = '이미지 URL:';
-                        modalBody.appendChild(labelImgUrl);
+                    var labelImgUrl = document.createElement('label');
+                    labelImgUrl.setAttribute('for', 'edit-imgUrl-account');
+                    labelImgUrl.innerText = '이미지 URL:';
+                    modalBody.appendChild(labelImgUrl);
 
-                        var inputImgUrl = document.createElement('input');
-                        inputImgUrl.setAttribute('type', 'text');
-                        inputImgUrl.setAttribute('id', 'edit-imgUrl-account');
-                        inputImgUrl.setAttribute('name', 'imgUrl');
-                        inputImgUrl.setAttribute('value', item.imgUrl);
-                        modalBody.appendChild(inputImgUrl);
-                        modalBody.appendChild(document.createElement('br'));
-                        modalBody.appendChild(document.createElement('br'));
+                    var inputImgUrl = document.createElement('input');
+                    inputImgUrl.setAttribute('type', 'text');
+                    inputImgUrl.setAttribute('id', 'edit-imgUrl-account');
+                    inputImgUrl.setAttribute('name', 'imgUrl');
+                    inputImgUrl.setAttribute('value', item.imgUrl);
+                    modalBody.appendChild(inputImgUrl);
+                    modalBody.appendChild(document.createElement('br'));
+                    modalBody.appendChild(document.createElement('br'));
 
-                        var inputId = document.createElement('input');
-                        inputId.setAttribute('type', 'hidden');
-                        inputId.setAttribute('id', 'edit-id-account');
-                        inputId.setAttribute('name', 'id');
-                        inputId.setAttribute('value', item.ano);
-                        modalBody.appendChild(inputId);
-                    <%--modalTitle.innerText = "계좌 수정";--%>
-                    <%--modalAction.value = "edit";--%>
-                    <%--modalBody.innerHTML = `--%>
-                    <%--    <label for="edit-name-account">이름:</label>--%>
-                    <%--    <input type="text" id="edit-name-account" name="name" value="${item.cname}" required><br><br>--%>
-                    <%--`;--%>
-                } else if (action === 'delete') {
-                        modalTitle.innerText = "계좌 삭제";
-                        modalAction.value = "delete";
+                    var inputId = document.createElement('input');
+                    inputId.setAttribute('type', 'hidden');
+                    inputId.setAttribute('id', 'edit-id-account');
+                    inputId.setAttribute('name', 'id');
+                    inputId.setAttribute('value', item.ano);
+                    modalBody.appendChild(inputId);
 
-                        var p = document.createElement('p');
-                        p.innerText = '정말로 삭제하시겠습니까?';
-                        modalBody.appendChild(p);
+            } else if (action === 'delete') {
+                    modalTitle.innerText = "계좌 삭제";
+                    modalAction.value = "delete";
 
-                        var inputId = document.createElement('input');
-                        inputId.setAttribute('type', 'hidden');
-                        inputId.setAttribute('id', 'delete-id-account');
-                        inputId.setAttribute('name', 'id');
-                        inputId.setAttribute('value', item.ano);
-                        modalBody.appendChild(inputId);
+                    var p = document.createElement('p');
+                    p.innerText = '정말로 삭제하시겠습니까?';
+                    modalBody.appendChild(p);
 
-                    }
-                    <%--modalTitle.innerText = "계좌 삭제";--%>
-                    <%--modalAction.value = "delete";--%>
-                    <%--modalBody.innerHTML = `--%>
-                    <%--    <p>정말로 삭제하시겠습니까?</p>--%>
-                    <%--    <input type="hidden" id="delete-id-account" name="id" value="${item.id}">--%>
-                    <%--`;--%>
+                    var inputId = document.createElement('input');
+                    inputId.setAttribute('type', 'hidden');
+                    inputId.setAttribute('id', 'delete-id-account');
+                    inputId.setAttribute('name', 'id');
+                    inputId.setAttribute('value', item.ano);
+                    modalBody.appendChild(inputId);
+
                 }
 
                 accountModal.style.display = "block";
@@ -680,8 +667,6 @@
                         alert("Error deleting account: " + error);
                     }
                 });
-
-
             }
             accountModal.style.display = "none";
             loadContent('account');

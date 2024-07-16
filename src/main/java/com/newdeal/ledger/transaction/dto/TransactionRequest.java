@@ -5,6 +5,10 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
+import com.newdeal.ledger.transaction.dto.type.RepeatType;
+import com.newdeal.ledger.transaction.dto.type.SourceType;
+import com.newdeal.ledger.transaction.dto.type.TransactionType;
+
 import lombok.Data;
 
 public class TransactionRequest {

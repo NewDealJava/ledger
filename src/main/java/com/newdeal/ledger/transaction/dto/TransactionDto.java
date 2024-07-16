@@ -6,6 +6,10 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+import com.newdeal.ledger.transaction.dto.type.RepeatType;
+import com.newdeal.ledger.transaction.dto.type.SourceType;
+import com.newdeal.ledger.transaction.dto.type.TransactionType;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data

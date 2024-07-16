@@ -1,5 +1,7 @@
 package com.newdeal.ledger.categorytag.dto;
 
+import com.newdeal.ledger.categorytag.dto.type.CategoryType;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.newdeal.ledger.transaction.dto.SourceDto;
 import com.newdeal.ledger.transaction.dto.TransactionListDto;
 import com.newdeal.ledger.transaction.dto.TransactionRequest;
+import com.newdeal.ledger.transaction.dto.TransactionResponse;
 import com.newdeal.ledger.transaction.service.TransactionService;
 
 import lombok.RequiredArgsConstructor;
@@ -27,10 +29,9 @@ public class TransactionRestController {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public void createTransaction(@ModelAttribute TransactionRequest.Create request) {
-
 		String tempEmail = "user1@example.com";
-		transactionService.createTransaction(tempEmail, request);
 
+		transactionService.createTransaction(tempEmail, request);
 	}
 
 	@GetMapping
@@ -39,6 +40,12 @@ public class TransactionRestController {
 		String tempEmail = "user1@example.com";
 
 		return transactionService.selectAllByMonth(tempEmail, year, month);
+	}
+
+	@GetMapping(value = "/{transactionId}")
+	@ResponseStatus(HttpStatus.OK)
+	public TransactionResponse.GetOne getTransactionById(@PathVariable Integer transactionId) {
+		return transactionService.getTransactionById(transactionId);
 	}
 
 	@GetMapping("/source")

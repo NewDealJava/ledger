@@ -4,10 +4,11 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.newdeal.ledger.categorytag.dto.TagDto;
 import com.newdeal.ledger.transaction.dto.SourceDto;
+import com.newdeal.ledger.transaction.dto.TransactionDto;
 import com.newdeal.ledger.transaction.dto.TransactionListDto;
 import com.newdeal.ledger.transaction.dto.TransactionRequest;
+import com.newdeal.ledger.transaction.dto.TransactionResponse;
 import com.newdeal.ledger.transaction.dto.TransactionTagDto;
 import com.newdeal.ledger.transaction.mapper.TransactionMapper;
 
@@ -39,7 +40,10 @@ public class TransactionServiceImpl implements TransactionService {
 			.map(tgno -> new TransactionTagDto(tgno, tsno))
 			.toList();
 		mapper.createTransactionTagMapper(list);
-		System.out.println("dd");
 	}
 
+	@Override
+	public TransactionResponse.GetOne getTransactionById(Integer transactionId) {
+		return mapper.selectTransactionById(transactionId);
+	}
 }

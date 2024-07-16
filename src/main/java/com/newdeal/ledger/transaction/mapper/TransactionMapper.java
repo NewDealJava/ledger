@@ -14,13 +14,27 @@ import com.newdeal.ledger.transaction.dto.TransactionTagDto;
 
 @Mapper
 public interface TransactionMapper {
-	List<TransactionListDto> findAllByMonth(@Param("email") String email, @Param("year") int year, @Param("month") int month);
+	List<TransactionListDto> findAllByMonth(
+		@Param("email") String email,
+		@Param("year") int year,
+		@Param("month") int month
+	);
 
 	List<SourceDto> findAllSourceByEmail(String email);
 
 	Integer createTransaction(@Param("email") String email, @Param("request") TransactionRequest.Create request);
 
-	void createTransactionTagMapper(List<TransactionTagDto> transactionTagDtos);
+	void createTransactionTag(
+		@Param("transactionId") Integer transactionId,
+		@Param("tagIdList") List<Integer> tagIdList
+	);
 
 	TransactionResponse.GetOne selectTransactionById(Integer transactionId);
+
+	void updateTransactionById(
+		@Param("transactionId") Integer transactionId,
+		@Param("request") TransactionRequest.Update request
+	);
+
+	void deleteTransactionTagByTransactionId(Integer transactionId);
 }

@@ -32,14 +32,16 @@ public class TransactionServiceImpl implements TransactionService {
 	@Override
 	public void createTransaction(String email, TransactionRequest.Create request) {
 		mapper.createTransaction(email, request);
+		Integer transactionId = request.getTno();
 
-		Integer tsno = request.getTno();
+		mapper.createTransactionTag(transactionId, request.getTags());
+	}
 
-		List<TransactionTagDto> list = request.getTags()
-			.stream()
-			.map(tgno -> new TransactionTagDto(tgno, tsno))
-			.toList();
-		mapper.createTransactionTagMapper(list);
+	@Override
+	public void updateTransactionById(Integer transactionId, TransactionRequest.Update request) {
+		mapper.updateTransactionById(transactionId, request);
+		mapper.deleteTransactionTagByTransactionId(transactionId);
+		mapper.createTransactionTag(transactionId, request.getTagIdList());
 	}
 
 	@Override

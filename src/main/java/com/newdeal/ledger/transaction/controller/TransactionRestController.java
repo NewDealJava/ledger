@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -32,6 +33,14 @@ public class TransactionRestController {
 		String tempEmail = "user1@example.com";
 
 		transactionService.createTransaction(tempEmail, request);
+	}
+
+	@PutMapping(value = "/{transactionId}")
+	@ResponseStatus(HttpStatus.OK)
+	public void updateTransactionById(@PathVariable Integer transactionId, @ModelAttribute TransactionRequest.Update request){
+		String tempEmail = "user1@example.com";
+
+		transactionService.updateTransactionById(transactionId, request);
 	}
 
 	@GetMapping

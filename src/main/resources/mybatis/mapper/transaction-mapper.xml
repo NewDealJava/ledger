@@ -136,20 +136,18 @@
 
     </insert>
 
-
-    <insert id="createTransactionTagMapper" parameterType="com.newdeal.ledger.transaction.dto.TransactionTagDto">
-        INSERT INTO `transactiontag`
-        (
-        `tgno`, `tsno`
-        )
+    <insert id="createTransactionTag" parameterType="map">
+        INSERT INTO `transactiontag` (tsno, tgno)
         VALUES
-        <foreach collection="list" item="item" separator=",">
-            (
-            #{item.tgno},
-            #{item.tsno}
-            )
+        <foreach collection="tagIdList" item="tagId" separator=",">
+            (#{transactionId}, #{tagId})
         </foreach>
     </insert>
+
+    <delete id="deleteTransactionTagByTransactionId" parameterType="int">
+        DELETE FROM `transactiontag`
+        WHERE `tsno` = #{transactionId}
+    </delete>
 
     <!-- TransactionDto를 찾기 위한 SQL문 -->
     <select id="findTransactionById" resultType="com.newdeal.ledger.transaction.dto.TransactionDto">
@@ -170,5 +168,24 @@
         FROM `transaction`
         WHERE tno = #{transactionId}
     </select>
+
+    <update id="updateTransactionById" parameterType="map">
+        UPDATE `transaction`
+        SET
+            `email` = #{request.email},
+            `cno` = #{request.subCategoryId},
+            `type` = #{request.transactionType},
+            `stype` = #{request.sourceType},
+            `sno` = #{request.sourceId},
+            `keyword` = #{request.keyword},
+            `samount` = #{request.amount},
+            `installment` = #{request.installment},
+            `imageUrl` = #{request.imageUrl},
+            `tsmemo` = #{request.memo},
+            `time` = #{request.dateTime},
+            `rtype` = #{request.repeatType}
+        WHERE
+            `tno` = #{transactionId}
+    </update>
 
 </mapper>

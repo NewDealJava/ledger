@@ -16,4 +16,6 @@ public interface TransactionService {
 	void createTransaction(String email, TransactionRequest.Create request);
 
 	TransactionResponse.GetOne getTransactionById(Integer transactionId);
+
+	void updateTransactionById(Integer transactionId, TransactionRequest.Update request);
 }

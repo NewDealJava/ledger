@@ -29,4 +29,9 @@ public class AccountServiceImpl implements AccountService {
 	public void updateAccount(Integer accountId, AccountRequest.Update request) {
 		mapper.updateAccount(accountId, request);
 	}
+
+	@Override
+	public void deleteAccount(Integer accountId) {
+		mapper.deleteAccount(accountId);
+	}
 }

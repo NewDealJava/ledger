@@ -41,4 +41,10 @@
         WHERE ano = #{accountId}
     </update>
 
+    <delete id="deleteAccount">
+        DELETE
+        FROM account
+        WHERE ano = #{accountId}
+    </delete>
+
 </mapper>

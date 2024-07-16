@@ -15,4 +15,6 @@ public interface AccountMapper {
 	void createAccount(@Param("email") String email, @Param("request") AccountRequest.Create request);
 
 	void updateAccount(@Param("accountId") Integer accountId, @Param("request") AccountRequest.Update request);
+
+	void deleteAccount(Integer accountId);
 }

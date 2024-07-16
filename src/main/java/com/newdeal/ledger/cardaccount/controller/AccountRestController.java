@@ -3,6 +3,7 @@ package com.newdeal.ledger.cardaccount.controller;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.newdeal.ledger.cardaccount.dto.AccountDto;
 import com.newdeal.ledger.cardaccount.dto.AccountRequest;
-import com.newdeal.ledger.cardaccount.dto.CardRequest;
 import com.newdeal.ledger.cardaccount.service.AccountService;
 
 import lombok.RequiredArgsConstructor;
@@ -46,5 +46,11 @@ public class AccountRestController {
 	@ResponseStatus(HttpStatus.OK)
 	public void updateAccount (@PathVariable Integer accountId, @RequestBody AccountRequest.Update request) {
 		accountService.updateAccount(accountId, request);
+	}
+
+	@DeleteMapping(value = "/{accountId}")
+	@ResponseStatus(HttpStatus.OK)
+	public void deleteAccount(@PathVariable Integer accountId) {
+		accountService.deleteAccount(accountId);
 	}
 }

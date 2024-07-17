@@ -24,6 +24,9 @@ repositories {
 }
 
 dependencies {
+    // aop
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+
     // Log4JDBC
     implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
 

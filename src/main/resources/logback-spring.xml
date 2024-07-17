@@ -16,10 +16,21 @@
         </encoder>
     </appender>
 
+    <!-- Console Appender for Highlighting Controller Logs -->
+    <appender name="COLOR_CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %highlight(%msg%n){red}</pattern>
+        </encoder>
+    </appender>
+
     <!-- Logger -->
     <logger name="com.newdeal" level="DEBUG" appender-ref="console" />
     <logger name="jdbc.sqlonly" level="INFO" appender-ref="console-infolog" />
     <logger name="jdbc.resultsettable" level="INFO" appender-ref="console-infolog" />
+
+    <logger name="highlightLogger" level="INFO" additivity="false">
+        <appender-ref ref="COLOR_CONSOLE"/>
+    </logger>
 
     <!-- Root Logger -->
     <root level="off">

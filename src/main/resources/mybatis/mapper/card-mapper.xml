@@ -32,13 +32,13 @@
 
 
     <!-- 이메일로 모든 카드 정보를 조회하는 SQL 쿼리 -->
-    <select id="findCardsByEmail" resultType="com.newdeal.ledger.card.dto.CardDto" parameterType="String">
-        SELECT cno,
+    <select id="findCardsByEmail" resultType="com.newdeal.ledger.card.dto.CardResponse$GetOne" parameterType="String">
+        SELECT cno AS cardId,
                email,
                name,
-               cname,
-               type,
-               bday AS bDay,
+               cname AS nickname,
+               type ,
+               bday AS statementDay,
                imgUrl,
                memo,
                amount,

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.newdeal.ledger.card.dto.CardDto;
 import com.newdeal.ledger.card.dto.CardRequest;
+import com.newdeal.ledger.card.dto.CardResponse;
 import com.newdeal.ledger.card.service.CardService;
 
 import lombok.RequiredArgsConstructor;
@@ -47,7 +48,7 @@ public class CardRestController {
 
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
-	public List<CardDto> getCardsByEmail() {
+	public List<CardResponse.GetOne> getCardsByEmail() {
 		String tempEmail = "user1@example.com";
 		return cardService.getCardsByEmail(tempEmail);
 	}

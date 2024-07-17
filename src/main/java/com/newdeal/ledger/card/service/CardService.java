@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.newdeal.ledger.card.dto.CardDto;
 import com.newdeal.ledger.card.dto.CardRequest;
+import com.newdeal.ledger.card.dto.CardResponse;
 
 public interface CardService {
 
@@ -13,5 +14,5 @@ public interface CardService {
 
 	void removeCard(Integer cardId);
 
-	List<CardDto> getCardsByEmail(String email);
+	List<CardResponse.GetOne> getCardsByEmail(String email);
 }

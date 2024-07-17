@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.newdeal.ledger.card.dto.CardDto;
 import com.newdeal.ledger.card.dto.CardRequest;
+import com.newdeal.ledger.card.dto.CardResponse;
 
 @Mapper
 public interface CardMapper {
@@ -16,6 +17,6 @@ public interface CardMapper {
 
 	void deleteCard(Integer cardId);
 
-	List<CardDto> findCardsByEmail(String email);
+	List<CardResponse.GetOne> findCardsByEmail(String email);
 
 }

@@ -163,7 +163,7 @@
 
                         var nameDiv = $('<div>').append(
                             $('<strong>').text(type === 'credit' ? '카드 이름: ' : '계좌 이름: '),
-                            $('<span>').text(item.cname)
+                            $('<span>').text(item.nickname)
                             );
 
                         cardBody.append(nameDiv);
@@ -341,7 +341,7 @@
                     inputCname.setAttribute('type', 'text');
                     inputCname.setAttribute('id', 'edit-cname-card');
                     inputCname.setAttribute('name', 'cname');
-                    inputCname.setAttribute('value', item.cname);
+                    inputCname.setAttribute('value', item.nickname);
                     inputCname.required = true;
                     modalBody.appendChild(inputCname);
                     modalBody.appendChild(document.createElement('br'));
@@ -356,7 +356,7 @@
                     inputBday.setAttribute('type', 'number');
                     inputBday.setAttribute('id', 'edit-bday-card');
                     inputBday.setAttribute('name', 'bday');
-                    inputBday.setAttribute('value', item.bday);
+                    inputBday.setAttribute('value', item.statementDay);
                     inputBday.required = true;
                     modalBody.appendChild(inputBday);
                     modalBody.appendChild(document.createElement('br'));
@@ -408,7 +408,7 @@
                     inputId.setAttribute('type', 'hidden');
                     inputId.setAttribute('id', 'edit-id-card');
                     inputId.setAttribute('name', 'id');
-                    inputId.setAttribute('value', item.cno);
+                    inputId.setAttribute('value', item.cardId);
                     modalBody.appendChild(inputId);
 
                 } else if (action === 'delete') {
@@ -423,12 +423,13 @@
                     inputId.setAttribute('type', 'hidden');
                     inputId.setAttribute('id', 'delete-id-card');
                     inputId.setAttribute('name', 'id');
-                    inputId.setAttribute('value', item.cno);
+                    inputId.setAttribute('value', item.cardId);
                     modalBody.appendChild(inputId);
                 }
 
                 cardModal.style.display = "block";
             } else if (type === 'account') {
+                debugger;
                 var modalTitle = document.getElementById("modal-title-account");
                 var modalAction = document.getElementById("modal-action-account");
                 var modalBody = document.getElementById("modal-body-account");

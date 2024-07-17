@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.newdeal.ledger.card.dto.CardDto;
 import com.newdeal.ledger.card.dto.CardRequest;
+import com.newdeal.ledger.card.dto.CardResponse;
 import com.newdeal.ledger.card.mapper.CardMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -31,7 +32,7 @@ public class CardServiceImpl implements CardService {
 	}
 
 	@Override
-	public List<CardDto> getCardsByEmail(String email) {
+	public List<CardResponse.GetOne> getCardsByEmail(String email) {
 		return mapper.findCardsByEmail(email);
 	}
 

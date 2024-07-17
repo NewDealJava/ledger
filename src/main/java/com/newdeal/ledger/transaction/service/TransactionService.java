@@ -18,7 +18,13 @@ public interface TransactionService {
 
 	TransactionResponse.GetOne getTransactionById(Integer transactionId);
 
+	List<TransactionResponse.GetList> getTransactionsByMultiFilter(
+		String email,
+		TransactionRequest.MultiFilter request
+	);
+
 	List<SourceDto> getSourcesByEmail(String email);
 
 	void createRepeatTypeTransactions();
+
 }

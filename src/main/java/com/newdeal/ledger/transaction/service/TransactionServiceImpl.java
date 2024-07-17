@@ -45,6 +45,14 @@ public class TransactionServiceImpl implements TransactionService {
 	}
 
 	@Override
+	public List<TransactionResponse.GetList> getTransactionsByMultiFilter(
+		String email,
+		TransactionRequest.MultiFilter request
+	) {
+		return  mapper.findTransactionsByMultiFilter(email, request);
+	}
+
+	@Override
 	public TransactionResponse.GetOne getTransactionById(Integer transactionId) {
 		return mapper.findTransactionById(transactionId);
 	}

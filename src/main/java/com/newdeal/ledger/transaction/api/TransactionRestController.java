@@ -36,13 +36,14 @@ public class TransactionRestController {
 
 	@PutMapping(value = "/{transactionId}")
 	@ResponseStatus(HttpStatus.OK)
-	public void updateTransactionById(@PathVariable Integer transactionId, @ModelAttribute TransactionRequest.Update request){
+	public void updateTransactionById(@PathVariable Integer transactionId,
+		@ModelAttribute TransactionRequest.Update request) {
 		transactionService.updateTransactionById(transactionId, request);
 	}
 
 	@DeleteMapping(value = "/{transactionId}")
 	@ResponseStatus(HttpStatus.OK)
-	public void removeTransactionById(@PathVariable Integer transactionId){
+	public void removeTransactionById(@PathVariable Integer transactionId) {
 		transactionService.removeTransactionById(transactionId);
 	}
 
@@ -51,6 +52,15 @@ public class TransactionRestController {
 	public List<TransactionResponse.GetList> getTransactions(@RequestParam int year, @RequestParam int month) {
 		String tempEmail = "user1@example.com";
 		return transactionService.getTransactionsByMonth(tempEmail, year, month);
+	}
+
+	@GetMapping("/search")
+	@ResponseStatus(HttpStatus.OK)
+	public List<TransactionResponse.GetList> getTransactionsByMultiFilter(
+		@ModelAttribute TransactionRequest.MultiFilter request
+	) {
+		String tempEmail = "user1@example.com";
+		return transactionService.getTransactionsByMultiFilter(tempEmail, request);
 	}
 
 	@GetMapping(value = "/{transactionId}")

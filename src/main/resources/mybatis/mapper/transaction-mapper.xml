@@ -132,6 +132,83 @@
         t.time desc;
     </select>
 
+    <select id="findTransactionsByMultiFilter" parameterType="map" resultType="com.newdeal.ledger.transaction.dto.TransactionResponse$GetList">
+        SELECT
+        t.tno AS transactionId,
+        DATE (t.time) AS date,
+        TIME (t.time) AS time,
+        parent_c.name AS category,
+        c.name AS subCategory,
+        t.keyword AS keyword,
+        t.samount AS amount,
+        t.tsmemo as memo,
+        CASE WHEN t.installment != 1 THEN '할부' ELSE '' END AS installment,
+        GROUP_CONCAT(tg.name SEPARATOR ', ') AS tags
+        FROM
+        transaction t
+        JOIN
+        category c ON t.cno = c.cno
+        JOIN
+        category parent_c ON c.parent_cno = parent_c.cno
+        LEFT JOIN
+        transactiontag tstg ON t.tno = tstg.tsno
+        LEFT JOIN
+        tag tg ON tstg.tgno = tg.tno
+        WHERE
+        YEAR (t.time) = #{request.year}
+        AND MONTH (t.time) = #{request.month}
+        AND t.email = #{email}
+        <if test="request.subCategoryIds != null and !request.subCategoryIds.isEmpty()">
+            AND c.cno IN
+            <foreach item="subCategoryId" collection="request.subCategoryIds" open="(" separator="," close=")">
+                #{subCategoryId}
+            </foreach>
+        </if>
+        <if test="request.tagIds != null and !request.tagIds.isEmpty()">
+            AND t.tno IN (
+            SELECT tsno FROM transactiontag tstg
+            WHERE tstg.tgno IN
+            <foreach item="tagId" collection="request.tagIds" open="(" separator="," close=")">
+                #{tagId}
+            </foreach>
+            )
+        </if>
+        <if test="request.installment != null and !request.installment.isEmpty()">
+            AND t.installment IN
+            <foreach item="inst" collection="request.installment" open="(" separator="," close=")">
+                #{inst}
+            </foreach>
+        </if>
+        <if test="request.repeatType != null and !request.repeatType.isEmpty()">
+            AND t.rtype IN
+            <foreach item="rt" collection="request.repeatType" open="(" separator="," close=")">
+                #{rt}
+            </foreach>
+        </if>
+        <if test="request.sourceType != null and !request.sourceType.isEmpty()">
+            AND t.stype IN
+            <foreach item="st" collection="request.sourceType" open="(" separator="," close=")">
+                #{st}
+            </foreach>
+        </if>
+        <if test="request.sourceIds != null and !request.sourceIds.isEmpty()">
+            AND t.sno IN
+            <foreach item="sn" collection="request.sourceIds" open="(" separator="," close=")">
+                #{sn}
+            </foreach>
+        </if>
+        <if test="request.keyword != null and !request.keyword.isEmpty()">
+            AND t.keyword LIKE CONCAT('%', #{request.keyword}, '%')
+        </if>
+        GROUP BY
+        t.tno
+        ORDER BY
+        t.time desc;
+    </select>
+
+
+
+
     <select id="findTransactionById" parameterType="int" resultMap="TransactionResultMap">
         SELECT
             t.tno AS transactionId,

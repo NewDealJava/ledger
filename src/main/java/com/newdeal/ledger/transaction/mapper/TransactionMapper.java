@@ -42,6 +42,11 @@ public interface TransactionMapper {
 		@Param("tagIdList") List<Integer> tagIdList
 	);
 
+	List<TransactionResponse.GetList> findTransactionsByMultiFilter(
+		@Param("email") String email,
+		@Param("request") TransactionRequest.MultiFilter request
+	);
+
 	void deleteTransactionTagByTransactionId(Integer transactionId);
 
 	List<TransactionTagDto> findTransactionTagByTransactionId(Integer transactionId);

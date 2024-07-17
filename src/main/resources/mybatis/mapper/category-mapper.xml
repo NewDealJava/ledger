@@ -3,39 +3,38 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.newdeal.ledger.categorytag.mapper.CategoryMapper">
+<mapper namespace="com.newdeal.ledger.category.mapper.CategoryMapper">
 
     <!-- parent_cno가 null인 카테고리 리스트를 조회하는 쿼리 -->
-    <select id="findAll" resultType="com.newdeal.ledger.categorytag.dto.CategoryDto">
-        SELECT cno,
+    <select id="findCategories" resultType="com.newdeal.ledger.category.dto.CategoryResponse$GetOne">
+        SELECT cno AS categoryId,
                type,
                name,
-               parent_cno as parentCno
+               parent_cno as parentCategoryId
         FROM category
         WHERE parent_cno IS NULL
     </select>
 
-    <select id="findAllCategoriesByType" resultType="com.newdeal.ledger.categorytag.dto.CategoryDto"
+    <select id="findCategoriesByType" resultType="com.newdeal.ledger.category.dto.CategoryResponse$GetOne"
             parameterType="String">
-        SELECT cno,
+        SELECT cno AS categoryId,
                type,
                name,
-               parent_cno as parentCno
+               parent_cno as parentCategoryId
         FROM category
         WHERE parent_cno IS NULL
           AND type = #{type}
 
     </select>
 
-    <select id="findAllSubcategoriesByParentCno" resultType="com.newdeal.ledger.categorytag.dto.CategoryDto"
+    <select id="findSubcategoriesByCategoryId" resultType="com.newdeal.ledger.category.dto.CategoryResponse$GetOne"
             parameterType="Integer">
-        SELECT cno,
+        SELECT cno AS categoryId,
                type,
                name,
-               parent_cno as parentCno
+               parent_cno as parentCategoryId
         FROM category
-        WHERE parent_cno = #{parentCno}
-
+        WHERE parent_cno = #{parentCategoryId}
     </select>
 
 </mapper>

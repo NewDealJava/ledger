@@ -278,7 +278,7 @@
                 inputId.setAttribute('type', 'hidden');
                 inputId.setAttribute('id', 'edit-id');
                 inputId.setAttribute('name', 'id');
-                inputId.setAttribute('value', item.tno);
+                inputId.setAttribute('value', item.tagId);
 
                 // Append elements to modal body
                 modalBody.appendChild(label);
@@ -300,7 +300,7 @@
                 inputId.setAttribute('type', 'hidden');
                 inputId.setAttribute('id', 'delete-id');
                 inputId.setAttribute('name', 'id');
-                inputId.setAttribute('value', item.tno);  // Ensure this is the correct property
+                inputId.setAttribute('value', item.tagId);  // Ensure this is the correct property
 
                 // Append elements to modal body
                 modalBody.appendChild(paragraph);

@@ -26,8 +26,86 @@
         </collection>
     </resultMap>
 
-    <!-- 트랜잭션과 태그를 조인하여 단일 트랜잭션을 가져오기 -->
-    <select id="selectTransactionById" parameterType="int" resultMap="TransactionResultMap">
+    <insert id="createTransaction" parameterType="map" useGeneratedKeys="true"
+            keyProperty="request.transactionId">
+        INSERT INTO `transaction`
+        (
+            `email`, `cno`, `type`, `stype`, `sno`, `keyword`,
+            `samount`, `installment`, `imageUrl`, `tsmemo`,
+            `time`, `rtype`
+        )
+        VALUES
+            (
+                #{email},
+                #{request.subCategoryId},
+                #{request.transactionType},
+                #{request.sourceType},
+                #{request.sourceId},
+                #{request.keyword},
+                #{request.amount},
+                #{request.installment},
+                #{request.imageUrl},
+                #{request.memo},
+                #{request.dateTime},
+                #{request.repeatType}
+            );
+    </insert>
+
+    <update id="updateTransactionById" parameterType="map">
+        UPDATE `transaction`
+        SET
+            `cno` = #{request.subCategoryId},
+            `type` = #{request.transactionType},
+            `stype` = #{request.sourceType},
+            `sno` = #{request.sourceId},
+            `keyword` = #{request.keyword},
+            `samount` = #{request.amount},
+            `installment` = #{request.installment},
+            `imageUrl` = #{request.imageUrl},
+            `tsmemo` = #{request.memo},
+            `time` = #{request.dateTime},
+            `rtype` = #{request.repeatType}
+        WHERE
+            `tno` = #{transactionId}
+    </update>
+
+    <delete id="deleteTransactionById">
+        DELETE
+        FROM transaction
+        WHERE tno = #{transactionId}
+    </delete>
+
+    <select id="findTransactionsByMonth" parameterType="map" resultType="com.newdeal.ledger.transaction.dto.TransactionResponse$GetList">
+        SELECT
+            t.tno AS transactionId,
+            DATE (t.time) AS date,
+            TIME (t.time) AS time,
+            parent_c.name AS category,
+            c.name AS subCategory,
+            t.keyword AS keyword,
+            t.samount AS amount,
+            t.tsmemo as memo,
+            CASE WHEN t.installment != 1 THEN '할부' ELSE '' END AS installment,
+            GROUP_CONCAT(tg.name SEPARATOR ', ') AS tags
+        FROM
+            transaction t
+        JOIN
+            category c ON t.cno = c.cno
+        JOIN
+            category parent_c ON c.parent_cno = parent_c.cno
+        LEFT JOIN
+            transactiontag tstg ON t.tno = tstg.tsno
+        LEFT JOIN
+            tag tg ON tstg.tgno = tg.tno
+        WHERE
+            YEAR (t.time) = #{year}
+        AND MONTH (t.time) = #{month}
+        AND t.email = #{email}
+        GROUP BY
+        t.tno;
+    </select>
+
+    <select id="findTransactionById" parameterType="int" resultMap="TransactionResultMap">
         SELECT
             t.tno AS transactionId,
             t.email,
@@ -54,41 +132,24 @@
             t.tno = #{transactionId}
     </select>
 
-
-
-
-    <select id="findAllByMonth" parameterType="map" resultType="com.newdeal.ledger.transaction.dto.TransactionListDto">
-        SELECT
-            t.tno,
-            DATE (t.time) AS date,
-            TIME (t.time) AS time,
-            parent_c.name AS category,
-            c.name AS subCategory,
-            t.keyword AS keyword,
-            t.samount AS amount,
-            t.tsmemo as memo,
-            CASE WHEN t.installment != 1 THEN '할부' ELSE '' END AS installment,
-            GROUP_CONCAT(tg.name SEPARATOR ', ') AS tags
-        FROM
-            transaction t
-        JOIN
-            category c ON t.cno = c.cno
-        JOIN
-            category parent_c ON c.parent_cno = parent_c.cno
-        LEFT JOIN
-            transactiontag tstg ON t.tno = tstg.tsno
-        LEFT JOIN
-            tag tg ON tstg.tgno = tg.tno
-        WHERE
-            YEAR (t.time) = #{year}
-            AND MONTH (t.time) = #{month}
-            AND t.email = #{email}
-        GROUP BY
-        t.tno;
+    <!-- TransactionDto를 찾기 위한 SQL문 -->
+    <select id="findTransactionDtoById" resultType="com.newdeal.ledger.transaction.dto.TransactionDto">
+        SELECT tno         AS transactionId,
+               email       AS email,
+               cno         AS subCategoryId,
+               type        AS transactionType,
+               stype       AS sourceType,
+               sno         AS sourceId,
+               keyword     AS keyword,
+               samount     AS amount,
+               installment AS installment,
+               imageUrl    AS imageUrl,
+               tsmemo      AS memo, time AS time, rtype AS repeatType
+        FROM `transaction`
+        WHERE tno = #{transactionId}
     </select>
 
-
-    <select id="findAllSourceByEmail" parameterType="String" resultType="com.newdeal.ledger.transaction.dto.SourceDto">
+    <select id="findSourcesByEmail" parameterType="String" resultType="com.newdeal.ledger.transaction.dto.SourceDto">
         SELECT 'ACCOUNT' as sourceType,
                CASE type
                    WHEN 'MONEY' THEN 'MONEY'
@@ -110,32 +171,6 @@
         WHERE email = #{email}
     </select>
 
-    <insert id="createTransaction" parameterType="map" useGeneratedKeys="true"
-            keyProperty="request.transactionId">
-        INSERT INTO `transaction`
-        (
-        `email`, `cno`, `type`, `stype`, `sno`, `keyword`,
-        `samount`, `installment`, `imageUrl`, `tsmemo`,
-        `time`, `rtype`
-        )
-        VALUES
-        (
-        #{email},
-        #{request.subCategoryId},
-        #{request.transactionType},
-        #{request.sourceType},
-        #{request.sourceId},
-        #{request.keyword},
-        #{request.amount},
-        #{request.installment},
-        #{request.imageUrl},
-        #{request.memo},
-        #{request.dateTime},
-        #{request.repeatType}
-        );
-
-    </insert>
-
     <insert id="createTransactionTag" parameterType="map">
         INSERT INTO `transactiontag` (tsno, tgno)
         VALUES
@@ -147,50 +182,6 @@
     <delete id="deleteTransactionTagByTransactionId" parameterType="int">
         DELETE FROM `transactiontag`
         WHERE `tsno` = #{transactionId}
-    </delete>
-
-    <!-- TransactionDto를 찾기 위한 SQL문 -->
-    <select id="findTransactionById" resultType="com.newdeal.ledger.transaction.dto.TransactionDto">
-        SELECT
-            tno,
-            email,
-            cno,
-            type,
-            stype,
-            sno,
-            keyword,
-            samount,
-            installment,
-            imageUrl,
-            tsmemo,
-            time,
-            rtype
-        FROM `transaction`
-        WHERE tno = #{transactionId}
-    </select>
-
-    <update id="updateTransactionById" parameterType="map">
-        UPDATE `transaction`
-        SET
-            `cno` = #{request.subCategoryId},
-            `type` = #{request.transactionType},
-            `stype` = #{request.sourceType},
-            `sno` = #{request.sourceId},
-            `keyword` = #{request.keyword},
-            `samount` = #{request.amount},
-            `installment` = #{request.installment},
-            `imageUrl` = #{request.imageUrl},
-            `tsmemo` = #{request.memo},
-            `time` = #{request.dateTime},
-            `rtype` = #{request.repeatType}
-        WHERE
-            `tno` = #{transactionId}
-    </update>
-
-    <delete id="deleteTransactionById">
-        DELETE
-        FROM transaction
-        WHERE tno = #{transactionId}
     </delete>
 
 </mapper>

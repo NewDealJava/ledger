@@ -163,7 +163,7 @@
 
                         var nameDiv = $('<div>').append(
                             $('<strong>').text(type === 'credit' ? '카드 이름: ' : '계좌 이름: '),
-                            $('<span>').text(item.cname)
+                            $('<span>').text(item.nickname)
                             );
 
                         cardBody.append(nameDiv);
@@ -341,7 +341,7 @@
                     inputCname.setAttribute('type', 'text');
                     inputCname.setAttribute('id', 'edit-cname-card');
                     inputCname.setAttribute('name', 'cname');
-                    inputCname.setAttribute('value', item.cname);
+                    inputCname.setAttribute('value', item.nickname);
                     inputCname.required = true;
                     modalBody.appendChild(inputCname);
                     modalBody.appendChild(document.createElement('br'));
@@ -356,7 +356,7 @@
                     inputBday.setAttribute('type', 'number');
                     inputBday.setAttribute('id', 'edit-bday-card');
                     inputBday.setAttribute('name', 'bday');
-                    inputBday.setAttribute('value', item.bday);
+                    inputBday.setAttribute('value', item.statementDay);
                     inputBday.required = true;
                     modalBody.appendChild(inputBday);
                     modalBody.appendChild(document.createElement('br'));
@@ -408,7 +408,7 @@
                     inputId.setAttribute('type', 'hidden');
                     inputId.setAttribute('id', 'edit-id-card');
                     inputId.setAttribute('name', 'id');
-                    inputId.setAttribute('value', item.cno);
+                    inputId.setAttribute('value', item.cardId);
                     modalBody.appendChild(inputId);
 
                 } else if (action === 'delete') {
@@ -423,7 +423,7 @@
                     inputId.setAttribute('type', 'hidden');
                     inputId.setAttribute('id', 'delete-id-card');
                     inputId.setAttribute('name', 'id');
-                    inputId.setAttribute('value', item.cno);
+                    inputId.setAttribute('value', item.cardId);
                     modalBody.appendChild(inputId);
                 }
 
@@ -489,7 +489,7 @@
                     inputCname.setAttribute('type', 'text');
                     inputCname.setAttribute('id', 'edit-cname-account');
                     inputCname.setAttribute('name', 'cname');
-                    inputCname.setAttribute('value', item.cname);
+                    inputCname.setAttribute('value', item.nickname);
                     inputCname.required = true;
                     modalBody.appendChild(inputCname);
                     modalBody.appendChild(document.createElement('br'));
@@ -541,7 +541,7 @@
                     inputId.setAttribute('type', 'hidden');
                     inputId.setAttribute('id', 'edit-id-account');
                     inputId.setAttribute('name', 'id');
-                    inputId.setAttribute('value', item.ano);
+                    inputId.setAttribute('value', item.accountId);
                     modalBody.appendChild(inputId);
 
             } else if (action === 'delete') {
@@ -556,7 +556,7 @@
                     inputId.setAttribute('type', 'hidden');
                     inputId.setAttribute('id', 'delete-id-account');
                     inputId.setAttribute('name', 'id');
-                    inputId.setAttribute('value', item.ano);
+                    inputId.setAttribute('value', item.accountId);
                     modalBody.appendChild(inputId);
 
                 }
@@ -575,8 +575,8 @@
                 var data = {
                     type: $("#edit-type-card").val(),
                     name: $("#edit-name-card").val(),
-                    cname: $("#edit-cname-card").val(),
-                    bday: $("#edit-bday-card").val(),
+                    nickname: $("#edit-cname-card").val(),
+                    statementDay: $("#edit-bday-card").val(),
                     amount: $("#edit-amount-card").val(),
                     memo: $("#edit-memo-card").val(),
                     imgUrl: $("#edit-imgUrl-card").val()
@@ -629,7 +629,7 @@
                 var data = {
                     type: $("#edit-type-account").val(),
                     name: $("#edit-name-account").val(),
-                    cname: $("#edit-cname-account").val(),
+                    nickname: $("#edit-cname-account").val(),
                     amount: $("#edit-amount-account").val(),
                     memo: $("#edit-memo-account").val(),
                     imgUrl: $("#edit-imgUrl-account").val()

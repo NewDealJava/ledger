@@ -45,6 +45,7 @@
                         var tbody = $('#transaction-table tbody');
                         tbody.empty();
                         data.forEach(function (transaction) {
+
                             var row = '<tr class="qna-board-list-body">' +
                                 '<td class="qna-board-list-date">' + transaction.date + '</td>' +
                                 '<td class="qna-board-list-time">' + transaction.time + '</td>' +
@@ -55,8 +56,8 @@
                                 '<td class="qna-board-list-memo">' + transaction.memo + '</td>' +
                                 '<td class="qna-board-list-tags">' + transaction.tags + '</td>' +
                                 '<td class="qna-board-list-installment">' + transaction.installment + '</td>' +
-                                '<td><button class="edit-button" data-id="' + transaction.tno + '">수정</button></td>' +
-                                '<td><button class="delete-button" data-id="' + transaction.tno + '">삭제</button></td>' +
+                                '<td><button class="edit-button" data-id="' + transaction.transactionId + '">수정</button></td>' +
+                                '<td><button class="delete-button" data-id="' + transaction.transactionId + '">삭제</button></td>' +
                                 '</tr>';
                             tbody.append(row);
                         });
@@ -82,7 +83,6 @@
             }
 
             function loadTransactionById(id) {
-
                 $.ajax({
                     url: '/api/transaction/' + id,
                     type: 'GET',
@@ -91,8 +91,8 @@
                             openTab(event, 'Expense');
 
                             const loadExpenseTagContainer = document.getElementById("expense-tag-container");
-                            transaction.tagIdList.forEach(function(tno) {
-                                const button = loadExpenseTagContainer.querySelector("button[data-tag-id='" + tno + "']");
+                            transaction.tagIdList.forEach(function (tagId) {
+                                const button = loadExpenseTagContainer.querySelector("button[data-tag-id='" + tagId + "']");
                                 if (button) {
                                     button.classList.toggle('selected');
                                 }
@@ -126,8 +126,8 @@
                             openTab(event, 'Income');
 
                             const loadExpenseTagContainer = document.getElementById("income-tag-container");
-                            transaction.tagIdList.forEach(function(tno) {
-                                const button = loadExpenseTagContainer.querySelector("button[data-tag-id='" + tno + "']");
+                            transaction.tagIdList.forEach(function (tagId) {
+                                const button = loadExpenseTagContainer.querySelector("button[data-tag-id='" + tagId + "']");
                                 if (button) {
                                     button.classList.toggle('selected');
                                 }

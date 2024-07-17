@@ -18,12 +18,11 @@
             jsonObject['sourceId'] = sourceData[1];
 
             formData.forEach((value, key) => {
-                if ( key !== 'source') {
+                if (key !== 'source') {
                     jsonObject[key] = value;
                 }
             });
-            if(jsonObject.transactionId === ""){ // 생성
-                debugger;
+            if (jsonObject.transactionId === "") { // 생성
                 fetch('/api/transaction', {
                     method: 'POST',
                     headers: {
@@ -42,7 +41,7 @@
                         console.error('Error:', error);
                     });
 
-            } else{  // 수정
+            } else {  // 수정
                 fetch('/api/transaction/' + jsonObject.transactionId, {
                     method: 'PUT',
                     headers: {
@@ -176,7 +175,7 @@
                 success: function (data) {
                     data.forEach(function (category) {
                         const option = document.createElement("option");
-                        option.value = category.cno;
+                        option.value = category.categoryId;
                         option.text = category.name;
                         categorySelect.add(option);
                     });
@@ -199,12 +198,12 @@
             $.ajax({
                 url: '/api/category/subcategory',
                 method: 'GET',
-                data: {parentCno: selectedCategory},
+                data: {parentCategoryId: selectedCategory},
                 dataType: 'json',
                 success: function (data) {
                     data.forEach(function (subcategory) {
                         const option = document.createElement("option");
-                        option.value = subcategory.cno;
+                        option.value = subcategory.categoryId;
                         option.text = subcategory.name;
                         subcategorySelect.add(option);
                     });
@@ -229,7 +228,7 @@
                         button.type = "button";
                         button.className = "tag-button";
                         button.textContent = tag.name;
-                        button.dataset.tagId = tag.tno;
+                        button.dataset.tagId = tag.tagId;
                         button.onclick = function () {
                             this.classList.toggle("selected");
                             updateSelectedTags(hiddenInput, tagContainer);

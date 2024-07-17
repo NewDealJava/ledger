@@ -3,27 +3,11 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.newdeal.ledger.cardaccount.mapper.CardMapper">
-
-    <!-- 이메일로 모든 카드 정보를 조회하는 SQL 쿼리 -->
-    <select id="findAllByEmail" resultType="com.newdeal.ledger.cardaccount.dto.CardDto" parameterType="String">
-        SELECT cno,
-               email,
-               name,
-               cname,
-               type,
-               bday AS bDay,
-               imgUrl,
-               memo,
-               amount,
-               isExcept
-        FROM card
-        WHERE email = #{email}
-    </select>
+<mapper namespace="com.newdeal.ledger.card.mapper.CardMapper">
 
     <insert id="createCard" parameterType="map">
         INSERT INTO card (email, name, cname, type, bday, imgurl, memo, amount)
-        VALUES (#{email}, #{request.name}, #{request.cname}, #{request.type}, #{request.bday}, #{request.imgUrl},
+        VALUES (#{email}, #{request.name}, #{request.nickname}, #{request.type}, #{request.statementDay}, #{request.imgUrl},
                 #{request.memo}, #{request.amount})
     </insert>
 
@@ -32,8 +16,8 @@
         SET
             type = #{request.type},
             name = #{request.name},
-            cname = #{request.cname},
-            bday = #{request.bday},
+            cname = #{request.nickname},
+            bday = #{request.statementDay},
             imgUrl = #{request.imgUrl},
             memo = #{request.memo},
             amount = #{request.amount}
@@ -45,5 +29,22 @@
         FROM card
         WHERE cno = #{cardId}
     </delete>
+
+
+    <!-- 이메일로 모든 카드 정보를 조회하는 SQL 쿼리 -->
+    <select id="findCardsByEmail" resultType="com.newdeal.ledger.card.dto.CardResponse$GetOne" parameterType="String">
+        SELECT cno AS cardId,
+               email,
+               name,
+               cname AS nickname,
+               type ,
+               bday AS statementDay,
+               imgUrl,
+               memo,
+               amount,
+               isExcept
+        FROM card
+        WHERE email = #{email}
+    </select>
 
 </mapper>

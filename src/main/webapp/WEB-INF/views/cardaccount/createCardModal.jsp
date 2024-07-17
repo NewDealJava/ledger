@@ -88,10 +88,10 @@
             <input type="text" id="card-name" name="name" required><br><br>
 
             <label for="card-alias">별칭:</label>
-            <input type="text" id="card-alias" name="cname" required><br><br>
+            <input type="text" id="card-alias" name="nickname" required><br><br>
 
             <label for="card-date">기준일:</label>
-            <input type="number" id="card-date" name="bday" required><br><br>
+            <input type="number" id="card-date" name="statementDay" required><br><br>
 
             <label for="card-total-amount">누적금액:</label>
             <input type="number" id="card-total-amount" name="amount" required><br><br>

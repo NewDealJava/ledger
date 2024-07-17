@@ -1,7 +1,5 @@
 package com.newdeal.ledger.card.dto;
 
-import com.newdeal.ledger.card.dto.CardType;
-
 import lombok.Data;
 
 public class CardRequest {
@@ -10,8 +8,8 @@ public class CardRequest {
 	public static class Create {
 		public CardType type;
 		public String name;
-		public String cname;
-		public Integer bday;
+		public String nickname;
+		public Integer statementDay;
 		public Long amount;
 		public String memo;
 		public String imgUrl;
@@ -21,8 +19,8 @@ public class CardRequest {
 	public static class Update {
 		public CardType type;
 		public String name;
-		public String cname;
-		public Integer bday;
+		public String nickname;
+		public Integer statementDay;
 		public Long amount;
 		public String memo;
 		public String imgUrl;

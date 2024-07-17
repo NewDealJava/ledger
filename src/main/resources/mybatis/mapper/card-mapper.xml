@@ -7,7 +7,7 @@
 
     <insert id="createCard" parameterType="map">
         INSERT INTO card (email, name, cname, type, bday, imgurl, memo, amount)
-        VALUES (#{email}, #{request.name}, #{request.cname}, #{request.type}, #{request.bday}, #{request.imgUrl},
+        VALUES (#{email}, #{request.name}, #{request.nickname}, #{request.type}, #{request.statementDay}, #{request.imgUrl},
                 #{request.memo}, #{request.amount})
     </insert>
 
@@ -16,8 +16,8 @@
         SET
             type = #{request.type},
             name = #{request.name},
-            cname = #{request.cname},
-            bday = #{request.bday},
+            cname = #{request.nickname},
+            bday = #{request.statementDay},
             imgUrl = #{request.imgUrl},
             memo = #{request.memo},
             amount = #{request.amount}

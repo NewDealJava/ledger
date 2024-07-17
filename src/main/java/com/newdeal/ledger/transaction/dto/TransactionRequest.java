@@ -63,4 +63,17 @@ public class TransactionRequest {
 			return LocalDateTime.of(date, time);
 		}
 	}
+
+	@Data
+	public static class MultiFilter{
+		private int year;
+		private int month;
+		private List<Integer> subCategoryIds;
+		private List<Integer> tagIds;
+		private List<Integer> installment;
+		private List<RepeatType> repeatType;
+		private List<SourceType> sourceType;
+		private List<Integer> sourceIds;
+		private String keyword;
+	}
 }

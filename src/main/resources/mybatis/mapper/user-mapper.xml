@@ -5,36 +5,17 @@
 
 <mapper namespace="com.newdeal.ledger.user.mapper.UserMapper">
 
-
-    <!-- <select id="findAll" resultType="com.newdeal.ledger.sample.dto.SampleDto">
-        SELECT * FROM sample
-    </select>
-
-    <select id="findById" parameterType="long" resultType="com.newdeal.ledger.sample.dto.SampleDto">
-        SELECT * FROM sample WHERE id = #{id}
-    </select> -->
-
-    <insert id="insert" parameterType="com.newdeal.ledger.user.dto.UserDto" >
-        INSERT INTO ymember (email, password, name, phone, address)
-        VALUES (#{email}, #{password}, #{name}, #{phone}, #{address})
+    <insert id="save" parameterType="com.newdeal.ledger.user.dto.UserDto" >
+        INSERT INTO ymember (email, password, name, phone, address, profile_image)
+        VALUES (#{email}, #{password}, #{name}, #{phone}, #{address}, #{profileImage})
     </insert>
 
-    <select id="existsByEmail" resultType="boolean" >
-        SELECT IF(COUNT(*) = 1, 1, 0) FROM ymember WHERE email = #{email}
+    <select id="existsByPhone" resultType="boolean" >
+        SELECT IF(COUNT(*) = 1, 1, 0) FROM ymember WHERE phone = #{phone}
     </select>
 
     <select id="findByEmail" parameterType="String" resultType="com.newdeal.ledger.user.dto.UserDto">
         SELECT * FROM ymember WHERE email = #{email}
     </select>
-
-    <!-- <update id="update" parameterType="com.newdeal.ledger.sample.dto.SampleDto">
-        UPDATE sample
-        SET title = #{title}, content = #{content}
-        WHERE id = #{id}
-    </update>
-
-    <delete id="deleteById" parameterType="long">
-        DELETE FROM sample WHERE id = #{id}
-    </delete> -->
 
 </mapper>

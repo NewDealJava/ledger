@@ -8,9 +8,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class CategoryDto {
-	public Integer cno;
+	public Integer categoryId;
 	public CategoryType type;
 	public String name;
-	public Integer parentCno;
-
+	public Integer parentCategoryId;
 }

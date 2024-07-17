@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.newdeal.ledger.category.dto.CategoryDto;
+import com.newdeal.ledger.category.dto.CategoryResponse;
 import com.newdeal.ledger.category.service.CategoryService;
 
 import lombok.RequiredArgsConstructor;
@@ -22,18 +23,18 @@ public class CategoryRestController {
 
 	@GetMapping("/all")
 	@ResponseStatus(HttpStatus.OK)
-	public List<CategoryDto> getCategories() {
+	public List<CategoryResponse.GetOne> getCategories() {
 		return categoryService.getCategories();
 	}
 
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
-	public List<CategoryDto> getCategoriesByTransactionType(@RequestParam String type) {
+	public List<CategoryResponse.GetOne> getCategoriesByTransactionType(@RequestParam String type) {
 		return categoryService.getCategoriesByTransactionType(type);
 	}
 
 	@GetMapping("/subcategory")
-	public List<CategoryDto> getSubcategories(@RequestParam Integer parentCno) {
-		return categoryService.getSubcategories(parentCno);
+	public List<CategoryResponse.GetOne> getSubcategories(@RequestParam Integer parentCategoryId) {
+		return categoryService.getSubcategories(parentCategoryId);
 	}
 }

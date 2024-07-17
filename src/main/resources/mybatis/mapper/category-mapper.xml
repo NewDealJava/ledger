@@ -6,35 +6,35 @@
 <mapper namespace="com.newdeal.ledger.category.mapper.CategoryMapper">
 
     <!-- parent_cno가 null인 카테고리 리스트를 조회하는 쿼리 -->
-    <select id="findCategories" resultType="com.newdeal.ledger.category.dto.CategoryDto">
-        SELECT cno,
+    <select id="findCategories" resultType="com.newdeal.ledger.category.dto.CategoryResponse$GetOne">
+        SELECT cno AS categoryId,
                type,
                name,
-               parent_cno as parentCno
+               parent_cno as parentCategoryId
         FROM category
         WHERE parent_cno IS NULL
     </select>
 
-    <select id="findCategoriesByType" resultType="com.newdeal.ledger.category.dto.CategoryDto"
+    <select id="findCategoriesByType" resultType="com.newdeal.ledger.category.dto.CategoryResponse$GetOne"
             parameterType="String">
-        SELECT cno,
+        SELECT cno AS categoryId,
                type,
                name,
-               parent_cno as parentCno
+               parent_cno as parentCategoryId
         FROM category
         WHERE parent_cno IS NULL
           AND type = #{type}
 
     </select>
 
-    <select id="findSubcategoriesByCategoryId" resultType="com.newdeal.ledger.category.dto.CategoryDto"
+    <select id="findSubcategoriesByCategoryId" resultType="com.newdeal.ledger.category.dto.CategoryResponse$GetOne"
             parameterType="Integer">
-        SELECT cno,
+        SELECT cno AS categoryId,
                type,
                name,
-               parent_cno as parentCno
+               parent_cno as parentCategoryId
         FROM category
-        WHERE parent_cno = #{categoryId}
+        WHERE parent_cno = #{parentCategoryId}
     </select>
 
 </mapper>

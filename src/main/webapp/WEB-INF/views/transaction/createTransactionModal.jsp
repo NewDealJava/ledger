@@ -175,7 +175,7 @@
                 success: function (data) {
                     data.forEach(function (category) {
                         const option = document.createElement("option");
-                        option.value = category.cno;
+                        option.value = category.categoryId;
                         option.text = category.name;
                         categorySelect.add(option);
                     });
@@ -198,12 +198,12 @@
             $.ajax({
                 url: '/api/category/subcategory',
                 method: 'GET',
-                data: {parentCno: selectedCategory},
+                data: {parentCategoryId: selectedCategory},
                 dataType: 'json',
                 success: function (data) {
                     data.forEach(function (subcategory) {
                         const option = document.createElement("option");
-                        option.value = subcategory.cno;
+                        option.value = subcategory.categoryId;
                         option.text = subcategory.name;
                         subcategorySelect.add(option);
                     });

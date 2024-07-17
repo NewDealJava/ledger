@@ -3,11 +3,12 @@ package com.newdeal.ledger.category.service;
 import java.util.List;
 
 import com.newdeal.ledger.category.dto.CategoryDto;
+import com.newdeal.ledger.category.dto.CategoryResponse;
 
 public interface CategoryService {
 
-	List<CategoryDto> getCategories();
-	List<CategoryDto> getCategoriesByTransactionType(String type);
+	List<CategoryResponse.GetOne> getCategories();
+	List<CategoryResponse.GetOne> getCategoriesByTransactionType(String type);
 
-	List<CategoryDto> getSubcategories(Integer parentCno);
+	List<CategoryResponse.GetOne> getSubcategories(Integer parentCategoryId);
 }

@@ -1,4 +1,4 @@
-package com.newdeal.ledger.categorytag.dto;
+package com.newdeal.ledger.tag.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

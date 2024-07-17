@@ -1,12 +1,12 @@
-package com.newdeal.ledger.categorytag.service;
+package com.newdeal.ledger.tag.service;
 
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.newdeal.ledger.categorytag.dto.TagDto;
-import com.newdeal.ledger.categorytag.dto.TagRequest;
-import com.newdeal.ledger.categorytag.mapper.TagMapper;
+import com.newdeal.ledger.tag.dto.TagDto;
+import com.newdeal.ledger.tag.dto.TagRequest;
+import com.newdeal.ledger.tag.mapper.TagMapper;
 
 import lombok.RequiredArgsConstructor;
 
@@ -15,21 +15,24 @@ import lombok.RequiredArgsConstructor;
 public class TagServiceImpl implements TagService {
 	private final TagMapper mapper;
 
-	public List<TagDto> selectAllByEmail(String email) {
-		return mapper.findAllByEmail(email);
-	}
-
+	@Override
 	public void createTag(String email, TagRequest.Create request) {
 		mapper.createTag(email, request);
 	}
 
+	@Override
 	public void updateTag(Integer tagId, TagRequest.Update request) {
 		mapper.updateTag(tagId, request);
 	}
 
-	public void deleteTag(Integer tagId) {
+	@Override
+	public void removeTag(Integer tagId) {
 		mapper.deleteTransactionTagByTagId(tagId);
 		mapper.deleteTag(tagId);
 	}
 
+	@Override
+	public List<TagDto> getTagsByEmail(String email) {
+		return mapper.findTagsByEmail(email);
+	}
 }

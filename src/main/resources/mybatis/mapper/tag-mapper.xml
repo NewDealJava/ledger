@@ -3,14 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.newdeal.ledger.categorytag.mapper.TagMapper">
-
-    <select id="findAllByEmail" resultType="com.newdeal.ledger.categorytag.dto.TagDto" parameterType="String">
-        SELECT tno, email, name
-        FROM tag
-        WHERE email = #{email}
-    </select>
-
+<mapper namespace="com.newdeal.ledger.tag.mapper.TagMapper">
     <insert id="createTag" parameterType="map">
         INSERT INTO tag (name, email)
         VALUES (#{request.name}, #{email})
@@ -28,10 +21,15 @@
         WHERE tno = #{tagId}
     </delete>
 
+    <select id="findTagsByEmail" resultType="com.newdeal.ledger.tag.dto.TagDto" parameterType="String">
+        SELECT tno, email, name
+        FROM tag
+        WHERE email = #{email}
+    </select>
+
     <delete id="deleteTransactionTagByTagId">
         DELETE
         FROM transactiontag
         WHERE tgno = #{tagId}
     </delete>
-
 </mapper>

@@ -1,4 +1,4 @@
-package com.newdeal.ledger.categorytag.controller;
+package com.newdeal.ledger.tag.api;
 
 import java.util.List;
 
@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.newdeal.ledger.categorytag.dto.TagDto;
-import com.newdeal.ledger.categorytag.dto.TagRequest;
-import com.newdeal.ledger.categorytag.service.TagService;
+import com.newdeal.ledger.tag.dto.TagDto;
+import com.newdeal.ledger.tag.dto.TagRequest;
+import com.newdeal.ledger.tag.service.TagService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,13 +25,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class TagRestController {
 	private final TagService tagService;
-
-	@GetMapping
-	@ResponseStatus(HttpStatus.OK)
-	public List<TagDto> getAllTagsByEmail() {
-		String tempEmail = "user1@example.com";
-		return tagService.selectAllByEmail(tempEmail);
-	}
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
@@ -44,14 +37,19 @@ public class TagRestController {
 	@ResponseStatus(HttpStatus.OK)
 	public void updateTag(@PathVariable Integer tagId, @RequestBody TagRequest.Update request) {
 		tagService.updateTag(tagId, request);
-
 	}
 
 	@DeleteMapping(value = "/{tagId}")
 	@ResponseStatus(HttpStatus.OK)
-	public void deleteTag(@PathVariable Integer tagId) {
-		tagService.deleteTag(tagId);
+	public void removeTag(@PathVariable Integer tagId) {
+		tagService.removeTag(tagId);
+	}
 
+	@GetMapping
+	@ResponseStatus(HttpStatus.OK)
+	public List<TagDto> getTagsByEmail() {
+		String tempEmail = "user1@example.com";
+		return tagService.getTagsByEmail(tempEmail);
 	}
 
 }

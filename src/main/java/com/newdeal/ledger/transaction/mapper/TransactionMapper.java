@@ -9,11 +9,14 @@ import com.newdeal.ledger.transaction.dto.SourceDto;
 import com.newdeal.ledger.transaction.dto.TransactionDto;
 import com.newdeal.ledger.transaction.dto.TransactionRequest;
 import com.newdeal.ledger.transaction.dto.TransactionResponse;
+import com.newdeal.ledger.transaction.dto.TransactionTagDto;
 
 @Mapper
 public interface TransactionMapper {
 
 	Integer createTransaction(@Param("email") String email, @Param("request") TransactionRequest.Create request);
+
+	Integer createTransactionByDto(@Param("transactionDto") TransactionDto transactionDto);
 
 	void updateTransactionById(
 		@Param("transactionId") Integer transactionId,
@@ -32,7 +35,7 @@ public interface TransactionMapper {
 
 	TransactionDto findTransactionDtoById(Integer transactionId);
 
-	List<SourceDto> findSourcesByEmail(String email);
+	List<TransactionDto> findRepeatTypeTransactionDto();
 
 	void createTransactionTag(
 		@Param("transactionId") Integer transactionId,
@@ -41,4 +44,7 @@ public interface TransactionMapper {
 
 	void deleteTransactionTagByTransactionId(Integer transactionId);
 
+	List<TransactionTagDto> findTransactionTagByTransactionId(Integer transactionId);
+
+	List<SourceDto> findSourcesByEmail(String email);
 }

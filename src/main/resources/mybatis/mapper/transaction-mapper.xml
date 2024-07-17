@@ -51,6 +51,31 @@
             );
     </insert>
 
+    <insert id="createTransactionByDto" parameterType="map" useGeneratedKeys="true"
+            keyProperty="transactionDto.transactionId">
+        INSERT INTO `transaction`
+        (
+            `email`, `cno`, `type`, `stype`, `sno`, `keyword`,
+            `samount`, `installment`, `imageUrl`, `tsmemo`,
+            `time`, `rtype`
+        )
+        VALUES
+            (
+                #{transactionDto.email},
+                #{transactionDto.subCategoryId},
+                #{transactionDto.transactionType},
+                #{transactionDto.sourceType},
+                #{transactionDto.sourceId},
+                #{transactionDto.keyword},
+                #{transactionDto.amount},
+                #{transactionDto.installment},
+                #{transactionDto.imageUrl},
+                #{transactionDto.memo},
+                #{transactionDto.time},
+                #{transactionDto.repeatType}
+            );
+    </insert>
+
     <update id="updateTransactionById" parameterType="map">
         UPDATE `transaction`
         SET
@@ -151,6 +176,49 @@
         WHERE tno = #{transactionId}
     </select>
 
+    <select id="findRepeatTypeTransactionDto" resultType="com.newdeal.ledger.transaction.dto.TransactionDto">
+        SELECT tno         AS transactionId,
+               email       AS email,
+               cno         AS subCategoryId,
+               type        AS transactionType,
+               stype       AS sourceType,
+               sno         AS sourceId,
+               keyword     AS keyword,
+               samount     AS amount,
+               installment AS installment,
+               imageUrl    AS imageUrl,
+               tsmemo      AS memo, time AS time, rtype AS repeatType
+        FROM `transaction`
+        WHERE
+            (`rtype` = 'WEEKLY'
+          AND DATE (`time`) = DATE_SUB(CURDATE()
+            , INTERVAL 1 WEEK))
+           OR
+            (`rtype` = 'MONTHLY'
+          AND DATE (`time`) = DATE_SUB(CURDATE()
+            , INTERVAL 1 MONTH));
+    </select>
+
+    <insert id="createTransactionTag" parameterType="map">
+        INSERT INTO `transactiontag` (tsno, tgno)
+        VALUES
+        <foreach collection="tagIdList" item="tagId" separator=",">
+            (#{transactionId}, #{tagId})
+        </foreach>
+    </insert>
+
+    <delete id="deleteTransactionTagByTransactionId" parameterType="int">
+        DELETE FROM `transactiontag`
+        WHERE `tsno` = #{transactionId}
+    </delete>
+
+    <select id="findTransactionTagByTransactionId"  resultType = "com.newdeal.ledger.transaction.dto.TransactionTagDto"  parameterType="int">
+        SELECT tsno AS transactionId,
+               tgno   AS tagId
+        FROM `transactiontag`
+        WHERE tsno = #{transactionId}
+    </select>
+
     <select id="findSourcesByEmail" parameterType="String" resultType="com.newdeal.ledger.transaction.dto.SourceDto">
         SELECT 'ACCOUNT' as sourceType,
                CASE type
@@ -172,18 +240,5 @@
         FROM card
         WHERE email = #{email}
     </select>
-
-    <insert id="createTransactionTag" parameterType="map">
-        INSERT INTO `transactiontag` (tsno, tgno)
-        VALUES
-        <foreach collection="tagIdList" item="tagId" separator=",">
-            (#{transactionId}, #{tagId})
-        </foreach>
-    </insert>
-
-    <delete id="deleteTransactionTagByTransactionId" parameterType="int">
-        DELETE FROM `transactiontag`
-        WHERE `tsno` = #{transactionId}
-    </delete>
 
 </mapper>

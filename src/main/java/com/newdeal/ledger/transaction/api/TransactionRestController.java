@@ -50,13 +50,13 @@ public class TransactionRestController {
 	@ResponseStatus(HttpStatus.OK)
 	public List<TransactionResponse.GetList> getTransactions(@RequestParam int year, @RequestParam int month) {
 		String tempEmail = "user1@example.com";
-
 		return transactionService.getTransactionsByMonth(tempEmail, year, month);
 	}
 
 	@GetMapping(value = "/{transactionId}")
 	@ResponseStatus(HttpStatus.OK)
 	public TransactionResponse.GetOne getTransactionById(@PathVariable Integer transactionId) {
+		transactionService.createRepeatTypeTransactions();
 		return transactionService.getTransactionById(transactionId);
 	}
 

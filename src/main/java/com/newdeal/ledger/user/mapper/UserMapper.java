@@ -6,9 +6,10 @@ import com.newdeal.ledger.user.dto.UserDto;
 
 @Mapper
 public interface UserMapper {
-	void insert(UserDto user);
-
-	boolean existsByEmail(String email);
 
 	UserDto findByEmail(String email);
+
+	boolean existsByPhone(String phone);
+
+	void save(UserDto dto);
 }

@@ -178,21 +178,22 @@ $(document).ready(() => {
       }),
       contentType: "application/json; charset=utf-8",
       dataType: "text",
-      success: (data, textStatus, jqXHR) => {
-        const redirectUrl = jqXHR.getResponseHeader("Location");
-        if (redirectUrl) {
+      success: (data) => {
+        if (data) {
           sessionStorage.setItem(
             "successMessage",
             "회원가입에 성공하였습니다!"
           );
-          window.location.href = redirectUrl;
+          window.location.href = "/sign-in";
         }
       },
-      error: (jqXHR, textStatus, errorThrown) => {
-        Toast.fire({
-          icon: "error",
-          title: "회원가입 실패: 서버 오류입니다.",
-        });
+      error: (error) => {
+        if (error.status === 400) {
+          Toast.fire({
+            icon: "error",
+            title: "이미 존재하는 휴대전화 번호입니다.",
+          });
+        }
       },
     });
   });

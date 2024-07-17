@@ -43,21 +43,28 @@ $(document).ready(() => {
       }),
       contentType: "application/json; charset=utf-8",
       dataType: "text",
-      success: (data, textStatus, jqXHR) => {
-        const redirectUrl = jqXHR.getResponseHeader("Location");
-        if (redirectUrl) {
+      success: (data) => {
+        if (data) {
           sessionStorage.setItem(
             "successMessage",
-            "${user.name}님 환영합니다!"
+            "님 환영합니다!"
           );
-          window.location.href = redirectUrl;
+          window.location.href = "/user/mypage";
         }
       },
-      error: (jqXHR, textStatus, errorThrown) => {
+      error: (error) => {
+        if (error.status === 400) {
         Toast.fire({
           icon: "error",
-          title: "서버 오류입니다.",
+          title: "비밀번호가 일치하지 않습니다.",
         });
+        }
+        if (error.status === 404) {
+        Toast.fire({
+          icon: "error",
+          title: "존재하지 않는 이메일입니다.",
+        });
+        }
       },
     });
   });

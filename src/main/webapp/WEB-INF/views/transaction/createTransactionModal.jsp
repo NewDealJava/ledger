@@ -228,7 +228,7 @@
                         button.type = "button";
                         button.className = "tag-button";
                         button.textContent = tag.name;
-                        button.dataset.tagId = tag.tno;
+                        button.dataset.tagId = tag.tagId;
                         button.onclick = function () {
                             this.classList.toggle("selected");
                             updateSelectedTags(hiddenInput, tagContainer);

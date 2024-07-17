@@ -21,8 +21,10 @@
         WHERE tno = #{tagId}
     </delete>
 
-    <select id="findTagsByEmail" resultType="com.newdeal.ledger.tag.dto.TagDto" parameterType="String">
-        SELECT tno, email, name
+    <select id="findTagsByEmail" resultType="com.newdeal.ledger.tag.dto.TagResponse$GetOne" parameterType="String">
+        SELECT tno AS tagId,
+               email,
+               name
         FROM tag
         WHERE email = #{email}
     </select>

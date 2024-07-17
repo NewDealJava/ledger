@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.newdeal.ledger.tag.dto.TagDto;
 import com.newdeal.ledger.tag.dto.TagRequest;
+import com.newdeal.ledger.tag.dto.TagResponse;
 import com.newdeal.ledger.tag.mapper.TagMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -32,7 +33,7 @@ public class TagServiceImpl implements TagService {
 	}
 
 	@Override
-	public List<TagDto> getTagsByEmail(String email) {
+	public List<TagResponse.GetOne> getTagsByEmail(String email) {
 		return mapper.findTagsByEmail(email);
 	}
 }

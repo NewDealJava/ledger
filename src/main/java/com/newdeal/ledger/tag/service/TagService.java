@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.newdeal.ledger.tag.dto.TagDto;
 import com.newdeal.ledger.tag.dto.TagRequest;
+import com.newdeal.ledger.tag.dto.TagResponse;
 
 public interface TagService {
 	void createTag(String email, TagRequest.Create request);
@@ -12,5 +13,5 @@ public interface TagService {
 
 	void removeTag(Integer tagId);
 
-	List<TagDto> getTagsByEmail(String email);
+	List<TagResponse.GetOne> getTagsByEmail(String email);
 }

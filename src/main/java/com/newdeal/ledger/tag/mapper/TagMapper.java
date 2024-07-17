@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.newdeal.ledger.tag.dto.TagDto;
 import com.newdeal.ledger.tag.dto.TagRequest;
+import com.newdeal.ledger.tag.dto.TagResponse;
 
 @Mapper
 public interface TagMapper {
@@ -16,7 +17,7 @@ public interface TagMapper {
 
 	void deleteTag(Integer tagId);
 
-	List<TagDto> findTagsByEmail(String email);
+	List<TagResponse.GetOne> findTagsByEmail(String email);
 
 	void deleteTransactionTagByTagId(Integer tagId);
 

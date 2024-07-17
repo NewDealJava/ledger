@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class TagDto {
-	public Integer tno;
+	public Integer tagId;
 	public String email;
 	public String name;
 }

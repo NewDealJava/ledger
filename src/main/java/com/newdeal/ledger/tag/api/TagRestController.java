@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.newdeal.ledger.tag.dto.TagDto;
 import com.newdeal.ledger.tag.dto.TagRequest;
+import com.newdeal.ledger.tag.dto.TagResponse;
 import com.newdeal.ledger.tag.service.TagService;
 
 import lombok.RequiredArgsConstructor;
@@ -47,7 +48,7 @@ public class TagRestController {
 
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
-	public List<TagDto> getTagsByEmail() {
+	public List<TagResponse.GetOne> getTagsByEmail() {
 		String tempEmail = "user1@example.com";
 		return tagService.getTagsByEmail(tempEmail);
 	}

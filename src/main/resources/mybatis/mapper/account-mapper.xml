@@ -3,25 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.newdeal.ledger.cardaccount.mapper.AccountMapper">
-
-    <!-- 이메일로 모든 계정 정보를 조회하는 SQL 쿼리 -->
-    <select id="findAllByEmail" resultType="com.newdeal.ledger.cardaccount.dto.AccountDto" parameterType="String">
-        SELECT
-            ano,
-            email,
-            name,
-            cname,
-            type,
-            imgUrl,
-            memo,
-            amount,
-            isExcept
-        FROM
-            account
-        WHERE
-            email = #{email}
-    </select>
+<mapper namespace="com.newdeal.ledger.account.mapper.AccountMapper">
 
     <insert id="createAccount" parameterType="map">
         INSERT INTO account (email, name, cname, type, imgUrl, memo, amount)
@@ -46,5 +28,23 @@
         FROM account
         WHERE ano = #{accountId}
     </delete>
+
+    <!-- 이메일로 모든 계정 정보를 조회하는 SQL 쿼리 -->
+    <select id="findAccountsByEmail" resultType="com.newdeal.ledger.account.dto.AccountDto" parameterType="String">
+        SELECT
+            ano,
+            email,
+            name,
+            cname,
+            type,
+            imgUrl,
+            memo,
+            amount,
+            isExcept
+        FROM
+            account
+        WHERE
+            email = #{email}
+    </select>
 
 </mapper>

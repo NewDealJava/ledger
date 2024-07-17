@@ -1,12 +1,12 @@
-package com.newdeal.ledger.cardaccount.service;
+package com.newdeal.ledger.account.service;
 
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.newdeal.ledger.cardaccount.dto.AccountDto;
-import com.newdeal.ledger.cardaccount.dto.AccountRequest;
-import com.newdeal.ledger.cardaccount.mapper.AccountMapper;
+import com.newdeal.ledger.account.dto.AccountDto;
+import com.newdeal.ledger.account.dto.AccountRequest;
+import com.newdeal.ledger.account.mapper.AccountMapper;
 
 import lombok.RequiredArgsConstructor;
 
@@ -16,12 +16,7 @@ public class AccountServiceImpl implements AccountService {
 	private final AccountMapper mapper;
 
 	@Override
-	public List<AccountDto> selectAllByEmail(String email) {
-		return mapper.findAllByEmail(email);
-	}
-
-	@Override
-	public void createAccount(String email, AccountRequest.Create request){
+	public void createAccount(String email, AccountRequest.Create request) {
 		mapper.createAccount(email, request);
 	}
 
@@ -31,7 +26,13 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	@Override
-	public void deleteAccount(Integer accountId) {
+	public void removeAccount(Integer accountId) {
 		mapper.deleteAccount(accountId);
 	}
+
+	@Override
+	public List<AccountDto> getAccountsByEmail(String email) {
+		return mapper.findAccountsByEmail(email);
+	}
+
 }

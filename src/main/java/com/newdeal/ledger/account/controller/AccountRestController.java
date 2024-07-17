@@ -1,4 +1,4 @@
-package com.newdeal.ledger.cardaccount.controller;
+package com.newdeal.ledger.account.controller;
 
 import java.util.List;
 
@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.newdeal.ledger.cardaccount.dto.AccountDto;
-import com.newdeal.ledger.cardaccount.dto.AccountRequest;
-import com.newdeal.ledger.cardaccount.service.AccountService;
+import com.newdeal.ledger.account.dto.AccountDto;
+import com.newdeal.ledger.account.dto.AccountRequest;
+import com.newdeal.ledger.account.service.AccountService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,19 +26,10 @@ import lombok.RequiredArgsConstructor;
 public class AccountRestController {
 	private final AccountService accountService;
 
-	@GetMapping
-	@ResponseStatus(HttpStatus.OK)
-	public List<AccountDto> getAllAccountsByEmail() {
-		String tempEmail = "user1@example.com";
-
-		return accountService.selectAllByEmail(tempEmail);
-	}
-
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public void createAccount (@ModelAttribute AccountRequest.Create request) {
 		String tempEmail = "user1@example.com";
-
 		accountService.createAccount(tempEmail, request);
 	}
 
@@ -50,7 +41,15 @@ public class AccountRestController {
 
 	@DeleteMapping(value = "/{accountId}")
 	@ResponseStatus(HttpStatus.OK)
-	public void deleteAccount(@PathVariable Integer accountId) {
-		accountService.deleteAccount(accountId);
+	public void removeAccount(@PathVariable Integer accountId) {
+		accountService.removeAccount(accountId);
+	}
+
+	@GetMapping
+	@ResponseStatus(HttpStatus.OK)
+	public List<AccountDto> getAccountsByEmail() {
+		String tempEmail = "user1@example.com";
+
+		return accountService.getAccountsByEmail(tempEmail);
 	}
 }

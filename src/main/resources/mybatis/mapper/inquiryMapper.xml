@@ -2,15 +2,33 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.newdeal.ledger.inquiry.mapper.InquiryMapper">
-
     <!--1. 문의게시판_전체리스트 가져오기 -->
     <select id="iSelectAll" resultType="com.newdeal.ledger.inquiry.dto.InquiryDto">
-        SELECT * FROM qboard ORDER BY qbno DESC LIMIT 10 offset #{startContRowNum}
+        SELECT * FROM qboard
+
+            <if test="searchCategory != 'All'">
+              where ${searchCategory} LIKE CONCAT('%', #{searchWord}, '%')
+            </if>
+            <if test="searchCategory == 'All' and searchWord != null">
+                where (Qtitle LIKE CONCAT('%', #{searchWord}, '%')
+                OR Qcontent LIKE CONCAT('%', #{searchWord}, '%')
+                OR Email LIKE CONCAT('%', #{searchWord}, '%'))
+            </if>
+        ORDER BY qbno DESC LIMIT 10 OFFSET #{startContRowNum}
     </select>
 
-    <!--1-ⓐ. 문의게시판 전체리스크 총갯수1 -->
+    <!--1-ⓐ. 문의게시판 전체리스크 총갯수 -->
     <select id="iSelectCountAll" resultType="int">
-        select count(*) from qboard
+        SELECT COUNT(*)
+        FROM qboard
+            <if test="searchCategory != 'All'">
+              where ${searchCategory} LIKE CONCAT('%', #{searchWord}, '%')
+            </if>
+            <if test="searchCategory == 'All' and searchWord != null">
+                where (Qtitle LIKE CONCAT('%', #{searchWord}, '%')
+                OR Qcontent LIKE CONCAT('%', #{searchWord}, '%')
+                OR Email LIKE CONCAT('%', #{searchWord}, '%'))
+            </if>
     </select>
 
     <!--2. 문의게시판 게시글 1개 가져오기 -->
@@ -36,4 +54,15 @@
     <update id="iDoUpdate">
         update qboard set qtitle=#{qtitle}, qcontent=#{qcontent},qdate=NOW() where qbno=#{qbno}
     </update>
+
+    <!--6. 문의게시판_하단댓글 모두가져오기 -->
+    <select id="iCommentSelectAll" parameterType="int" resultType="com.newdeal.ledger.inquiry.dto.CommentDto">
+        select * from qcomment where qbno =#{qbno}
+    </select>
+    <!--6-ⓐ. 문의게시판_하단댓글 모두가져오기 -->
+    <select id="iCommentContSelectAll" parameterType="int" resultType="int">
+        select count(*) from qcomment where qbno=#{qbno}
+    </select>
+
+
 </mapper>

@@ -115,6 +115,99 @@
   background: none;
 }
 
+.board-detail-comment-list ul li {
+  margin: 0 !important;
+  padding: 15px 0 0 0 !important;
+  list-style: none;
+  border: 0;
+  background: none;
+}
+
+.comment-list-writer {
+  float: left;
+  margin: 0;
+  padding-right: 10px;
+  width: auto;
+  font-size: 13px;
+  color: #3b3b3b;
+  font-weight: bold;
+  line-height: 24px;
+  margin-left: 2px;
+}
+
+.comment-list-writer img {
+  border: 0;
+  display: inline;
+  margin: 0 3px 0 0;
+  width: 24px;
+  max-width: none;
+  height: 24px;
+  vertical-align: middle;
+  border-radius: 50%;
+}
+
+.comment-list-date {
+  float: left;
+  margin: 0;
+  padding-right: 10px;
+  width: auto;
+  font-size: 12px;
+  color: gray;
+  line-height: 24px;
+}
+
+.comment-list-content {
+  line-height: 24px;
+  padding: 5px 30px 5px 2px;
+  font-size: 14px;
+  clear: both;
+  color: #3b3b3b;
+  overflow: hidden;
+}
+
+.comment-list-controller {
+  clear: both;
+  overflow: hidden;
+  line-height: 1;
+}
+
+.comment-list-controller .left {
+  position: static;
+  float: left;
+}
+
+.comment-list-controller .right {
+  position: static;
+  float: right;
+  text-align: right;
+}
+
+.comment-button {
+  margin: 0 0 5px 0;
+  padding: 3px 4px;
+  font-size: 12px;
+  font-weight: normal;
+  line-height: 12px;
+  text-align: left;
+  border: 1px solid #ededed;
+  background: none;
+  background-color: white;
+  border-radius: 2px;
+  letter-spacing: normal;
+  cursor: pointer;
+  vertical-align: middle;
+  text-shadow: none;
+  box-shadow: none;
+}
+
+.button-delete,
+.button-update,
+.button-cancle,
+.button-save {
+  color: gray;
+  margin-top: 5px;
+}
+
 .board-detail-comment-default form {
   margin: 0;
   padding: 0;
@@ -130,8 +223,23 @@
   line-height: 28px;
 }
 
-.board-detail-comment-form textarea {
+.board-detail-comment-form .comment-content {
   margin: 0;
+  padding: 5px;
+  width: 100%;
+  height: 60px;
+  border: 1px solid #eaeaea;
+  font-size: 13px;
+  background-color: white;
+  color: #8a8a8a;
+  vertical-align: top;
+  overflow: hidden;
+  resize: none;
+}
+
+.comment-edit-content {
+  margin: 0;
+  margin-top: 5px;
   padding: 5px;
   width: 100%;
   height: 60px;

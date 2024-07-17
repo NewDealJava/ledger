@@ -7,10 +7,10 @@ package com.newdeal.ledger.inquiry.service;// package com.newdeal.ledger.inquiry
 public interface InquiryService {
 
  	// ▶ 1.문의 게시판 전체 리스트 가져오기
- 	Map<String, Object> iSelectAll(int page);
+ 	Map<String, Object> iSelectAll(int page, String searchCategory, String searchWord);
 
     // ▶ 2.문의 게시판_게시물 1개 가져오기
-    InquiryDto iSelectOne(int qbno);
+    Map<String, Object> iSelectOne(int qbno);
 
     // ▶ 3.문의 게시판_게시물 1개 작성하기(feat.파일업로드)
     void iWrite(InquiryDto ibdto);

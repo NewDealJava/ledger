@@ -1,4 +1,5 @@
 .header {
+  width: 100%;
   position: fixed;
   box-shadow: none;
 
@@ -13,15 +14,22 @@
 
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
 }
 
-.header .logo {
+.header-wrapper {
+  width: 1440px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header .header-wrapper .logo {
   float: left;
   padding: 16px 23px;
 }
 
-.header .logo h1 {
+.header .header-wrapper .logo h1 {
   position: absolute;
   opacity: 0;
   text-indent: -1000px;
@@ -31,16 +39,65 @@
   display: flex;
   list-style: none;
   gap: 10px;
+  position: relative;
 }
 
 .nav-bar .sign-in,
-.nav-bar .sign-up,
 .nav-bar .user-info {
   color: rgba(0, 0, 0, 1);
+  cursor: pointer;
 }
 
 .nav-bar .sign-in:hover,
-.nav-bar .sign-up:hover,
 .nav-bar .user-info:hover {
   color: rgba(0, 0, 0, 0.6);
+}
+
+.header-user-info-box {
+  position: absolute;
+
+  top: 25px;
+  right: 0;
+
+  background-color: rgba(255, 255, 255, 1);
+
+  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.25);
+}
+
+.header-user-info-mypage-button {
+  width: 143px;
+  height: 40px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 140%;
+}
+
+.header-user-info-mypage-button:hover {
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+.header-user-info-logout-button {
+  width: 143px;
+  height: 40px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  color: rgba(255, 0, 0, 0.5);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 140%;
+}
+
+.header-user-info-logout-button:hover {
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.03);
 }

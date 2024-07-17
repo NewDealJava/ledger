@@ -19,6 +19,7 @@ import com.newdeal.ledger.tag.dto.TagRequest;
 import com.newdeal.ledger.tag.dto.TagResponse;
 import com.newdeal.ledger.tag.service.TagService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -29,14 +30,14 @@ public class TagRestController {
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public void createTag(@ModelAttribute TagRequest.Create request) {
+	public void createTag(@ModelAttribute @Valid TagRequest.Create request) {
 		String tempEmail = "user1@example.com";
 		tagService.createTag(tempEmail, request);
 	}
 
 	@PutMapping(value = "/{tagId}")
 	@ResponseStatus(HttpStatus.OK)
-	public void updateTag(@PathVariable Integer tagId, @RequestBody TagRequest.Update request) {
+	public void updateTag(@PathVariable Integer tagId, @RequestBody @Valid TagRequest.Update request) {
 		tagService.updateTag(tagId, request);
 	}
 

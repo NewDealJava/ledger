@@ -19,6 +19,7 @@ import com.newdeal.ledger.card.dto.CardRequest;
 import com.newdeal.ledger.card.dto.CardResponse;
 import com.newdeal.ledger.card.service.CardService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -29,14 +30,14 @@ public class CardRestController {
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public void createCard(@ModelAttribute CardRequest.Create request) {
+	public void createCard(@ModelAttribute @Valid CardRequest.Create request) {
 		String tempEmail = "user1@example.com";
 		cardService.createCard(tempEmail, request);
 	}
 
 	@PutMapping(value = "/{cardId}")
 	@ResponseStatus(HttpStatus.OK)
-	public void updateCard(@PathVariable Integer cardId, @RequestBody CardRequest.Update request) {
+	public void updateCard(@PathVariable Integer cardId, @RequestBody @Valid CardRequest.Update request) {
 		cardService.updateCard(cardId, request);
 	}
 

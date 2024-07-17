@@ -1,4 +1,4 @@
-package com.newdeal.ledger.categorytag.dto.type;
+package com.newdeal.ledger.category.dto;
 
 public enum CategoryType {
 	INCOME, EXPENSE;

@@ -1,4 +1,4 @@
-package com.newdeal.ledger.categorytag.controller;
+package com.newdeal.ledger.category.api;
 
 import java.util.List;
 
@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.newdeal.ledger.categorytag.dto.CategoryDto;
-import com.newdeal.ledger.categorytag.service.CategoryService;
+import com.newdeal.ledger.category.dto.CategoryDto;
+import com.newdeal.ledger.category.service.CategoryService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,13 +23,13 @@ public class CategoryRestController {
 	@GetMapping("/all")
 	@ResponseStatus(HttpStatus.OK)
 	public List<CategoryDto> getCategories() {
-		return categoryService.selectAll();
+		return categoryService.getCategories();
 	}
 
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
-	public List<CategoryDto> getCategoriesByType(@RequestParam String type) {
-		return categoryService.getCategoriesByType(type);
+	public List<CategoryDto> getCategoriesByTransactionType(@RequestParam String type) {
+		return categoryService.getCategoriesByTransactionType(type);
 	}
 
 	@GetMapping("/subcategory")

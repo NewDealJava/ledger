@@ -2,9 +2,11 @@ package com.newdeal.ledger.transaction.service;
 
 import java.util.List;
 
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.newdeal.ledger.transaction.dto.SourceDto;
+import com.newdeal.ledger.transaction.dto.TransactionDto;
 import com.newdeal.ledger.transaction.dto.TransactionRequest;
 import com.newdeal.ledger.transaction.dto.TransactionResponse;
 import com.newdeal.ledger.transaction.mapper.TransactionMapper;
@@ -50,6 +52,26 @@ public class TransactionServiceImpl implements TransactionService {
 	@Override
 	public List<SourceDto> getSourcesByEmail(String email) {
 		return mapper.findSourcesByEmail(email);
+	}
+
+	@Scheduled(cron = "0 10 1 * * ?")
+	public void createRepeatTypeTransactions() {
+		System.out.println("ddddd start");
+		List<TransactionDto> repeatTypeTransactionDtoList = mapper.findRepeatTypeTransactionDto();
+
+		for (TransactionDto repeatTypeTransactionDto : repeatTypeTransactionDtoList) {
+			Integer repeatTypeTransactionId = repeatTypeTransactionDto.getTransactionId();
+
+			List<Integer> tagList = mapper.findTransactionTagByTransactionId(repeatTypeTransactionId)
+				.stream()
+				.map(transactionTagDto -> transactionTagDto.getTagId())
+				.toList();
+
+			mapper.createTransactionByDto(repeatTypeTransactionDto);
+			Integer newTransactionId = repeatTypeTransactionDto.getTransactionId();
+
+			mapper.createTransactionTag(newTransactionId, tagList);
+		}
 	}
 
 }

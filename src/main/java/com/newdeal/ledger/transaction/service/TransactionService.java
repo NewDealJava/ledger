@@ -20,4 +20,5 @@ public interface TransactionService {
 
 	List<SourceDto> getSourcesByEmail(String email);
 
+	void createRepeatTypeTransactions();
 }

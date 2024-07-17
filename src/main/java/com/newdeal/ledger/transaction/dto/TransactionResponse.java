@@ -1,6 +1,8 @@
 package com.newdeal.ledger.transaction.dto;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 import com.newdeal.ledger.transaction.dto.type.RepeatType;
@@ -28,6 +30,20 @@ public class TransactionResponse {
 		private String memo;
 		private LocalDateTime time;
 		private RepeatType repeatType;
+	}
+
+	@Data
+	public static class GetList {
+		public Integer transactionId;
+		public LocalDate date;
+		public LocalTime time;
+		public String category;
+		public String subCategory;
+		public String keyword;
+		public String amount;
+		public String memo;
+		public String installment;
+		public String tags;
 	}
 
 }

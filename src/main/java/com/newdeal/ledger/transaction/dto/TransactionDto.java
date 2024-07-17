@@ -14,18 +14,18 @@ import com.newdeal.ledger.transaction.dto.type.TransactionType;
 @NoArgsConstructor
 @Data
 public class TransactionDto {
-	private Integer tno;
+	private Integer transactionId;
 	private String email;
-	private Integer cno;
-	private TransactionType type;
-	private SourceType stype;
-	private Integer sno;
+	private Integer subCategoryId;
+	private TransactionType transactionType;
+	private SourceType sourceType;
+	private Integer sourceId;
 	private String keyword;
-	private Long samount;
+	private Long amount;
 	private Integer installment;
 	private String imageUrl;
-	private String tsmemo;
+	private String memo;
 	private LocalDateTime time;
-	private RepeatType rtype;
+	private RepeatType repeatType;
 
 }

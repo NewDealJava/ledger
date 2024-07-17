@@ -6,15 +6,12 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.newdeal.ledger.transaction.dto.SourceDto;
-import com.newdeal.ledger.transaction.dto.TransactionDto;
-import com.newdeal.ledger.transaction.dto.TransactionListDto;
 import com.newdeal.ledger.transaction.dto.TransactionRequest;
 import com.newdeal.ledger.transaction.dto.TransactionResponse;
-import com.newdeal.ledger.transaction.dto.TransactionTagDto;
 
 @Mapper
 public interface TransactionMapper {
-	List<TransactionListDto> findAllByMonth(
+	List<TransactionResponse.GetList> findAllByMonth(
 		@Param("email") String email,
 		@Param("year") int year,
 		@Param("month") int month

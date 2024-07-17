@@ -57,9 +57,9 @@
 
 
 
-    <select id="findAllByMonth" parameterType="map" resultType="com.newdeal.ledger.transaction.dto.TransactionListDto">
+    <select id="findAllByMonth" parameterType="map" resultType="com.newdeal.ledger.transaction.dto.TransactionResponse$GetList">
         SELECT
-            t.tno,
+            t.tno AS transactionId,
             DATE (t.time) AS date,
             TIME (t.time) AS time,
             parent_c.name AS category,
@@ -86,7 +86,6 @@
         GROUP BY
         t.tno;
     </select>
-
 
     <select id="findAllSourceByEmail" parameterType="String" resultType="com.newdeal.ledger.transaction.dto.SourceDto">
         SELECT 'ACCOUNT' as sourceType,
@@ -151,20 +150,17 @@
 
     <!-- TransactionDto를 찾기 위한 SQL문 -->
     <select id="findTransactionById" resultType="com.newdeal.ledger.transaction.dto.TransactionDto">
-        SELECT
-            tno,
-            email,
-            cno,
-            type,
-            stype,
-            sno,
-            keyword,
-            samount,
-            installment,
-            imageUrl,
-            tsmemo,
-            time,
-            rtype
+        SELECT tno         AS transactionId,
+               email       AS email,
+               cno         AS subCategoryId,
+               type        AS transactionType,
+               stype       AS sourceType,
+               sno         AS sourceId,
+               keyword     AS keyword,
+               samount     AS amount,
+               installment AS installment,
+               imageUrl    AS imageUrl,
+               tsmemo      AS memo, time AS time, rtype AS repeatType
         FROM `transaction`
         WHERE tno = #{transactionId}
     </select>

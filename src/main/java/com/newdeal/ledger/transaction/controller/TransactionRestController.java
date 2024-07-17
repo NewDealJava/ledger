@@ -50,7 +50,7 @@ public class TransactionRestController {
 
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
-	public List<TransactionListDto> getTransactions(@RequestParam int year, @RequestParam int month) {
+	public List<TransactionResponse.GetList> getTransactions(@RequestParam int year, @RequestParam int month) {
 		String tempEmail = "user1@example.com";
 
 		return transactionService.selectAllByMonth(tempEmail, year, month);

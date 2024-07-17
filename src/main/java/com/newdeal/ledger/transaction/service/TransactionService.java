@@ -9,7 +9,7 @@ import com.newdeal.ledger.transaction.dto.TransactionResponse;
 
 public interface TransactionService {
 
-	List<TransactionListDto> selectAllByMonth(String email, int year, int month);
+	List<TransactionResponse.GetList> selectAllByMonth(String email, int year, int month);
 
 	List<SourceDto> selectAllSourceByEmail(String email);
 

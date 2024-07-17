@@ -1,4 +1,4 @@
-package com.newdeal.ledger.report;
+package com.newdeal.ledger.view;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,4 +1,4 @@
-package com.newdeal.ledger.transaction.controller;
+package com.newdeal.ledger.transaction.api;
 
 import java.util.List;
 

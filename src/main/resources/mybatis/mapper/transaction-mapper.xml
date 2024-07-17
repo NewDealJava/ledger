@@ -102,7 +102,9 @@
         AND MONTH (t.time) = #{month}
         AND t.email = #{email}
         GROUP BY
-        t.tno;
+        t.tno
+        ORDER BY
+        t.time desc;
     </select>
 
     <select id="findTransactionById" parameterType="int" resultMap="TransactionResultMap">

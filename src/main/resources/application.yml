@@ -5,6 +5,11 @@ mybatis:
   mapper-locations: classpath:mybatis/mapper/*.xml
   config-location: classpath:mybatis/mybatis-config.xml
 
+springdoc:
+  api-docs.path: /api-docs
+  swagger-ui.path: /swagger-ui-custom.html
+  swagger-ui.operationsSorter: method
+
 spring:
   mvc:
     view:

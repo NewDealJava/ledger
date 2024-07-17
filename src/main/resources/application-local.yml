@@ -3,7 +3,8 @@ spring:
     url: ${LOCAL_DB_URL}
     username: ${LOCAL_DB_USER}
     password: ${LOCAL_DB_PASSWORD}
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+#    com.mysql.cj.jdbc.Driver
 
   flyway:
     locations: classpath:db/migration, classpath:db/data

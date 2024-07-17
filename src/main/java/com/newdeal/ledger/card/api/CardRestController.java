@@ -1,4 +1,4 @@
-package com.newdeal.ledger.cardaccount.controller;
+package com.newdeal.ledger.card.api;
 
 import java.util.List;
 
@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.newdeal.ledger.cardaccount.dto.CardDto;
-import com.newdeal.ledger.cardaccount.dto.CardRequest;
-import com.newdeal.ledger.cardaccount.service.CardService;
+import com.newdeal.ledger.card.dto.CardDto;
+import com.newdeal.ledger.card.dto.CardRequest;
+import com.newdeal.ledger.card.service.CardService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,32 +26,30 @@ import lombok.RequiredArgsConstructor;
 public class CardRestController {
 	private final CardService cardService;
 
-	@GetMapping
-	@ResponseStatus(HttpStatus.OK)
-	public List<CardDto> getAllCardsByEmail() {
-		String tempEmail = "user1@example.com";
-
-		return cardService.selectAllByEmail(tempEmail);
-	}
-
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public void createCard (@ModelAttribute CardRequest.Create request) {
+	public void createCard(@ModelAttribute CardRequest.Create request) {
 		String tempEmail = "user1@example.com";
-
 		cardService.createCard(tempEmail, request);
 	}
 
 	@PutMapping(value = "/{cardId}")
 	@ResponseStatus(HttpStatus.OK)
-	public void updateCard (@PathVariable Integer cardId, @RequestBody CardRequest.Update request) {
+	public void updateCard(@PathVariable Integer cardId, @RequestBody CardRequest.Update request) {
 		cardService.updateCard(cardId, request);
 	}
 
 	@DeleteMapping(value = "/{cardId}")
 	@ResponseStatus(HttpStatus.OK)
-	public void deleteTag(@PathVariable Integer cardId) {
-		cardService.deleteCard(cardId);
+	public void removeCard(@PathVariable Integer cardId) {
+		cardService.removeCard(cardId);
+	}
+
+	@GetMapping
+	@ResponseStatus(HttpStatus.OK)
+	public List<CardDto> getCardsByEmail() {
+		String tempEmail = "user1@example.com";
+		return cardService.getCardsByEmail(tempEmail);
 	}
 
 }

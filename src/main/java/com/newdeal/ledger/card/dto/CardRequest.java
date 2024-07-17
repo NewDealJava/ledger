@@ -1,6 +1,6 @@
-package com.newdeal.ledger.cardaccount.dto;
+package com.newdeal.ledger.card.dto;
 
-import com.newdeal.ledger.cardaccount.dto.type.CardType;
+import com.newdeal.ledger.card.dto.CardType;
 
 import lombok.Data;
 

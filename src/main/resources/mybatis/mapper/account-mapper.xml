@@ -30,12 +30,12 @@
     </delete>
 
     <!-- 이메일로 모든 계정 정보를 조회하는 SQL 쿼리 -->
-    <select id="findAccountsByEmail" resultType="com.newdeal.ledger.account.dto.AccountDto" parameterType="String">
+    <select id="findAccountsByEmail" resultType="com.newdeal.ledger.account.dto.AccountResponse$GetOne" parameterType="String">
         SELECT
-            ano,
+            ano as accountId,
             email,
             name,
-            cname,
+            cname as nickname,
             type,
             imgUrl,
             memo,

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.newdeal.ledger.account.dto.AccountDto;
 import com.newdeal.ledger.account.dto.AccountRequest;
+import com.newdeal.ledger.account.dto.AccountResponse;
 
 public interface AccountService {
 	void createAccount(String tempEmail, AccountRequest.Create request);
@@ -12,6 +13,6 @@ public interface AccountService {
 
 	void removeAccount(Integer accountId);
 
-	List<AccountDto> getAccountsByEmail(String email);
+	List<AccountResponse.GetOne> getAccountsByEmail(String email);
 
 }

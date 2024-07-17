@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.newdeal.ledger.account.dto.AccountDto;
 import com.newdeal.ledger.account.dto.AccountRequest;
+import com.newdeal.ledger.account.dto.AccountResponse;
 import com.newdeal.ledger.account.mapper.AccountMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -31,7 +32,7 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	@Override
-	public List<AccountDto> getAccountsByEmail(String email) {
+	public List<AccountResponse.GetOne> getAccountsByEmail(String email) {
 		return mapper.findAccountsByEmail(email);
 	}
 

@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.newdeal.ledger.account.dto.AccountDto;
 import com.newdeal.ledger.account.dto.AccountRequest;
+import com.newdeal.ledger.account.dto.AccountResponse;
 
 @Mapper
 public interface AccountMapper {
@@ -15,5 +16,5 @@ public interface AccountMapper {
 	void updateAccount(@Param("accountId") Integer accountId, @Param("request") AccountRequest.Update request);
 
 	void deleteAccount(Integer accountId);
-	List<AccountDto> findAccountsByEmail(String email);
+	List<AccountResponse.GetOne> findAccountsByEmail(String email);
 }

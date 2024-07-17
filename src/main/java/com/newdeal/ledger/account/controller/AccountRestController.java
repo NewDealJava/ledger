@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.newdeal.ledger.account.dto.AccountDto;
 import com.newdeal.ledger.account.dto.AccountRequest;
+import com.newdeal.ledger.account.dto.AccountResponse;
 import com.newdeal.ledger.account.service.AccountService;
 
 import lombok.RequiredArgsConstructor;
@@ -47,9 +48,8 @@ public class AccountRestController {
 
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
-	public List<AccountDto> getAccountsByEmail() {
+	public List<AccountResponse.GetOne> getAccountsByEmail() {
 		String tempEmail = "user1@example.com";
-
 		return accountService.getAccountsByEmail(tempEmail);
 	}
 }

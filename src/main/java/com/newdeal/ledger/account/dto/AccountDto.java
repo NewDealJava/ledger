@@ -8,10 +8,10 @@ import lombok.RequiredArgsConstructor;
 @AllArgsConstructor
 @Data
 public class AccountDto {
-	public Integer ano;
+	public Integer accountId;
 	public String email;
 	public String name;
-	public String cname;
+	public String nickname;
 	public AccountType type;
 	public String imgUrl;
 	public String memo;

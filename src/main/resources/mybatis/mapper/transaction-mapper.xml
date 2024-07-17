@@ -187,4 +187,10 @@
             `tno` = #{transactionId}
     </update>
 
+    <delete id="deleteTransactionById">
+        DELETE
+        FROM transaction
+        WHERE tno = #{transactionId}
+    </delete>
+
 </mapper>

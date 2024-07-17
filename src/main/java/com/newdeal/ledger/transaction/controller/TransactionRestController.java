@@ -3,6 +3,7 @@ package com.newdeal.ledger.transaction.controller;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,6 +40,12 @@ public class TransactionRestController {
 	@ResponseStatus(HttpStatus.OK)
 	public void updateTransactionById(@PathVariable Integer transactionId, @ModelAttribute TransactionRequest.Update request){
 		transactionService.updateTransactionById(transactionId, request);
+	}
+
+	@DeleteMapping(value = "/{transactionId}")
+	@ResponseStatus(HttpStatus.OK)
+	public void deleteTransactionById(@PathVariable Integer transactionId){
+		transactionService.removeTransactionById(transactionId);
 	}
 
 	@GetMapping

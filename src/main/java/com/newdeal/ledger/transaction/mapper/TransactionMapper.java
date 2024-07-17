@@ -37,4 +37,6 @@ public interface TransactionMapper {
 	);
 
 	void deleteTransactionTagByTransactionId(Integer transactionId);
+
+	void deleteTransactionById(Integer transactionId);
 }

@@ -48,4 +48,10 @@ public class TransactionServiceImpl implements TransactionService {
 	public TransactionResponse.GetOne getTransactionById(Integer transactionId) {
 		return mapper.selectTransactionById(transactionId);
 	}
+
+	@Override
+	public void removeTransactionById(Integer transactionId) {
+		mapper.deleteTransactionTagByTransactionId(transactionId);
+		mapper.deleteTransactionById(transactionId);
+	}
 }

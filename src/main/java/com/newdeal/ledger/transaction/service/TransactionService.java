@@ -18,4 +18,6 @@ public interface TransactionService {
 	TransactionResponse.GetOne getTransactionById(Integer transactionId);
 
 	void updateTransactionById(Integer transactionId, TransactionRequest.Update request);
+
+	void removeTransactionById(Integer transactionId);
 }

@@ -95,7 +95,7 @@ VALUES (v_email,
             END,
         CASE
             WHEN v_count MOD 3 = 2 THEN 'INCOME'
-            ELSE 'EXPAND'
+            ELSE 'EXPENSE'
             END,
         v_stype,
         v_sno,

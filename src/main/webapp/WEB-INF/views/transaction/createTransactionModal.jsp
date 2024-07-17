@@ -15,41 +15,54 @@
 
             let sourceData = formData.get('source').split(' - ');
             jsonObject['sourceType'] = sourceData[0];
-            jsonObject['sno'] = sourceData[1];
-
-            let installmentValue = formData.get('installment');
-            if (installmentValue === '일시불') {
-                jsonObject['installment'] = 1;
-            } else {
-                jsonObject['installment'] = parseInt(installmentValue.replace('개월', ''));
-            }
-
-            let rtypeValue = formData.get('rtype');
-            jsonObject['rtype'] = rtypeValue;
+            jsonObject['sourceId'] = sourceData[1];
 
             formData.forEach((value, key) => {
-                if (key !== 'installment' && key !== 'rtype' && key !== 'source') {
+                if ( key !== 'source') {
                     jsonObject[key] = value;
                 }
             });
-
-            fetch('/api/transaction', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: new URLSearchParams(jsonObject).toString()
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    resetFormAndCloseModal('expense-form');
-                    window.location.reload();
+            if(jsonObject.transactionId === ""){ // 생성
+                debugger;
+                fetch('/api/transaction', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: new URLSearchParams(jsonObject).toString()
                 })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        resetFormAndCloseModal('expense-form');
+                        window.location.reload();
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+
+            } else{  // 수정
+                fetch('/api/transaction/' + jsonObject.transactionId, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: new URLSearchParams(jsonObject).toString()
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        resetFormAndCloseModal('expense-form');
+                        window.location.reload();
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+
+            }
+
         }
 
         function submitIncomeForm(event) {
@@ -79,7 +92,6 @@
                 body: new URLSearchParams(jsonObject).toString()
             })
                 .then(response => {
-
                     console.log(response);
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
@@ -116,11 +128,15 @@
 
             span.onclick = function () {
                 modal.style.display = "none";
+                resetFormAndCloseModal('expense-form');
+                resetFormAndCloseModal('income-form');
             }
 
             window.onclick = function (event) {
                 if (event.target == modal) {
                     modal.style.display = "none";
+                    resetFormAndCloseModal('expense-form');
+                    resetFormAndCloseModal('income-form');
                 }
             }
 
@@ -228,6 +244,7 @@
         }
 
         function updateSelectedTags(hiddenInput, tagContainer) {
+
             const selectedTags = [];
             const buttons = tagContainer.getElementsByClassName("tag-button");
             for (let button of buttons) {
@@ -286,16 +303,19 @@
             <form id="expense-form" onsubmit="submitExpenseForm(event)">
                 <h3>지출</h3>
 
+                <label for="expense-transactionId">ID:</label>
+                <input type="hidden" id="expense-transactionId" name="transactionId"><br><br>
+
                 <label for="expense-type">타입:</label>
-                <input type="text" id="expense-type" name="type" value="EXPENSE" readonly><br><br>
+                <input type="text" id="expense-type" name="transactionType" value="EXPENSE" readonly><br><br>
 
                 <label for="expense-category">카테고리:</label>
-                <select id="expense-category" name="category" onchange="updateSubcategories('EXPENSE')">
+                <select id="expense-category" name="categoryId" onchange="updateSubcategories('EXPENSE')">
                     <!-- Category options will be populated dynamically -->
                 </select><br><br>
 
                 <label for="expense-subcategory">세부카테고리:</label>
-                <select id="expense-subcategory" name="subcategory">
+                <select id="expense-subcategory" name="subCategoryId">
                     <!-- Subcategory options will be populated based on category selection -->
                 </select><br><br>
 
@@ -312,9 +332,9 @@
 
                 <label for="expense-installment">할부: </label>
                 <select id="expense-installment" name="installment">
-                    <option value="일시불">일시불</option>
+                    <option value=1>일시불</option>
                     <% for (int i = 2; i <= 36; i++) { %>
-                    <option value="<%= i %>개월"><%= i %>개월</option>
+                    <option value="<%= i %>"><%= i %>개월</option>
                     <% } %>
                 </select><br><br>
 
@@ -322,7 +342,7 @@
                 <div id="expense-tag-container">
                     <!-- Tag buttons will be populated dynamically -->
                 </div>
-                <input type="hidden" id="expense-tags" name="tags"><br><br>
+                <input type="hidden" id="expense-tags" name="tagIdList"><br><br>
 
                 <div class="form-row">
                     <label for="expense-date">날짜: </label>
@@ -333,7 +353,7 @@
                 <br>
 
                 <label for="expense-rtype">반복주기: </label>
-                <select id="expense-rtype" name="rtype">
+                <select id="expense-rtype" name="repeatType">
                     <option value="NONE">없음</option>
                     <option value="MONTHLY">월간</option>
                     <option value="WEEKLY">주간</option>
@@ -353,6 +373,9 @@
             <form id="income-form" onsubmit="submitIncomeForm(event)">
                 <h3>수입</h3>
 
+                <label for="income-transactionId">ID:</label>
+                <input type="hidden" id="income-transactionId" name="transactionId"><br><br>
+
                 <label for="income-type">타입:</label>
                 <input type="text" id="income-type" name="type" value="INCOME" readonly><br><br>
 
@@ -362,7 +385,7 @@
                 </select><br><br>
 
                 <label for="income-subcategory">서브카테고리:</label>
-                <select id="income-subcategory" name="subcategory">
+                <select id="income-subcategory" name="subCategory">
                     <!-- Subcategory options will be populated based on category selection -->
                 </select><br><br>
 

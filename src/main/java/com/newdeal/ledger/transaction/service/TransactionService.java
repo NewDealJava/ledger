@@ -5,6 +5,7 @@ import java.util.List;
 import com.newdeal.ledger.transaction.dto.SourceDto;
 import com.newdeal.ledger.transaction.dto.TransactionListDto;
 import com.newdeal.ledger.transaction.dto.TransactionRequest;
+import com.newdeal.ledger.transaction.dto.TransactionResponse;
 
 public interface TransactionService {
 
@@ -13,4 +14,8 @@ public interface TransactionService {
 	List<SourceDto> selectAllSourceByEmail(String email);
 
 	void createTransaction(String email, TransactionRequest.Create request);
+
+	TransactionResponse.GetOne getTransactionById(Integer transactionId);
+
+	void updateTransactionById(Integer transactionId, TransactionRequest.Update request);
 }

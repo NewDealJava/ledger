@@ -8,7 +8,7 @@ public class AccountRequest {
 	public static class Create {
 		public AccountType type;
 		public String name;
-		public String cname;
+		public String nickname;
 		public Long amount;
 		public String memo;
 		public String imgUrl;
@@ -18,7 +18,7 @@ public class AccountRequest {
 	public static class Update {
 		public AccountType type;
 		public String name;
-		public String cname;
+		public String nickname;
 		public Long amount;
 		public String memo;
 		public String imgUrl;

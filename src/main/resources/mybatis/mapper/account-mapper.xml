@@ -7,7 +7,7 @@
 
     <insert id="createAccount" parameterType="map">
         INSERT INTO account (email, name, cname, type, imgUrl, memo, amount)
-        VALUES (#{email}, #{request.name}, #{request.cname}, #{request.type}, #{request.imgUrl}, #{request.memo},
+        VALUES (#{email}, #{request.name}, #{request.nickname}, #{request.type}, #{request.imgUrl}, #{request.memo},
                 #{request.amount})
     </insert>
 
@@ -16,7 +16,7 @@
         SET
             type = #{request.type},
             name = #{request.name},
-            cname = #{request.cname},
+            cname = #{request.nickname},
             amount = #{request.amount},
             memo = #{request.memo},
             imgUrl = #{request.imgUrl}

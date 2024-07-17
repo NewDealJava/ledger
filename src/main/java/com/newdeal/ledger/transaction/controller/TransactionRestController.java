@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.newdeal.ledger.transaction.dto.SourceDto;
-import com.newdeal.ledger.transaction.dto.TransactionListDto;
 import com.newdeal.ledger.transaction.dto.TransactionRequest;
 import com.newdeal.ledger.transaction.dto.TransactionResponse;
 import com.newdeal.ledger.transaction.service.TransactionService;
@@ -32,7 +31,6 @@ public class TransactionRestController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public void createTransaction(@ModelAttribute TransactionRequest.Create request) {
 		String tempEmail = "user1@example.com";
-
 		transactionService.createTransaction(tempEmail, request);
 	}
 
@@ -44,7 +42,7 @@ public class TransactionRestController {
 
 	@DeleteMapping(value = "/{transactionId}")
 	@ResponseStatus(HttpStatus.OK)
-	public void deleteTransactionById(@PathVariable Integer transactionId){
+	public void removeTransactionById(@PathVariable Integer transactionId){
 		transactionService.removeTransactionById(transactionId);
 	}
 
@@ -53,7 +51,7 @@ public class TransactionRestController {
 	public List<TransactionResponse.GetList> getTransactions(@RequestParam int year, @RequestParam int month) {
 		String tempEmail = "user1@example.com";
 
-		return transactionService.selectAllByMonth(tempEmail, year, month);
+		return transactionService.getTransactionsByMonth(tempEmail, year, month);
 	}
 
 	@GetMapping(value = "/{transactionId}")
@@ -66,7 +64,7 @@ public class TransactionRestController {
 	@ResponseStatus(HttpStatus.OK)
 	public List<SourceDto> getSource() {
 		String tempEmail = "user1@example.com";
-		List<SourceDto> sourceDtos = transactionService.selectAllSourceByEmail(tempEmail);
+		List<SourceDto> sourceDtos = transactionService.getSourcesByEmail(tempEmail);
 		return sourceDtos;
 	}
 }

@@ -17,16 +17,6 @@ public class TransactionServiceImpl implements TransactionService {
 	private final TransactionMapper mapper;
 
 	@Override
-	public List<TransactionResponse.GetList> selectAllByMonth(String email, int year, int month) {
-		return mapper.findAllByMonth(email, year, month);
-	}
-
-	@Override
-	public List<SourceDto> selectAllSourceByEmail(String email) {
-		return mapper.findAllSourceByEmail(email);
-	}
-
-	@Override
 	public void createTransaction(String email, TransactionRequest.Create request) {
 		mapper.createTransaction(email, request);
 		Integer transactionId = request.getTransactionId();
@@ -42,13 +32,24 @@ public class TransactionServiceImpl implements TransactionService {
 	}
 
 	@Override
-	public TransactionResponse.GetOne getTransactionById(Integer transactionId) {
-		return mapper.selectTransactionById(transactionId);
-	}
-
-	@Override
 	public void removeTransactionById(Integer transactionId) {
 		mapper.deleteTransactionTagByTransactionId(transactionId);
 		mapper.deleteTransactionById(transactionId);
 	}
+
+	@Override
+	public List<TransactionResponse.GetList> getTransactionsByMonth(String email, int year, int month) {
+		return mapper.findTransactionsByMonth(email, year, month);
+	}
+
+	@Override
+	public TransactionResponse.GetOne getTransactionById(Integer transactionId) {
+		return mapper.findTransactionById(transactionId);
+	}
+
+	@Override
+	public List<SourceDto> getSourcesByEmail(String email) {
+		return mapper.findSourcesByEmail(email);
+	}
+
 }

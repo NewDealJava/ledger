@@ -18,12 +18,11 @@
             jsonObject['sourceId'] = sourceData[1];
 
             formData.forEach((value, key) => {
-                if ( key !== 'source') {
+                if (key !== 'source') {
                     jsonObject[key] = value;
                 }
             });
-            if(jsonObject.transactionId === ""){ // 생성
-                debugger;
+            if (jsonObject.transactionId === "") { // 생성
                 fetch('/api/transaction', {
                     method: 'POST',
                     headers: {
@@ -42,7 +41,7 @@
                         console.error('Error:', error);
                     });
 
-            } else{  // 수정
+            } else {  // 수정
                 fetch('/api/transaction/' + jsonObject.transactionId, {
                     method: 'PUT',
                     headers: {

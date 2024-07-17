@@ -12,10 +12,10 @@ package com.newdeal.ledger.inquiry.mapper;// package com.newdeal.ledger.inquiry.
 @Mapper
  public interface InquiryMapper {
      //1.문의 게시판_전체리스트 가져오기.
-     ArrayList<InquiryDto> iSelectAll(@Param("startContRowNum") int startContRowNum, @Param("endContRowNum") int endContRowNum); //문의 게시판 전체리스트 가져오기
+     ArrayList<InquiryDto> iSelectAll(@Param("startContRowNum") int startContRowNum, @Param("endContRowNum") int endContRowNum, @Param("searchCategory") String searchCategory, @Param("searchWord") String searchWord); //문의 게시판 전체리스트 가져오기
     //HashMap<Object, Object> map
-     // ※ 1-ⓐ회원정보 리스트 총갯수
-     int iSelectCountAll();
+     // ※ 문의 게시판_리스트 총갯수
+     int iSelectCountAll(@Param("searchCategory") String searchCategory, @Param("searchWord") String searchWord);
      
      // 2.문의 게시판_게시글 1개 가져오기.
      InquiryDto iSelectOne(int qbno);

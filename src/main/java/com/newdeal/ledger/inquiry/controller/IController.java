@@ -34,10 +34,11 @@ package com.newdeal.ledger.inquiry.controller;// package com.newdeal.ledger.inqu
 	 
 	 // 1. 문의 게시판_전체 리스트 가져오기.
  	@GetMapping("/inquiry")
- 	public String index(@RequestParam(name ="page", defaultValue = "1" ) int page, @RequestParam(name="SearchCategory", defaultValue = "All") String SearchCategory, @RequestParam(name = "SearchWord", required = false) String SearchWord,  Model model) {
-
+ 	public String index(@RequestParam(name ="page", defaultValue = "1" ) int page, @RequestParam(name="searchCategory", defaultValue = "All") String searchCategory, @RequestParam(name = "searchWord", required = false) String searchWord,  Model model) {
+		System.out.println("검색어 : "+searchWord);
+		System.out.println("검색어 카테고리 : "+searchCategory);
 		// ▽ Service에 연결
- 		Map<String, Object> map = inquiryService.iSelectAll(page);
+ 		Map<String, Object> map = inquiryService.iSelectAll(page,searchCategory,searchWord);
 
  		// ▼ model저장 후 전송
  		model.addAttribute("map",map);

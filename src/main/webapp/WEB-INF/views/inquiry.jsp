@@ -23,19 +23,25 @@
 
   <script>
     $(function () {
+     //검색어 유지
+      var search_main=$("#SearchWord_hidden").val(); //검색창 검색어 유지기능
+      $("#SearchWord").val(search_main); //검색어 유지 및 검색어 보여지는 갯수 유지
+
       $("#searchBtn").click(function () {
-        if ($("#searchWord").val().length < 1) {
+        if ($("#SearchWord").val().length < 1) {
           alert("※ 검색어를 입력해주세요.");
-          $("#searchWord").focus();
+          $("#SearchWord").focus();
           return false;
         } //if(검색어 미입력시)
 
         SearchFrm.submit();
       }); //#searchBtn(검색어)
 
-      //검색어 유지
-      var SearchWord_Maintain = $("#searchWord_maintain").val();
-      $("#searchWord").val(SearchWord_Maintain);
+
+      $("#ViewCondition").change(function(){
+
+      });//#ViewCondition
+
     }); //제이쿼리 최신
   </script>
   <body>
@@ -89,11 +95,11 @@
           <div class="pagination-area">
             <ul id="pagination">
               <!--첫번째 페이지-->
-              <li class="pagination-first-page"><a href="/inquiry?page=1">처음</a></li>
+              <li class="pagination-first-page"><a href="/inquiry?page=1&searchCategory=${map.searchCategory}&searchWord=${map.searchWord}">처음</a></li>
 
               <!--이전 페이지-->
               <c:if test="${map.page>=1 }">
-                <a href="/inquiry?page=${map.page-1 }&SearchCategory=${map.SearchCategory}&SearchWord=${map.SearchWord}"><i class="fa fa-chevron-left" aria-hidden="true"></i></a></li>
+                <a href="/inquiry?page=${map.page-1 }&searchCategory=${map.searchCategory}&searchWord=${map.searchWord}"><i class="fa fa-chevron-left" aria-hidden="true"></i></a></li>
               </c:if>
 
               <!--페이지 넘버링-->
@@ -102,33 +108,54 @@
                     <li class="pagination-number">${i}</li>
                 </c:if>
                 <c:if test="${map.page!=i }">
-                    <li class="pagination-number"><a href="/inquiry?page=${i}&SearchCategory=${map.SearchCategory}&SearchWord=${map.SearchWord}">${i}</a></li>
+                    <li class="pagination-number"><a href="/inquiry?page=${i}&searchCategory=${map.searchCategory}&searchWord=${map.searchWord}">${i}</a></li>
                 </c:if>
               </c:forEach>
               <!--페이지 넘버링-->
 
               <!--다음 페이지-->
               <c:if test="${map.page<map.maxPage }">
-                <a href="/inquiry?page=${map.page+1 }&SearchCategory=${map.SearchCategory}&SearchWord=${map.SearchWord}"><i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>
+                <a href="/inquiry?page=${map.page+1 }&searchCategory=${map.searchCategory}&searchWord=${map.searchWord}"><i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>
               </c:if>
               <c:if test="${map.page>=map.maxPage }">
                 <i class="fa fa-chevron-right" aria-hidden="true"></i>
               </c:if>
               <!-- 마지막 페이지 -->
               <li class="pagination-last-page">
-                <a href="/inquiry?page=${map.maxPage }&SearchCategory=${map.SearchCategory}&SearchWord=${map.SearchWord}">마지막</a>
+                <a href="/inquiry?page=${map.maxPage }&searchCategory=${map.searchCategory}&searchWord=${map.searchWord}">마지막</a>
               </li>
             </ul>
           </div>
           <div class="search-area">
           <form action="/inquiry" method="get" name="SearchFrm">
-                <select class="search-word-select" name="SearchCategory">
-                  <option value="All" selected="selected">전체</option>
-                  <option value="qtitle">제목</option>
-                  <option value="qcontent">내용</option>
-                  <option value="Id">작성자</option>
+                <select class="search-word-select" name="searchCategory">
+                  <c:if test="${map.searchCategory != 'All'}">
+                    <option value="All">전체</option>
+                  </c:if>
+                  <c:if test="${map.searchCategory == 'All'}">
+                    <option value="All" selected="selected">전체</option>
+                  </c:if>
+                  <c:if test="${map.searchCategory == 'Qtitle'}">
+                    <option value="Qtitle" selected="selected">제목</option>
+                  </c:if>
+                  <c:if test="${map.searchCategory != 'Qtitle'}">
+                    <option value="Qtitle">제목</option>
+                  </c:if>
+                  <c:if test="${map.searchCategory == 'Qcontent'}">
+                    <option value="Qcontent" selected="selected">내용</option>
+                  </c:if>
+                  <c:if test="${map.searchCategory != 'Qcontent'}">
+                    <option value="Qcontent">내용</option>
+                  </c:if>
+                  <c:if test="${map.searchCategory == 'Email'}">
+                    <option value="Email" selected="selected">작성자</option>
+                  </c:if>
+                  <c:if test="${map.searchCategory !='Email'}">
+                    <option value="Email">작성자</option>
+                  </c:if>
                 </select>
-                <input type="text"class="search-word-input"id="searchWord" name="searchWord" placeholder=" ※검색어를 입력하세요."/>
+                <input type="text" class="search-word-input" id="SearchWord" name="searchWord" placeholder=" ※검색어를 입력하세요."/>
+                <input type="hidden" id="SearchWord_hidden" value="${map.searchWord}"> <!-- 검색어 검색창 유지기능  -->
                 <button id="searchBtn" class="search-word-button">검색</button>
             </form>
           </div>

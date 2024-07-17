@@ -33,6 +33,17 @@ prefix="fn" %> <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
         }
     });
   })
+
+    const onLogoutButtonClickHandler = () => {
+    $.ajax({
+      url: '/user/logout',
+      type: 'POST',
+      success: () => {
+        sessionStorage.setItem('logoutMessage', '정상적으로 로그아웃 되었습니다.');
+        window.location.href = '/sign-in';
+      },
+    });
+  }
 </script>
 
   <header class="header">
@@ -55,7 +66,7 @@ prefix="fn" %> <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
         <div id="user-box" class="header-user-info-box" style="display: none;">
           <div class="header-user-info-mypage-button">마이페이지</div>
           <div class="divider"></div>
-          <div class="header-user-info-logout-button">로그아웃</div>
+          <div class="header-user-info-logout-button" onclick="onLogoutButtonClickHandler()">로그아웃</div>
         </div>
       </c:if>
     </ul>

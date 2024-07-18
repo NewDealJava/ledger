@@ -23,7 +23,9 @@ public class TransactionServiceImpl implements TransactionService {
 		mapper.createTransaction(email, request);
 		Integer transactionId = request.getTransactionId();
 
-		mapper.createTransactionTag(transactionId, request.getTagIdList());
+		if (!request.getTagIdList().isEmpty()) {
+			mapper.createTransactionTag(transactionId, request.getTagIdList());
+		}
 	}
 
 	@Override
@@ -49,7 +51,7 @@ public class TransactionServiceImpl implements TransactionService {
 		String email,
 		TransactionRequest.MultiFilter request
 	) {
-		return  mapper.findTransactionsByMultiFilter(email, request);
+		return mapper.findTransactionsByMultiFilter(email, request);
 	}
 
 	@Override

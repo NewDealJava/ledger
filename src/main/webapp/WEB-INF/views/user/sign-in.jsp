@@ -8,8 +8,8 @@ prefix="fn" %> <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
     <meta charset="UTF-8" />
     <title>가계부</title>
     <!-- CSS -->
-    <link href="../css/include/global.css?ver=1" rel="stylesheet" />
-    <link href="../css/user.css?ver=1" rel="stylesheet" />
+    <link href="/css/include/global.css?ver=1" rel="stylesheet" />
+    <link href="/css/user.css?ver=1" rel="stylesheet" />
     <!-- JQuery 최신 -->
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <!-- Sweet Alert -->
@@ -42,15 +42,13 @@ $(document).ready(() => {
         password: password,
       }),
       contentType: "application/json; charset=utf-8",
-      dataType: "text",
-      success: (data) => {
-        if (data) {
+      dataType: "json",
+      success: (response) => {
           sessionStorage.setItem(
             "successMessage",
             "님 환영합니다!"
           );
           window.location.href = "/user/mypage";
-        }
       },
       error: (error) => {
         if (error.status === 400) {
@@ -151,6 +149,16 @@ $(document).ready(() => {
             title: successMessage,
         });
         sessionStorage.removeItem('successMessage');
+    }
+});
+  $(document).ready(() => {
+    const logoutMessage = sessionStorage.getItem('logoutMessage');
+    if (logoutMessage) {
+        Toast.fire({
+            icon: 'success',
+            title: logoutMessage,
+        });
+        sessionStorage.removeItem('logoutMessage');
     }
 });
 </script>

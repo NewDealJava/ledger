@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.newdeal.ledger.category.dto.CategoryDto;
 import com.newdeal.ledger.category.dto.CategoryResponse;
 import com.newdeal.ledger.category.service.CategoryService;
+import com.newdeal.ledger.transaction.dto.type.TransactionType;
 
 import lombok.RequiredArgsConstructor;
 
@@ -29,7 +30,7 @@ public class CategoryRestController {
 
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
-	public List<CategoryResponse.GetOne> getCategoriesByTransactionType(@RequestParam String type) {
+	public List<CategoryResponse.GetOne> getCategoriesByTransactionType(@RequestParam TransactionType type) {
 		return categoryService.getCategoriesByTransactionType(type);
 	}
 

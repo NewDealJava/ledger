@@ -1,4 +1,4 @@
-package com.newdeal.ledger.account.controller;
+package com.newdeal.ledger.account.api;
 
 import java.util.List;
 
@@ -19,6 +19,7 @@ import com.newdeal.ledger.account.dto.AccountRequest;
 import com.newdeal.ledger.account.dto.AccountResponse;
 import com.newdeal.ledger.account.service.AccountService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -29,14 +30,14 @@ public class AccountRestController {
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public void createAccount (@ModelAttribute AccountRequest.Create request) {
+	public void createAccount (@ModelAttribute @Valid AccountRequest.Create request) {
 		String tempEmail = "user1@example.com";
 		accountService.createAccount(tempEmail, request);
 	}
 
 	@PutMapping(value = "/{accountId}")
 	@ResponseStatus(HttpStatus.OK)
-	public void updateAccount (@PathVariable Integer accountId, @RequestBody AccountRequest.Update request) {
+	public void updateAccount (@PathVariable Integer accountId, @RequestBody @Valid AccountRequest.Update request) {
 		accountService.updateAccount(accountId, request);
 	}
 

@@ -19,6 +19,7 @@ import com.newdeal.ledger.transaction.dto.TransactionRequest;
 import com.newdeal.ledger.transaction.dto.TransactionResponse;
 import com.newdeal.ledger.transaction.service.TransactionService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -29,7 +30,7 @@ public class TransactionRestController {
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public void createTransaction(@ModelAttribute TransactionRequest.Create request) {
+	public void createTransaction(@ModelAttribute @Valid TransactionRequest.Create request) {
 		String tempEmail = "user1@example.com";
 		transactionService.createTransaction(tempEmail, request);
 	}
@@ -37,7 +38,7 @@ public class TransactionRestController {
 	@PutMapping(value = "/{transactionId}")
 	@ResponseStatus(HttpStatus.OK)
 	public void updateTransactionById(@PathVariable Integer transactionId,
-		@ModelAttribute TransactionRequest.Update request) {
+		@ModelAttribute @Valid TransactionRequest.Update request) {
 		transactionService.updateTransactionById(transactionId, request);
 	}
 
@@ -57,7 +58,7 @@ public class TransactionRestController {
 	@GetMapping("/search")
 	@ResponseStatus(HttpStatus.OK)
 	public List<TransactionResponse.GetList> getTransactionsByMultiFilter(
-		@ModelAttribute TransactionRequest.MultiFilter request
+		@ModelAttribute @Valid TransactionRequest.MultiFilter request
 	) {
 		String tempEmail = "user1@example.com";
 		return transactionService.getTransactionsByMultiFilter(tempEmail, request);

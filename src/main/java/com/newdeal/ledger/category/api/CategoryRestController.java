@@ -30,7 +30,7 @@ public class CategoryRestController {
 
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
-	public List<CategoryResponse.GetOne> getCategoriesByTransactionType(@RequestParam String type) {
+	public List<CategoryResponse.GetOne> getCategoriesByTransactionType(@RequestParam TransactionType type) {
 		return categoryService.getCategoriesByTransactionType(type);
 	}
 

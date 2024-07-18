@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.newdeal.ledger.category.dto.CategoryDto;
 import com.newdeal.ledger.category.dto.CategoryResponse;
 import com.newdeal.ledger.category.mapper.CategoryMapper;
+import com.newdeal.ledger.transaction.dto.type.TransactionType;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,7 +22,7 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
-	public List<CategoryResponse.GetOne> getCategoriesByTransactionType(String type) {
+	public List<CategoryResponse.GetOne> getCategoriesByTransactionType(TransactionType type) {
 		return mapper.findCategoriesByType(type);
 	}
 

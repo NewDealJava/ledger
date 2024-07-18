@@ -31,11 +31,18 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
+      # Gradle build (Test 제외)
       - name: Build with Gradle
         run: ./gradlew clean build -x test
 
+      # 빌드 결과 확인
+      - name: Check build result
+        run: ls -la build/libs
+
+      # 압축 파일 만들기
       - name: Make Zip File
-        run: zip -qq -r $GITHUB_SHA.zip . -x '*.git*' -x 'build/*' -x 'node_modules/*'
+        run: zip -qq -r ./$GITHUB_SHA.zip .
+        shell: bash
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -44,9 +51,11 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-northeast-2
 
+      # S3 버킷으로 파일을 업로드
       - name: Upload to S3
-        run: aws s3 cp --region ap-northeast-2 $GITHUB_SHA.zip s3://$BUCKET_NAME/$PROJECT_NAME/$GITHUB_SHA.zip
+        run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://$BUCKET_NAME/$PROJECT_NAME/$GITHUB_SHA.zip
 
+      # S3 버킷에 업로드 된 파일을 대상으로 CodeDeploy에서 배포 요청
       - name: Code Deploy
         run: aws deploy create-deployment --application-name $CODE_DEPLOY_APP_NAME --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name $DEPLOYMENT_GROUP_NAME --s3-location bucket=$BUCKET_NAME,bundleType=zip,key=$PROJECT_NAME/$GITHUB_SHA.zip
 
@@ -60,14 +69,17 @@ jobs:
           echo "DEV_DB_USER=${{ secrets.DEV_DB_USER }}" >> $GITHUB_ENV
           echo "DEV_DB_PASSWORD=${{ secrets.DEV_DB_PASSWORD }}" >> $GITHUB_ENV
 
-      - name: Stop application
-        run: |
-          chmod +x /home/ubuntu/deploy/scripts/stop.sh
-          /home/ubuntu/deploy/scripts/stop.sh
-        env:
-          DEV_DB_URL: ${{ secrets.DEV_DB_URL }}
-          DEV_DB_USER: ${{ secrets.DEV_DB_USER }}
-          DEV_DB_PASSWORD: ${{ secrets.DEV_DB_PASSWORD }}
+#      - name: Sleep for 90 seconds
+#        run: sleep 90
+#
+#      - name: Stop application
+#        run: |
+#          chmod +x /home/ubuntu/deploy/scripts/stop.sh
+#          /home/ubuntu/deploy/scripts/stop.sh
+#        env:
+#          DEV_DB_URL: ${{ secrets.DEV_DB_URL }}
+#          DEV_DB_USER: ${{ secrets.DEV_DB_USER }}
+#          DEV_DB_PASSWORD: ${{ secrets.DEV_DB_PASSWORD }}
 
       - name: Start application
         run: |

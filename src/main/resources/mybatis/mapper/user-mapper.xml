@@ -6,8 +6,8 @@
 <mapper namespace="com.newdeal.ledger.user.mapper.UserMapper">
 
     <insert id="save" parameterType="com.newdeal.ledger.user.dto.UserDto" >
-        INSERT INTO ymember (email, password, name, phone, address, profile_image)
-        VALUES (#{email}, #{password}, #{name}, #{phone}, #{address}, #{profileImage})
+        INSERT INTO ymember (email,uuid, password, name, phone, address, profile_image)
+        VALUES (#{email}, ${uuid}, #{password}, #{name}, #{phone}, #{address}, #{profileImage})
     </insert>
 
     <select id="existsByPhone" resultType="boolean" >

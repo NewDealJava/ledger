@@ -6,9 +6,9 @@ TRUNCATE TABLE tag;
 TRUNCATE TABLE transaction;
 SET foreign_key_checks = 1;
 
-INSERT INTO ymember (email, password, name, phone, address, profile_image, created_at, role)
-VALUES ('user1@example.com', 'password1', 'User One', '123-456-7890', '123 Main St', null, '2023-01-01', 'USER'),
-       ('user2@example.com', 'password2', 'User Two', '234-567-8901', '234 Oak St', null, '2023-02-01', 'USER');
+INSERT INTO ymember (email, uuid, password, name, phone, address, profile_image, created_at, role)
+VALUES ('user1@example.com', '123e4567-e89b-12d3-a456-556642440000', 'password1', 'User One', '123-456-7890', '123 Main St', null, '2023-01-01', 'USER'),
+       ('user2@example.com','123e4567-e89b-12d3-a456-556642440001', 'password2', 'User Two', '234-567-8901', '234 Oak St', null, '2023-02-01', 'USER');
 
 
 

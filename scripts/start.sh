@@ -1,7 +1,7 @@
 # start.sh
 
 PROJECT_ROOT="/home/ubuntu/deploy"
-JAR_FILE="$PROJECT_ROOT/server-0.0.1-SNAPSHOT.jar"
+JAR_FILE="$PROJECT_ROOT/ledger-0.0.1-SNAPSHOT.jar"
 
 APP_LOG="$PROJECT_ROOT/application.log"
 ERROR_LOG="$PROJECT_ROOT/error.log"

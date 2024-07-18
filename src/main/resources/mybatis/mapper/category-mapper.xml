@@ -16,7 +16,7 @@
     </select>
 
     <select id="findCategoriesByType" resultType="com.newdeal.ledger.category.dto.CategoryResponse$GetOne"
-            parameterType="String">
+            parameterType="map">
         SELECT cno AS categoryId,
                type,
                name,

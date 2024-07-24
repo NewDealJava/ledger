@@ -9,7 +9,7 @@
 		<meta charset="UTF-8">
 		<title>회원리스트</title>
 	</head>
-	<!-- ♣♣♣ CSS ♣♣♣ -->
+	<!-- ♣♣♣ CSS1 ♣♣♣ -->
 	<link href="../css/index.css" rel="stylesheet">
 	
 	<!-- ♣♣♣ font ♣♣♣ -->
